@@ -212,31 +212,31 @@ mod tests_aes_add_round_key {
 
 fn aes_key_expansion(key: &[u8; 32]) -> [[u8; 4]; 60] {  // generate Key Schedule (byte-array Nr+1 x Nb) from Key [§5.2]
     //4 int Nb = 4;            // block size (in words): no of columns in state (fixed at 4 for AES)
-    let Nk = key.len() / 4;  // key length (in words): 4/6/8 for 128/192/256-bit keys
-    let rounds = Nk + 6;       // no of rounds: 10/12/14 for 128/192/256-bit keys
+    let key_length_words = key.len() / 4;  // key length (in words): 4/6/8 for 128/192/256-bit keys
+    let _rounds = key_length_words + 6;       // no of rounds: 10/12/14 for 128/192/256-bit keys
 
     let mut w: [[u8; 4]; 60] = [[8; 4]; 60];
 
-    for i in 0..Nk {
+    for i in 0..key_length_words {
         w[i] = [key[4 * i], key[4 * i + 1], key[4 * i + 2], key[4 * i + 3]];
     }
 
-    for i in Nk..60 {
+    for i in key_length_words..60 {
         let mut temp = [w[i - 1][0], w[i - 1][1], w[i - 1][2], w[i - 1][3]];
-        if i % Nk == 0 {
+        if i % key_length_words == 0 {
             aes_rot_word(&mut temp);
             aes_sub_word(&mut temp);
-            temp[0] ^= R_CON[i / Nk][0];
-            temp[1] ^= R_CON[i / Nk][1];
-            temp[2] ^= R_CON[i / Nk][2];
-            temp[3] ^= R_CON[i / Nk][3];
-        } else if i%Nk == 4 {
+            temp[0] ^= R_CON[i / key_length_words][0];
+            temp[1] ^= R_CON[i / key_length_words][1];
+            temp[2] ^= R_CON[i / key_length_words][2];
+            temp[3] ^= R_CON[i / key_length_words][3];
+        } else if i%key_length_words == 4 {
             aes_sub_word(&mut temp);
         }
-        w[i][0] = w[i - Nk][0] ^ temp[0];
-        w[i][1] = w[i - Nk][1] ^ temp[1];
-        w[i][2] = w[i - Nk][2] ^ temp[2];
-        w[i][3] = w[i - Nk][3] ^ temp[3];
+        w[i][0] = w[i - key_length_words][0] ^ temp[0];
+        w[i][1] = w[i - key_length_words][1] ^ temp[1];
+        w[i][2] = w[i - key_length_words][2] ^ temp[2];
+        w[i][3] = w[i - key_length_words][3] ^ temp[3];
     }
     w
 }
@@ -383,7 +383,7 @@ const BLOCK_SIZE: usize = 16;
  * a mask: first half the nonce, the second a counter. Then we cipher the mask
  * with the secret key and xor the plaintext block with the ciphered mask.
  */
-pub fn aes_ctr_encrypt(plaintext: &str, password: &str) -> String {
+pub fn aes_ctr_encrypt(plaintext: &str, password: &str, nonce: u64) -> String {
     // let blockSize = 16;  
     //if (!(nBits==128 || nBits==192 || nBits==256)) return "";  // standard allows 128/192/256 bit keys
 
@@ -404,8 +404,8 @@ pub fn aes_ctr_encrypt(plaintext: &str, password: &str) -> String {
     // initialise counter block (NIST SP800-38A §B.2): millisecond time-stamp for nonce in 1st 8 bytes,
     // block counter in 2nd 8 bytes
     let mut counter_block:[u8; BLOCK_SIZE] = [0; BLOCK_SIZE];
-    let now = std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_millis();
-    counter_block.copy_from_slice(&now.to_le_bytes());
+    
+    counter_block[..8].copy_from_slice(&nonce.to_le_bytes());
 
     // and convert it to a string to go on the front of the ciphertext
     // char[] ctrTxt = new char[8];
@@ -444,8 +444,8 @@ pub fn aes_ctr_encrypt(plaintext: &str, password: &str) -> String {
 mod test_encryption {
     #[test]
     fn encrypt() {
-        let s = super::aes_ctr_encrypt("aha", "secret");
-        assert_eq!(s.len, "");
+        let s = super::aes_ctr_encrypt("aha", "secret", 0 as u64);
+        assert_eq!(s, "AAAAAAAAAACTrCM=");
     }
 }
 
@@ -523,7 +523,9 @@ pub fn aes_ctr_decrypt(ciphertext: &str, password: &str) -> String {
 mod test_decryption {
     #[test]
     fn decrypt() {
-        let enc = super::aes_ctr_encrypt("aha", "secret");
+        let now = std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_millis();
+
+        let enc = super::aes_ctr_encrypt("aha", "secret", now as u64);
         let dec = super::aes_ctr_decrypt(&enc, "secret");
         assert_eq!(dec, "aha");
     }
@@ -531,7 +533,9 @@ mod test_decryption {
     #[test]
     fn longer_string() {
         let text = "A text longer than 16 characters.";
-        let enc = super::aes_ctr_encrypt(text, "secret");
+        let now = std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_millis();
+
+        let enc = super::aes_ctr_encrypt(text, "secret", now as u64);
         println!("Encrypted string: {}", enc);
         let dec = super::aes_ctr_decrypt(&enc, "secret");
         assert_eq!(dec, text);

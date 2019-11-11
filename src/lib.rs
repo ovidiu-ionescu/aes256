@@ -1,6 +1,6 @@
-mod aes;
+pub mod aes;
 
-use std::str::{CharIndices};
+use crate::aes::{ aes_ctr_decrypt, aes_ctr_encrypt};
 
 struct  Part <'a> {
     text: &'a str,
@@ -13,6 +13,7 @@ struct Status {
     inside: bool,
     found: isize,
     prev_pos: usize,
+    // in the tuple the bool is true if we have a base64 value, opposite of Part.clear
     parts: Vec<(usize, usize, bool)>,
 }
 
@@ -54,7 +55,6 @@ pub fn b64here(s: &str) -> Vec<(usize, usize, bool)> {
     let mut status = Status::new();
 
     for (pos, c) in s.char_indices() {
-        print!("{}", c);
         if status.inside {
             // we can only have = signs at the end and max three of them
             if (c != '=' && status.equal_count > 0) || (c == '=' && status.equal_count > 2) {
@@ -103,6 +103,7 @@ DhVyXUxMTEwpo9eX4aw7dJnT1zaZ9DBqISbEU0rj6pPcoWZk5m1xTDqQouV4pyOxdLLVIeBfZG/bF2Rl
 Fourth secret
 JhVyXYWFhYVkprM94+hLMA=="#;
         let parts = super::b64here(&s);
+        assert_eq!(parts.len(), 8);
         let encrypted_parts_count = parts.iter().filter(|p| p.2).count();
         assert_eq!(encrypted_parts_count, 4);
         println!("The parsed parts=====================");
@@ -126,4 +127,113 @@ JhVyXYWFhYVkprM94+hLMA=="#;
         parts.iter().for_each(|p| print!("[{}]", &s[p.0..p.1]));
         assert_eq!(parts.len(), 2);
     }
+}
+
+pub fn memo_decrypt(encrypted_memo: &str, secret: &str) -> String {
+    let parts = b64here(encrypted_memo);
+    let mut result = String::with_capacity(encrypted_memo.len());
+    parts.iter()
+      .map(|p| Part { text: &encrypted_memo[p.0..p.1], clear: !p.2 })
+      .for_each(|p| {
+        if p.clear {
+          result.push_str(p.text);
+        } else {
+          result.push('\u{300c}');
+          result.push_str(&aes_ctr_decrypt(p.text, secret));
+          result.push('\u{300d}');
+        }        
+      });
+    result
+}
+
+#[cfg(test)]
+mod test_memo_decryption {
+  #[test]
+  fn memo_decrypt_test() {
+    let memo_encrypted = r#"
+First secret
+8xRyXaSkpKQGqlTMpMssgnNsZDnatopg
+
+Second secret
+/xRyXY6Ojo7/u45hZut8f41Uf6C2GvNCdA==
+"#;
+    let memo_clear = "
+First secret
+\u{300c}The first secret\u{300d}
+
+Second secret
+\u{300c}The second secret\u{300d}
+";
+
+  assert_eq!(memo_clear, super::memo_decrypt(memo_encrypted, "secret"));
+  }
+}
+
+pub fn memo_encrypt(clear_memo: &str, secret: &str, initial_nonce: u64) -> Result<String, &'static str> {
+  let opening_quote_size = "\u{300c}".len();
+  let closing_quote_size = "\u{300d}".len();
+
+  let mut nonce = initial_nonce;
+  let mut result = String::with_capacity(clear_memo.len() * 2);
+  let mut start = 0;
+  let mut encrypt = false;
+  for (pos, c) in clear_memo.char_indices() {
+      match c {
+        // opening quote
+        '\u{300c}' => {
+            if pos > start {
+              result.push_str(&clear_memo[start..pos]);
+            }
+            start = pos + opening_quote_size;
+            if encrypt {
+                return Err("Previous quote was not ended");
+            }
+            encrypt = true;
+          },
+        // closing quote
+        '\u{300d}' => {
+            if !encrypt {
+                return Err("Closing quote has no opening quote");
+            }
+            result.push_str(&aes_ctr_encrypt(&clear_memo[start..pos], secret, nonce));
+            nonce += (2 + (pos - start) / 16) as u64;
+            start = pos + closing_quote_size;
+            encrypt = false;
+          },
+          _ => ()
+      }
+  }
+  if start < clear_memo.len() {
+    result.push_str(&clear_memo[start..]);
+  }
+  Ok(result)
+}
+
+#[cfg(test)]
+mod test_memo_encrypt {
+  #[test]
+  fn memo_encrypt_test() {
+    let clear_memo = "
+First secret
+\u{300c}The first secret\u{300d}
+
+Second secret
+\u{300c}The second secret\u{300d}
+End
+";
+
+    let encrypted_memo = "
+First secret
+AAAAAAAAAACmrCf4UYHplcBTiCEztS/3
+
+Second secret
+AwAAAAAAAADSUdXvchKudrwyi9q+mYmOUg==
+End
+";
+    match super::memo_encrypt(&clear_memo, "secret", 0) {
+        Ok(s) => assert_eq!(encrypted_memo, s),
+        Err(s) => println!("Failed to process memo: {}", s),
+    }
+    
+  }
 }
