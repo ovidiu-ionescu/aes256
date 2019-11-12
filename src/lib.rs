@@ -177,12 +177,21 @@ pub fn memo_encrypt(clear_memo: &str, secret: &str, initial_nonce: u64) -> Resul
   let mut result = String::with_capacity(clear_memo.len() * 2);
   let mut start = 0;
   let mut encrypt = false;
+
+  let mut prev_char = '\n';
+  let mut after_closing_quote = false;
   for (pos, c) in clear_memo.char_indices() {
       match c {
         // opening quote
         '\u{300c}' => {
+            after_closing_quote = false;
             if pos > start {
               result.push_str(&clear_memo[start..pos]);
+              // make sure the encrypted result does not touch the text before it
+              match prev_char {
+                ' '| '\n' |'\r' | '\t' => (),
+                _ => result.push(' '), 
+              }
             }
             start = pos + opening_quote_size;
             if encrypt {
@@ -192,6 +201,7 @@ pub fn memo_encrypt(clear_memo: &str, secret: &str, initial_nonce: u64) -> Resul
           },
         // closing quote
         '\u{300d}' => {
+            after_closing_quote = true;
             if !encrypt {
                 return Err("Closing quote has no opening quote");
             }
@@ -200,7 +210,18 @@ pub fn memo_encrypt(clear_memo: &str, secret: &str, initial_nonce: u64) -> Resul
             start = pos + closing_quote_size;
             encrypt = false;
           },
-          _ => ()
+          _ => {
+            // if we just added an encrypted section make sure it does not touch subsequent chars
+            if after_closing_quote {
+              match c {
+                ' '| '\n' |'\r' | '\t' => (),
+                _ => result.push(' '), 
+              }
+                after_closing_quote = false; 
+            }
+              prev_char = c
+          },
+
       }
   }
   if start < clear_memo.len() {
@@ -215,7 +236,7 @@ mod test_memo_encrypt {
   fn memo_encrypt_test() {
     let clear_memo = "
 First secret
-\u{300c}The first secret\u{300d}
+\u{300c}The first secret\u{300d} a
 
 Second secret
 \u{300c}The second secret\u{300d}
@@ -224,16 +245,45 @@ End
 
     let encrypted_memo = "
 First secret
-AAAAAAAAAACmrCf4UYHplcBTiCEztS/3
+AAAAAAAAAACmrCf4UYHplcBTiCEztS/3 a
 
 Second secret
 AwAAAAAAAADSUdXvchKudrwyi9q+mYmOUg==
 End
 ";
     match super::memo_encrypt(&clear_memo, "secret", 0) {
-        Ok(s) => assert_eq!(encrypted_memo, s),
-        Err(s) => println!("Failed to process memo: {}", s),
+      Ok(s) => assert_eq!(encrypted_memo, s),
+      Err(s) => println!("Failed to process memo: {}", s),
     }
-    
+  }
+
+  #[test]
+  fn memo_encrypt_spaces() {
+    let clear_memo = "
+First secret\u{300c}The first secret\u{300d}
+Second secret
+\u{300c}The second secret\u{300d}is here
+";
+    let encrypted_memo = "
+First secret AAAAAAAAAACmrCf4UYHplcBTiCEztS/3
+Second secret
+AwAAAAAAAADSUdXvchKudrwyi9q+mYmOUg== is here
+";   
+  
+    match super::memo_encrypt(&clear_memo, "secret", 0) {
+      Ok(s) => assert_eq!(encrypted_memo, s),
+      Err(s) => println!("Failed to process memo: {}", s),
+    }
+  }
+
+  #[test]
+  fn memo_encrypt_short() {
+    let clear_memo = "Secret \u{300c}secret\u{300d}";
+    let encrypted_memo = "Secret AAAAAAAAAACBoSGqUpw=";
+
+    match super::memo_encrypt(&clear_memo, "secret", 0) {
+      Ok(s) => assert_eq!(encrypted_memo, s),
+      Err(s) => println!("Failed to process memo: {}", s),
+    }      
   }
 }
