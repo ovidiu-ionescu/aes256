@@ -41,7 +41,7 @@ impl Status {
                 self.parts.push((self.prev_pos, pos - total_chars, false));
             }
             self.parts.push((pos - total_chars, pos, true));
-            println!("Found a base64");
+            // println!("Found a base64");
             self.prev_pos = pos;
         }
         // println!("prev_pos: {}, total_chars {}", self.prev_pos, total_chars);
@@ -127,6 +127,15 @@ JhVyXYWFhYVkprM94+hLMA=="#;
         parts.iter().for_each(|p| print!("[{}]", &s[p.0..p.1]));
         assert_eq!(parts.len(), 2);
     }
+
+    #[test]
+    fn fake_b64() {
+        let s = "http://www.positioniseverything";
+        let parts = super::b64here(&s);
+        parts.iter().for_each(|p| print!("[{}]", &s[p.0..p.1]));
+        println!("Above are the fake parts");
+        assert_eq!(parts.len(), 2);
+    }
 }
 
 pub fn memo_decrypt(encrypted_memo: &str, secret: &str) -> String {
@@ -138,10 +147,16 @@ pub fn memo_decrypt(encrypted_memo: &str, secret: &str) -> String {
         if p.clear {
           result.push_str(p.text);
         } else {
-          result.push('\u{300c}');
-          result.push_str(&aes_ctr_decrypt(p.text, secret));
-          result.push('\u{300d}');
-        }        
+          let clear_text = &aes_ctr_decrypt(p.text, secret);
+          if clear_text.len() == p.text.len() {
+            // decryption failed, encrypted text is the same length as clear text
+            result.push_str(clear_text);
+          } else {
+            result.push('\u{300c}');
+            result.push_str(clear_text);
+            result.push('\u{300d}');
+          }
+        }
       });
     result
 }
@@ -166,6 +181,13 @@ Second secret
 ";
 
   assert_eq!(memo_clear, super::memo_decrypt(memo_encrypted, "secret"));
+  }
+
+  #[test]
+  fn memo_decryption_false_test() {
+    let encrypted_memo = "http://www.positioniseverything";
+    let clear_memo = super::memo_decrypt(encrypted_memo, "secret");
+    assert_eq!(encrypted_memo, clear_memo);
   }
 }
 

@@ -383,7 +383,9 @@ const BLOCK_SIZE: usize = 16;
  * a mask: first half the nonce, the second a counter. Then we cipher the mask
  * with the secret key and xor the plaintext block with the ciphered mask.
  */
-pub fn aes_ctr_encrypt(plaintext: &str, password: &str, nonce: u64) -> String {
+pub fn aes_ctr_encrypt(plain_text: &str, password: &str, nonce: u64) -> String {
+
+    let plain_bytes = plain_text.as_bytes();
     // let blockSize = 16;  
     //if (!(nBits==128 || nBits==192 || nBits==256)) return "";  // standard allows 128/192/256 bit keys
 
@@ -414,9 +416,9 @@ pub fn aes_ctr_encrypt(plaintext: &str, password: &str, nonce: u64) -> String {
     // generate key schedule - an expansion of the key into distinct Key Rounds for each round
     let key_schedule = aes_key_expansion(&key);
 
-    let block_count = (plaintext.len() + BLOCK_SIZE - 1) / BLOCK_SIZE;
+    let block_count = (plain_bytes.len() + BLOCK_SIZE - 1) / BLOCK_SIZE;
     // char[][] ciphertxt: = new char[blockCount][];  // ciphertext as array of strings
-    let mut cipher_txt = Vec::with_capacity(8 + plaintext.len());
+    let mut cipher_txt = Vec::with_capacity(8 + plain_bytes.len());
     // nonce goes at the beginning of the encripted string
     cipher_txt.extend_from_slice(&counter_block[..8]);
 
@@ -429,9 +431,9 @@ pub fn aes_ctr_encrypt(plaintext: &str, password: &str, nonce: u64) -> String {
         let cipher_counter_block = aes_cipher(&counter_block, &key_schedule);  // -- encrypt counter block --
 
         // block size is reduced on final block
-        let block_length = if b < block_count - 1 { BLOCK_SIZE } else { (plaintext.len() - 1) % BLOCK_SIZE + 1 };
+        let block_length = if b < block_count - 1 { BLOCK_SIZE } else { (plain_bytes.len() - 1) % BLOCK_SIZE + 1 };
 
-        cipher_txt.extend(plaintext[BLOCK_SIZE * b..BLOCK_SIZE * b + block_length].as_bytes().iter()
+        cipher_txt.extend(plain_bytes[BLOCK_SIZE * b..BLOCK_SIZE * b + block_length].iter()
             .zip(cipher_counter_block.iter())
             .map(|(x, y)| *x ^ *y));
     }
@@ -473,8 +475,8 @@ fn print_w(state: &[[u8; 4]; 60]) {
  * @param nBits      Number of bits to be used in the key (128, 192, or 256)
  * @return          Decrypted text
  */
-pub fn aes_ctr_decrypt(ciphertext: &str, password: &str) -> String {
-    let mut ciphertext = base64::decode(ciphertext).unwrap();
+pub fn aes_ctr_decrypt(original_ciphertext: &str, password: &str) -> String {
+    let mut ciphertext = base64::decode(original_ciphertext).unwrap();
 
     // use AES to encrypt password (mirroring encrypt routine)
     let mut password_bytes:[u8; KEY_BYTES] = [0; KEY_BYTES];
@@ -516,7 +518,10 @@ pub fn aes_ctr_decrypt(ciphertext: &str, password: &str) -> String {
             .for_each(|(x, y)| *x = *x ^ *y);
     }
 
-    String::from_utf8(ciphertext).unwrap()
+    match String::from_utf8(ciphertext) {
+        Ok(s) => s,
+        Err(_v) => String::from(original_ciphertext),
+    }
 }
 
 #[cfg(test)]
