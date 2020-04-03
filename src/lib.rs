@@ -7,6 +7,12 @@ struct  Part <'a> {
     clear: bool,
 }
 
+struct PartDescriptor {
+  start: usize,
+  end: usize,
+  base64: bool
+}
+
 struct Status {
     char_count: usize,
     equal_count: usize,
@@ -14,7 +20,7 @@ struct Status {
     found: isize,
     prev_pos: usize,
     // in the tuple the bool is true if we have a base64 value, opposite of Part.clear
-    parts: Vec<(usize, usize, bool)>,
+    parts: Vec<PartDescriptor>,
 }
 
 impl Status {
@@ -38,9 +44,9 @@ impl Status {
             self.found += 1;
             // add the clear string if it is non empty
             if self.prev_pos < pos - total_chars {
-                self.parts.push((self.prev_pos, pos - total_chars, false));
+                self.parts.push(PartDescriptor {start: self.prev_pos, end: pos - total_chars, base64: false});
             }
-            self.parts.push((pos - total_chars, pos, true));
+            self.parts.push(PartDescriptor {start: pos - total_chars, end: pos, base64: true});
             // println!("Found a base64");
             self.prev_pos = pos;
         }
@@ -51,7 +57,7 @@ impl Status {
     }
 }
 
-pub fn b64here(s: &str) -> Vec<(usize, usize, bool)> {
+fn b64here(s: &str) -> Vec<PartDescriptor> {
     let mut status = Status::new();
 
     for (pos, c) in s.char_indices() {
@@ -79,7 +85,7 @@ pub fn b64here(s: &str) -> Vec<(usize, usize, bool)> {
     }
     status.check_base64(s.len());
     if status.prev_pos < s.len() {
-        status.parts.push((status.prev_pos, s.len(), false));
+        status.parts.push(PartDescriptor {start: status.prev_pos, end: s.len(), base64: false});
     }
     status.parts
  }
@@ -104,10 +110,10 @@ Fourth secret
 JhVyXYWFhYVkprM94+hLMA=="#;
         let parts = super::b64here(&s);
         assert_eq!(parts.len(), 8);
-        let encrypted_parts_count = parts.iter().filter(|p| p.2).count();
+        let encrypted_parts_count = parts.iter().filter(|p| p.base64).count();
         assert_eq!(encrypted_parts_count, 4);
         println!("The parsed parts=====================");
-        parts.iter().for_each(|p| print!("{}", &s[p.0..p.1]));
+        parts.iter().for_each(|p| print!("{}", &s[p.start..p.end]));
     }
 
     #[test]
@@ -116,15 +122,15 @@ JhVyXYWFhYVkprM94+hLMA=="#;
         let parts = super::b64here(&s);
         assert_eq!(parts.len(), 1);
         let t = parts.first().unwrap();
-        assert_eq!(t.0, 0);
-        assert_eq!(t.1, s.len());
+        assert_eq!(t.start, 0);
+        assert_eq!(t.end, s.len());
     }
 
     #[test]
     fn b64here_test3() {
         let s = "JhVyXYWFhYVkprM94+hLMA== ";
         let parts = super::b64here(&s);
-        parts.iter().for_each(|p| print!("[{}]", &s[p.0..p.1]));
+        parts.iter().for_each(|p| print!("[{}]", &s[p.start..p.end]));
         assert_eq!(parts.len(), 2);
     }
 
@@ -132,17 +138,60 @@ JhVyXYWFhYVkprM94+hLMA=="#;
     fn fake_b64() {
         let s = "http://www.positioniseverything";
         let parts = super::b64here(&s);
-        parts.iter().for_each(|p| print!("[{}]", &s[p.0..p.1]));
+        parts.iter().for_each(|p| print!("[{}]", &s[p.start..p.end]));
         println!("Above are the fake parts");
         assert_eq!(parts.len(), 2);
     }
+}
+
+/**
+ * Truncates the large segments of base64 and adds an ellipsis
+ */
+pub fn prepare_memo_for_view(memo_text: &mut str, max_size: usize) -> &str {
+  let parts = b64here(memo_text);
+  println!("Found {} parts", parts.len());
+  let ellipsis = [0xE2, 0x80, 0xA6];
+
+  // we store here how much we removed from the string so far
+  let mut removed: usize = 0;
+  parts.iter().filter(|p| p.base64 && (p.end - p.start) > max_size).for_each(|p| {
+    unsafe {
+      let bt = memo_text.as_bytes_mut();
+
+      // recalculate the offsets at every iteration
+      let start = p.start - removed;
+      let end = p.end - removed;
+      // this is how much we remove now
+      let extra = end - start - max_size;
+      
+      bt[start + max_size - ellipsis.len()..start + max_size].copy_from_slice(&ellipsis);
+      bt.copy_within(end.., start + max_size);
+      removed += extra;
+    }
+  });
+  &memo_text[..memo_text.len() - removed]
+}
+
+#[cfg(test)]
+mod test_prepare_memo {
+  #[test]
+  fn memo_ellipsis_test() {
+    let mut s = String::from(r#"
+    Third secret
+DhVyXUxMTEwpo9eX4aw7dJnT1zaZ9DBqISbEU0rj6pPcoWZk5m1xTDqQouV4pyOxdLLVIeBfZG/bF2Rlm4AVR7dnn28t8Sr5
+aha
+8xRyXaSkpKQGqlTMpMssgnNsZDnatopg
+123   x"#);
+    let short = super::prepare_memo_for_view(&mut s, 16);
+    println!("{}", short);
+  }
 }
 
 pub fn memo_decrypt(encrypted_memo: &str, secret: &str) -> String {
     let parts = b64here(encrypted_memo);
     let mut result = String::with_capacity(encrypted_memo.len());
     parts.iter()
-      .map(|p| Part { text: &encrypted_memo[p.0..p.1], clear: !p.2 })
+      .map(|p| Part { text: &encrypted_memo[p.start..p.end], clear: !p.base64 })
       .for_each(|p| {
         if p.clear {
           result.push_str(p.text);
