@@ -1,6 +1,7 @@
 pub mod aes;
 
 use crate::aes::{ aes_ctr_decrypt, aes_ctr_encrypt};
+use std::cmp::{ min };
 
 struct  Part <'a> {
     text: &'a str,
@@ -57,9 +58,14 @@ impl Status {
     }
 }
 
+fn is_space(c: char) -> bool {
+  c == ' ' || c == '\t' || c == '\n' || c == '\r'
+}
+
 fn b64here(s: &str) -> Vec<PartDescriptor> {
     let mut status = Status::new();
 
+    let mut prev_space = true;
     for (pos, c) in s.char_indices() {
         if status.inside {
             // we can only have = signs at the end and max three of them
@@ -75,12 +81,16 @@ fn b64here(s: &str) -> Vec<PartDescriptor> {
         }
 
         if ('A'..='Z').contains(&c) || ('a'..= 'z').contains(&c) || ('0' ..= '9').contains(&c) || '/' == c || '+' == c {
-            status.char_count += 1;
-            status.inside = true;
+            if status.inside || prev_space {
+                status.char_count += 1;
+                status.inside = true;
+                prev_space = false;
+            }
         } else {
             if status.inside  {
                 status.check_base64(pos);
             }
+            prev_space = is_space(c);
         }
     }
     status.check_base64(s.len());
@@ -109,6 +119,7 @@ DhVyXUxMTEwpo9eX4aw7dJnT1zaZ9DBqISbEU0rj6pPcoWZk5m1xTDqQouV4pyOxdLLVIeBfZG/bF2Rl
 Fourth secret
 JhVyXYWFhYVkprM94+hLMA=="#;
         let parts = super::b64here(&s);
+        parts.iter().for_each(|p| print!("\u{300C}{}\u{300D}{} ", &s[p.start..p.end], p.base64));
         assert_eq!(parts.len(), 8);
         let encrypted_parts_count = parts.iter().filter(|p| p.base64).count();
         assert_eq!(encrypted_parts_count, 4);
@@ -140,7 +151,21 @@ JhVyXYWFhYVkprM94+hLMA=="#;
         let parts = super::b64here(&s);
         parts.iter().for_each(|p| print!("[{}]", &s[p.start..p.end]));
         println!("Above are the fake parts");
-        assert_eq!(parts.len(), 2);
+        assert_eq!(parts.len(), 1);
+    }
+
+    #[test]
+    fn fake_b64_2() {
+      let s = r#"# Serverless
+_2020-05-08_  
+
+[www.cs.utah.edu](https://www.cs.utah.edu/~lifeifei/papers/shredder.pdf) 
+
+[blog.acolyer.org](https://blog.acolyer.org/2020/01/29/narrowing-the-gap/) Narrowing the gap between serverless and its state with storage functions
+"#;
+      let parts = super::b64here(&s);
+      parts.iter().for_each(|p| print!("\u{300C}{}\u{300D}{} ", &s[p.start..p.end], p.base64));
+      assert_eq!(parts.len(), 1);
     }
 }
 
@@ -183,6 +208,45 @@ aha
 8xRyXaSkpKQGqlTMpMssgnNsZDnatopg
 123   x"#);
     let short = super::prepare_memo_for_view(&mut s, 16);
+    println!("{}", short);
+  }
+}
+
+pub fn truncate_base64(text: &str, max_b64: usize) -> String {
+  let parts = b64here(text);
+  // calculate the size of the reduced string
+  let short_size = parts.iter().map(|p| if p.base64 { min(p.end - p.start, max_b64) } else { p.end - p.start })
+    .sum();
+    let mut result = String::with_capacity(short_size);
+
+    parts.iter().for_each(|p| 
+      if p.base64 {
+        if p.end - p.start > max_b64 {
+          // in utf-8 this is E2 80 A6, three bytes
+          let ellipsis = "\u{2026}";
+          result.push_str(&text[p.start .. p.start + max_b64 - ellipsis.len()]);
+          result.push_str(ellipsis); 
+        } else {
+          result.push_str(&text[p.start..p.end]);
+        }
+      } else {
+        result.push_str(&text[p.start..p.end]);
+      }
+    );
+    result
+}
+
+#[cfg(test)]
+mod test_truncate_base64 {
+  #[test]
+  fn memo_ellipsis_test() {
+    let mut s = String::from(r#"
+    Third secret
+DhVyXUxMTEwpo9eX4aw7dJnT1zaZ9DBqISbEU0rj6pPcoWZk5m1xTDqQouV4pyOxdLLVIeBfZG/bF2Rlm4AVR7dnn28t8Sr5
+aha
+8xRyXaSkpKQGqlTMpMssgnNsZDnatopg
+123   x"#);
+    let short = super::truncate_base64(&mut s, 16);
     println!("{}", short);
   }
 }
