@@ -417,12 +417,22 @@ pub fn aes_ctr_encrypt(plain_text: &str, password: &str, nonce: u64) -> String {
     let key_schedule = aes_key_expansion(&key);
 
     let block_count = (plain_bytes.len() + BLOCK_SIZE - 1) / BLOCK_SIZE;
-    // char[][] ciphertxt: = new char[blockCount][];  // ciphertext as array of strings
-    let mut cipher_txt = Vec::with_capacity(8 + plain_bytes.len());
+
+    // allocate enough space to fill in the last block
+    let result_size = 8 + BLOCK_SIZE * block_count;
+    let mut cipher_txt = Vec::with_capacity(result_size);
+
     // nonce goes at the beginning of the encripted string
     cipher_txt.extend_from_slice(&counter_block[..8]);
 
-    // for (int b = 0; b < blockCount; b++) {
+    // copy the plain text into the destination
+    cipher_txt.extend_from_slice(plain_bytes);
+
+    // extend with zeroes
+    for _i in 0..result_size - cipher_txt.len() {
+        cipher_txt.push(0);
+    }
+
     for b in 0..block_count { 
         // set counter (block #) in last 8 bytes of counter block (leaving nonce in 1st 8 bytes)
         // done in two stages for 32-bit ops: using two words allows us to go past 2^32 blocks (68GB)
@@ -430,14 +440,11 @@ pub fn aes_ctr_encrypt(plain_text: &str, password: &str, nonce: u64) -> String {
 
         let cipher_counter_block = aes_cipher(&counter_block, &key_schedule);  // -- encrypt counter block --
 
-        // block size is reduced on final block
-        let block_length = if b < block_count - 1 { BLOCK_SIZE } else { (plain_bytes.len() - 1) % BLOCK_SIZE + 1 };
-
-        cipher_txt.extend(plain_bytes[BLOCK_SIZE * b..BLOCK_SIZE * b + block_length].iter()
+        let block_start = 8 + b * BLOCK_SIZE;
+        cipher_txt[block_start..block_start + BLOCK_SIZE].iter_mut()
             .zip(cipher_counter_block.iter())
-            .map(|(x, y)| *x ^ *y));
+            .for_each(|(x, y)| *x ^= *y);
     }
-
 
     base64::encode(&cipher_txt)  // encode in base64
 }
@@ -447,7 +454,7 @@ mod test_encryption {
     #[test]
     fn encrypt() {
         let s = super::aes_ctr_encrypt("aha", "secret", 0 as u64);
-        assert_eq!(s, "AAAAAAAAAACTrCM=");
+        assert_eq!(s, "AAAAAAAAAACTrCPYN+ib5rRz+0RQx0qD");
     }
 }
 
@@ -516,6 +523,11 @@ pub fn aes_ctr_decrypt(original_ciphertext: &str, password: &str) -> String {
         ciphertext[BLOCK_SIZE * b..BLOCK_SIZE * b + block_length].iter_mut()
             .zip(cipher_counter_block.iter())
             .for_each(|(x, y)| *x = *x ^ *y);
+    }
+
+    // remove any trailing zeroes
+    if let Some(index) = ciphertext.iter().rev().position(|x| *x != 0) {
+        ciphertext.truncate(ciphertext.len() - index);
     }
 
     match String::from_utf8(ciphertext) {

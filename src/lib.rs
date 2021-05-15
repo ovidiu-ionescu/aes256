@@ -383,7 +383,7 @@ First secret
 AAAAAAAAAACmrCf4UYHplcBTiCEztS/3 a
 
 Second secret
-AwAAAAAAAADSUdXvchKudrwyi9q+mYmOUg==
+AwAAAAAAAADSUdXvchKudrwyi9q+mYmOUtD762Z48LL6PfIqyh+TyQ==
 End
 ";
     match super::memo_encrypt(&clear_memo, "secret", 0) {
@@ -402,7 +402,7 @@ Second secret
     let encrypted_memo = "
 First secret AAAAAAAAAACmrCf4UYHplcBTiCEztS/3
 Second secret
-AwAAAAAAAADSUdXvchKudrwyi9q+mYmOUg== is here
+AwAAAAAAAADSUdXvchKudrwyi9q+mYmOUtD762Z48LL6PfIqyh+TyQ== is here
 ";   
   
     match super::memo_encrypt(&clear_memo, "secret", 0) {
@@ -414,7 +414,7 @@ AwAAAAAAAADSUdXvchKudrwyi9q+mYmOUg== is here
   #[test]
   fn memo_encrypt_short() {
     let clear_memo = "Secret \u{300c}secret\u{300d}";
-    let encrypted_memo = "Secret AAAAAAAAAACBoSGqUpw=";
+    let encrypted_memo = "Secret AAAAAAAAAACBoSGqUpyb5rRz+0RQx0qD";
 
     match super::memo_encrypt(&clear_memo, "secret", 0) {
       Ok(s) => assert_eq!(encrypted_memo, s),
