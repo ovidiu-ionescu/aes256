@@ -480,6 +480,17 @@ fn print_w(state: &[[u8; 4]; 60]) {
 /// * `ciphertext` Source text to be decrypted
 /// * `password`   The password to generate the key from
 ///
+/// ```rust
+///  # use memo_rust::aes::aes_ctr_decrypt;
+///  # use memo_rust::aes::aes_ctr_encrypt;
+///  # use std::time::SystemTime;
+///
+///    let now = SystemTime::now().duration_since(SystemTime::UNIX_EPOCH).unwrap().as_millis();
+///
+///    let enc = aes_ctr_encrypt("aha", "secret", now as u64);
+///    let dec = aes_ctr_decrypt(&enc, "secret");
+///    assert_eq!(dec, "aha");
+/// ```
 pub fn aes_ctr_decrypt(original_ciphertext: &str, password: &str) -> String {
     let mut ciphertext = base64::decode(original_ciphertext).unwrap();
 
