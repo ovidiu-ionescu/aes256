@@ -369,20 +369,20 @@ const KEY_BYTES: usize = 32;
 // block size fixed at 16 bytes / 128 bits (Nb=4) for AES
 const BLOCK_SIZE: usize = 16;
 
-/**
- * Encrypt a text using AES encryption in Counter mode of operation
- *
- * Unicode multi-byte character safe
- *
- * @param plaintext Source text to be encrypted
- * @param password  The password to use to generate a key
- * @param nBits     Number of bits to be used in the key (128, 192, or 256)
- * @return          Encrypted text
- * 
- * The way it works: we split the text into blocks. For each block we prepare
- * a mask: first half the nonce, the second a counter. Then we cipher the mask
- * with the secret key and xor the plaintext block with the ciphered mask.
- */
+///
+/// Encrypt a text using AES encryption in Counter mode of operation
+///
+/// Unicode multi-byte character safe
+///
+/// * `plain_text` Source text to be encrypted
+/// * `password`  The password to use to generate a key
+/// * `nonce`     Unique number, e.g. time in seconds
+/// * `return`    Encrypted text
+///
+/// The way it works: we split the text into blocks. For each block we prepare
+/// a mask: first half the nonce, the second a counter. Then we cipher the mask
+/// with the secret key and xor the plaintext block with the ciphered mask.
+///
 pub fn aes_ctr_encrypt(plain_text: &str, password: &str, nonce: u64) -> String {
 
     let plain_bytes = plain_text.as_bytes();
@@ -474,14 +474,12 @@ fn print_w(state: &[[u8; 4]; 60]) {
     println!("]");
 }
 
-/**
- * Decrypt a text encrypted by AES in counter mode of operation
- *
- * @param ciphertext Source text to be encrypted
- * @param password   The password to use to generate a key
- * @param nBits      Number of bits to be used in the key (128, 192, or 256)
- * @return          Decrypted text
- */
+///
+/// Decrypt a text encrypted by AES in counter mode of operation
+///
+/// * `ciphertext` Source text to be decrypted
+/// * `password`   The password to generate the key from
+///
 pub fn aes_ctr_decrypt(original_ciphertext: &str, password: &str) -> String {
     let mut ciphertext = base64::decode(original_ciphertext).unwrap();
 
