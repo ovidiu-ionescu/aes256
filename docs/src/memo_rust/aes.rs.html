@@ -1,10 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/aes.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>aes.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../memo_rust/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div>
-        </a><h2 class="location"></h2>
-    </nav>
-    <nav class="sidebar"><a class="sidebar-logo" href="../../memo_rust/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../memo_rust/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1">
-                                <a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div>
-                        </div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/aes.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>aes.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../memo_rust/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../memo_rust/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../memo_rust/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -573,11 +567,13 @@
 <span id="567">567</span>
 <span id="568">568</span>
 <span id="569">569</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std::mem::swap</span>;
-<span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">base64</span>;
+<span id="570">570</span>
+<span id="571">571</span>
+</pre><pre class="rust"><code><span class="kw">use </span>std::mem::swap;
+<span class="kw">extern crate </span>base64;
 
-<span class="comment">// Sbox is pre-computed multiplicative inverse in GF(2^8) used in SubBytes and KeyExpansion [§5.1.1]</span>
-<span class="kw">const</span> <span class="ident">S_BOX</span>:[<span class="ident">u8</span>; <span class="number">256</span>] <span class="op">=</span>
+<span class="comment">// Sbox is pre-computed multiplicative inverse in GF(2^8) used in SubBytes and KeyExpansion [§5.1.1]
+</span><span class="kw">const </span>S_BOX:[u8; <span class="number">256</span>] =
             [<span class="number">0x63</span>,<span class="number">0x7c</span>,<span class="number">0x77</span>,<span class="number">0x7b</span>,<span class="number">0xf2</span>,<span class="number">0x6b</span>,<span class="number">0x6f</span>,<span class="number">0xc5</span>,<span class="number">0x30</span>,<span class="number">0x01</span>,<span class="number">0x67</span>,<span class="number">0x2b</span>,<span class="number">0xfe</span>,<span class="number">0xd7</span>,<span class="number">0xab</span>,<span class="number">0x76</span>,
             <span class="number">0xca</span>,<span class="number">0x82</span>,<span class="number">0xc9</span>,<span class="number">0x7d</span>,<span class="number">0xfa</span>,<span class="number">0x59</span>,<span class="number">0x47</span>,<span class="number">0xf0</span>,<span class="number">0xad</span>,<span class="number">0xd4</span>,<span class="number">0xa2</span>,<span class="number">0xaf</span>,<span class="number">0x9c</span>,<span class="number">0xa4</span>,<span class="number">0x72</span>,<span class="number">0xc0</span>,
             <span class="number">0xb7</span>,<span class="number">0xfd</span>,<span class="number">0x93</span>,<span class="number">0x26</span>,<span class="number">0x36</span>,<span class="number">0x3f</span>,<span class="number">0xf7</span>,<span class="number">0xcc</span>,<span class="number">0x34</span>,<span class="number">0xa5</span>,<span class="number">0xe5</span>,<span class="number">0xf1</span>,<span class="number">0x71</span>,<span class="number">0xd8</span>,<span class="number">0x31</span>,<span class="number">0x15</span>,
@@ -595,8 +591,8 @@
             <span class="number">0xe1</span>,<span class="number">0xf8</span>,<span class="number">0x98</span>,<span class="number">0x11</span>,<span class="number">0x69</span>,<span class="number">0xd9</span>,<span class="number">0x8e</span>,<span class="number">0x94</span>,<span class="number">0x9b</span>,<span class="number">0x1e</span>,<span class="number">0x87</span>,<span class="number">0xe9</span>,<span class="number">0xce</span>,<span class="number">0x55</span>,<span class="number">0x28</span>,<span class="number">0xdf</span>,
             <span class="number">0x8c</span>,<span class="number">0xa1</span>,<span class="number">0x89</span>,<span class="number">0x0d</span>,<span class="number">0xbf</span>,<span class="number">0xe6</span>,<span class="number">0x42</span>,<span class="number">0x68</span>,<span class="number">0x41</span>,<span class="number">0x99</span>,<span class="number">0x2d</span>,<span class="number">0x0f</span>,<span class="number">0xb0</span>,<span class="number">0x54</span>,<span class="number">0xbb</span>,<span class="number">0x16</span>];
 
-<span class="comment">// Rcon is Round Constant used for the Key Expansion [1st col is 2^(r-1) in GF(2^8)] [§5.2]</span>
-<span class="kw">const</span> <span class="ident">R_CON</span>:[[<span class="ident">u8</span>; <span class="number">4</span>]; <span class="number">11</span>] <span class="op">=</span> [
+<span class="comment">// Rcon is Round Constant used for the Key Expansion [1st col is 2^(r-1) in GF(2^8)] [§5.2]
+</span><span class="kw">const </span>R_CON:[[u8; <span class="number">4</span>]; <span class="number">11</span>] = [
             [<span class="number">0x00</span>, <span class="number">0x00</span>, <span class="number">0x00</span>, <span class="number">0x00</span>],
             [<span class="number">0x01</span>, <span class="number">0x00</span>, <span class="number">0x00</span>, <span class="number">0x00</span>],
             [<span class="number">0x02</span>, <span class="number">0x00</span>, <span class="number">0x00</span>, <span class="number">0x00</span>],
@@ -611,216 +607,216 @@
 ];
 
 
-<span class="comment">// leave row 0, shift row 1 once, row two twice and row 3 three times</span>
-<span class="kw">fn</span> <span class="ident">aes_shift_rows</span>(<span class="ident">s</span>: <span class="kw-2">&amp;mut</span> [[<span class="ident">u8</span>; <span class="number">4</span>]; <span class="number">4</span>]) {
-    <span class="ident">aes_rot_word</span>(<span class="kw-2">&amp;mut</span> <span class="ident">s</span>[<span class="number">1</span>]);
+<span class="comment">// leave row 0, shift row 1 once, row two twice and row 3 three times
+</span><span class="kw">fn </span>aes_shift_rows(s: <span class="kw-2">&amp;mut </span>[[u8; <span class="number">4</span>]; <span class="number">4</span>]) {
+    aes_rot_word(<span class="kw-2">&amp;mut </span>s[<span class="number">1</span>]);
 
-    <span class="ident">aes_rot_word</span>(<span class="kw-2">&amp;mut</span> <span class="ident">s</span>[<span class="number">2</span>]);
-    <span class="ident">aes_rot_word</span>(<span class="kw-2">&amp;mut</span> <span class="ident">s</span>[<span class="number">2</span>]);
+    aes_rot_word(<span class="kw-2">&amp;mut </span>s[<span class="number">2</span>]);
+    aes_rot_word(<span class="kw-2">&amp;mut </span>s[<span class="number">2</span>]);
 
-    <span class="ident">aes_rot_word</span>(<span class="kw-2">&amp;mut</span> <span class="ident">s</span>[<span class="number">3</span>]);
-    <span class="ident">aes_rot_word</span>(<span class="kw-2">&amp;mut</span> <span class="ident">s</span>[<span class="number">3</span>]);
-    <span class="ident">aes_rot_word</span>(<span class="kw-2">&amp;mut</span> <span class="ident">s</span>[<span class="number">3</span>]);
+    aes_rot_word(<span class="kw-2">&amp;mut </span>s[<span class="number">3</span>]);
+    aes_rot_word(<span class="kw-2">&amp;mut </span>s[<span class="number">3</span>]);
+    aes_rot_word(<span class="kw-2">&amp;mut </span>s[<span class="number">3</span>]);
 }
 
-<span class="doccomment">/// apply SBox to 4-byte word w</span>
-<span class="doccomment">/// (substitute every byte with its corresponent in the SBox)</span>
-<span class="kw">fn</span> <span class="ident">aes_sub_word</span>(<span class="ident">w</span>: <span class="kw-2">&amp;mut</span>[<span class="ident">u8</span>; <span class="number">4</span>]) {
-    <span class="comment">// TODO use a for loop</span>
-    <span class="ident">w</span>[<span class="number">0</span>] <span class="op">=</span> <span class="ident">S_BOX</span>[<span class="ident">w</span>[<span class="number">0</span>] <span class="kw">as</span> <span class="ident">usize</span>];
-    <span class="ident">w</span>[<span class="number">1</span>] <span class="op">=</span> <span class="ident">S_BOX</span>[<span class="ident">w</span>[<span class="number">1</span>] <span class="kw">as</span> <span class="ident">usize</span>];
-    <span class="ident">w</span>[<span class="number">2</span>] <span class="op">=</span> <span class="ident">S_BOX</span>[<span class="ident">w</span>[<span class="number">2</span>] <span class="kw">as</span> <span class="ident">usize</span>];
-    <span class="ident">w</span>[<span class="number">3</span>] <span class="op">=</span> <span class="ident">S_BOX</span>[<span class="ident">w</span>[<span class="number">3</span>] <span class="kw">as</span> <span class="ident">usize</span>];
+<span class="doccomment">/// apply SBox to 4-byte word w
+/// (substitute every byte with its corresponent in the SBox)
+</span><span class="kw">fn </span>aes_sub_word(w: <span class="kw-2">&amp;mut</span>[u8; <span class="number">4</span>]) {
+    <span class="comment">// TODO use a for loop
+    </span>w[<span class="number">0</span>] = S_BOX[w[<span class="number">0</span>] <span class="kw">as </span>usize];
+    w[<span class="number">1</span>] = S_BOX[w[<span class="number">1</span>] <span class="kw">as </span>usize];
+    w[<span class="number">2</span>] = S_BOX[w[<span class="number">2</span>] <span class="kw">as </span>usize];
+    w[<span class="number">3</span>] = S_BOX[w[<span class="number">3</span>] <span class="kw">as </span>usize];
 }
 
-<span class="doccomment">/// apply SBox to state S [§5.1.1]</span>
-<span class="kw">fn</span> <span class="ident">aes_sub_bytes</span>(<span class="ident">s</span>: <span class="kw-2">&amp;mut</span> [[<span class="ident">u8</span>; <span class="number">4</span>]; <span class="number">4</span>]) {
-    <span class="ident">aes_sub_word</span>(<span class="kw-2">&amp;mut</span> <span class="ident">s</span>[<span class="number">0</span>]);
-    <span class="ident">aes_sub_word</span>(<span class="kw-2">&amp;mut</span> <span class="ident">s</span>[<span class="number">1</span>]);
-    <span class="ident">aes_sub_word</span>(<span class="kw-2">&amp;mut</span> <span class="ident">s</span>[<span class="number">2</span>]);
-    <span class="ident">aes_sub_word</span>(<span class="kw-2">&amp;mut</span> <span class="ident">s</span>[<span class="number">3</span>]);
+<span class="doccomment">/// apply SBox to state S [§5.1.1]
+</span><span class="kw">fn </span>aes_sub_bytes(s: <span class="kw-2">&amp;mut </span>[[u8; <span class="number">4</span>]; <span class="number">4</span>]) {
+    aes_sub_word(<span class="kw-2">&amp;mut </span>s[<span class="number">0</span>]);
+    aes_sub_word(<span class="kw-2">&amp;mut </span>s[<span class="number">1</span>]);
+    aes_sub_word(<span class="kw-2">&amp;mut </span>s[<span class="number">2</span>]);
+    aes_sub_word(<span class="kw-2">&amp;mut </span>s[<span class="number">3</span>]);
 }
 
-<span class="doccomment">/// rotate 4-byte word w left by one byte</span>
-<span class="kw">fn</span> <span class="ident">aes_rot_word</span>(<span class="ident">w</span>: <span class="kw-2">&amp;mut</span>[<span class="ident">u8</span>; <span class="number">4</span>]) {
-    <span class="kw">let</span> <span class="ident">tmp</span> <span class="op">=</span> <span class="ident">w</span>[<span class="number">0</span>];
-    <span class="ident">w</span>[<span class="number">0</span>] <span class="op">=</span> <span class="ident">w</span>[<span class="number">1</span>];
-    <span class="ident">w</span>[<span class="number">1</span>] <span class="op">=</span> <span class="ident">w</span>[<span class="number">2</span>];
-    <span class="ident">w</span>[<span class="number">2</span>] <span class="op">=</span> <span class="ident">w</span>[<span class="number">3</span>];
-    <span class="ident">w</span>[<span class="number">3</span>] <span class="op">=</span> <span class="ident">tmp</span>;
+<span class="doccomment">/// rotate 4-byte word w left by one byte
+</span><span class="kw">fn </span>aes_rot_word(w: <span class="kw-2">&amp;mut</span>[u8; <span class="number">4</span>]) {
+    <span class="kw">let </span>tmp = w[<span class="number">0</span>];
+    w[<span class="number">0</span>] = w[<span class="number">1</span>];
+    w[<span class="number">1</span>] = w[<span class="number">2</span>];
+    w[<span class="number">2</span>] = w[<span class="number">3</span>];
+    w[<span class="number">3</span>] = tmp;
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="kw">mod</span> <span class="ident">tests</span> {
+<span class="attribute">#[cfg(test)]
+</span><span class="kw">mod </span>tests {
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">aes_rot_word</span>() {
-      <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">word</span> <span class="op">=</span> [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>];
-      <span class="ident"><span class="kw">super</span>::aes_rot_word</span>(<span class="kw-2">&amp;mut</span> <span class="ident">word</span>);
-      <span class="macro">assert_eq!</span>(<span class="ident">word</span>, [<span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">1</span>]);
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>aes_rot_word() {
+      <span class="kw">let </span><span class="kw-2">mut </span>word = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>];
+      <span class="kw">super</span>::aes_rot_word(<span class="kw-2">&amp;mut </span>word);
+      <span class="macro">assert_eq!</span>(word, [<span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">1</span>]);
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">aes_sub_word</span>() {
-      <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">word</span> <span class="op">=</span> [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>];
-      <span class="ident"><span class="kw">super</span>::aes_sub_word</span>(<span class="kw-2">&amp;mut</span> <span class="ident">word</span>);
-      <span class="macro">assert_eq!</span>(<span class="ident">word</span>, [<span class="number">0x7c</span>,<span class="number">0x77</span>,<span class="number">0x7b</span>,<span class="number">0xf2</span>]);
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>aes_sub_word() {
+      <span class="kw">let </span><span class="kw-2">mut </span>word = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>];
+      <span class="kw">super</span>::aes_sub_word(<span class="kw-2">&amp;mut </span>word);
+      <span class="macro">assert_eq!</span>(word, [<span class="number">0x7c</span>,<span class="number">0x77</span>,<span class="number">0x7b</span>,<span class="number">0xf2</span>]);
     }
 }
 
-<span class="kw">fn</span> <span class="ident">mix_column</span>(<span class="ident">r</span>: <span class="kw-2">&amp;mut</span> [<span class="ident">u8</span>; <span class="number">4</span>]) {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">a</span>: [<span class="ident">u8</span>; <span class="number">4</span>] <span class="op">=</span> [<span class="number">0</span>; <span class="number">4</span>];
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">b</span>: [<span class="ident">u8</span>; <span class="number">4</span>] <span class="op">=</span> [<span class="number">0</span>; <span class="number">4</span>];
+<span class="kw">fn </span>mix_column(r: <span class="kw-2">&amp;mut </span>[u8; <span class="number">4</span>]) {
+    <span class="kw">let </span><span class="kw-2">mut </span>a: [u8; <span class="number">4</span>] = [<span class="number">0</span>; <span class="number">4</span>];
+    <span class="kw">let </span><span class="kw-2">mut </span>b: [u8; <span class="number">4</span>] = [<span class="number">0</span>; <span class="number">4</span>];
     <span class="comment">/* The array &#39;a&#39; is simply a copy of the input array &#39;r&#39;
      * The array &#39;b&#39; is each element of the array &#39;a&#39; multiplied by 2
      * in Rijndael&#39;s Galois field
-     * a[n] ^ b[n] is element n multiplied by 3 in Rijndael&#39;s Galois field */</span> 
-    <span class="kw">for</span> <span class="ident">c</span> <span class="kw">in</span> <span class="number">0</span>..<span class="number">4</span> {
-        <span class="ident">a</span>[<span class="ident">c</span>] <span class="op">=</span> <span class="ident">r</span>[<span class="ident">c</span>];
-        <span class="comment">/* h is 0xff if the high bit of r[c] is set, 0 otherwise */</span>
-        <span class="kw">let</span> <span class="ident">h</span>: <span class="ident">u8</span> <span class="op">=</span> ((<span class="ident">r</span>[<span class="ident">c</span>] <span class="kw">as</span> <span class="ident">i8</span>) <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">7</span>) <span class="kw">as</span> <span class="ident">u8</span>; <span class="comment">/* arithmetic right shift, thus shifting in either zeros or ones */</span>
-        <span class="ident">b</span>[<span class="ident">c</span>] <span class="op">=</span> <span class="ident">r</span>[<span class="ident">c</span>] <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">1</span>; <span class="comment">/* implicitly removes high bit because b[c] is an 8-bit char, so we xor by 0x1b and not 0x11b in the next line */</span>
-        <span class="ident">b</span>[<span class="ident">c</span>] <span class="op">^</span><span class="op">=</span> <span class="number">0x1B</span> <span class="op">&amp;</span> <span class="ident">h</span>; <span class="comment">/* Rijndael&#39;s Galois field */</span>
-    }
-    <span class="ident">r</span>[<span class="number">0</span>] <span class="op">=</span> <span class="ident">b</span>[<span class="number">0</span>] <span class="op">^</span> <span class="ident">a</span>[<span class="number">3</span>] <span class="op">^</span> <span class="ident">a</span>[<span class="number">2</span>] <span class="op">^</span> <span class="ident">b</span>[<span class="number">1</span>] <span class="op">^</span> <span class="ident">a</span>[<span class="number">1</span>]; <span class="comment">/* 2 * a0 + a3 + a2 + 3 * a1 */</span>
-    <span class="ident">r</span>[<span class="number">1</span>] <span class="op">=</span> <span class="ident">b</span>[<span class="number">1</span>] <span class="op">^</span> <span class="ident">a</span>[<span class="number">0</span>] <span class="op">^</span> <span class="ident">a</span>[<span class="number">3</span>] <span class="op">^</span> <span class="ident">b</span>[<span class="number">2</span>] <span class="op">^</span> <span class="ident">a</span>[<span class="number">2</span>]; <span class="comment">/* 2 * a1 + a0 + a3 + 3 * a2 */</span>
-    <span class="ident">r</span>[<span class="number">2</span>] <span class="op">=</span> <span class="ident">b</span>[<span class="number">2</span>] <span class="op">^</span> <span class="ident">a</span>[<span class="number">1</span>] <span class="op">^</span> <span class="ident">a</span>[<span class="number">0</span>] <span class="op">^</span> <span class="ident">b</span>[<span class="number">3</span>] <span class="op">^</span> <span class="ident">a</span>[<span class="number">3</span>]; <span class="comment">/* 2 * a2 + a1 + a0 + 3 * a3 */</span>
-    <span class="ident">r</span>[<span class="number">3</span>] <span class="op">=</span> <span class="ident">b</span>[<span class="number">3</span>] <span class="op">^</span> <span class="ident">a</span>[<span class="number">2</span>] <span class="op">^</span> <span class="ident">a</span>[<span class="number">1</span>] <span class="op">^</span> <span class="ident">b</span>[<span class="number">0</span>] <span class="op">^</span> <span class="ident">a</span>[<span class="number">0</span>]; <span class="comment">/* 2 * a3 + a2 + a1 + 3 * a0 */</span>
+     * a[n] ^ b[n] is element n multiplied by 3 in Rijndael&#39;s Galois field */ 
+    </span><span class="kw">for </span>c <span class="kw">in </span><span class="number">0</span>..<span class="number">4 </span>{
+        a[c] = r[c];
+        <span class="comment">/* h is 0xff if the high bit of r[c] is set, 0 otherwise */
+        </span><span class="kw">let </span>h: u8 = ((r[c] <span class="kw">as </span>i8) &gt;&gt; <span class="number">7</span>) <span class="kw">as </span>u8; <span class="comment">/* arithmetic right shift, thus shifting in either zeros or ones */
+        </span>b[c] = r[c] &lt;&lt; <span class="number">1</span>; <span class="comment">/* implicitly removes high bit because b[c] is an 8-bit char, so we xor by 0x1b and not 0x11b in the next line */
+        </span>b[c] ^= <span class="number">0x1B </span>&amp; h; <span class="comment">/* Rijndael&#39;s Galois field */
+    </span>}
+    r[<span class="number">0</span>] = b[<span class="number">0</span>] ^ a[<span class="number">3</span>] ^ a[<span class="number">2</span>] ^ b[<span class="number">1</span>] ^ a[<span class="number">1</span>]; <span class="comment">/* 2 * a0 + a3 + a2 + 3 * a1 */
+    </span>r[<span class="number">1</span>] = b[<span class="number">1</span>] ^ a[<span class="number">0</span>] ^ a[<span class="number">3</span>] ^ b[<span class="number">2</span>] ^ a[<span class="number">2</span>]; <span class="comment">/* 2 * a1 + a0 + a3 + 3 * a2 */
+    </span>r[<span class="number">2</span>] = b[<span class="number">2</span>] ^ a[<span class="number">1</span>] ^ a[<span class="number">0</span>] ^ b[<span class="number">3</span>] ^ a[<span class="number">3</span>]; <span class="comment">/* 2 * a2 + a1 + a0 + 3 * a3 */
+    </span>r[<span class="number">3</span>] = b[<span class="number">3</span>] ^ a[<span class="number">2</span>] ^ a[<span class="number">1</span>] ^ b[<span class="number">0</span>] ^ a[<span class="number">0</span>]; <span class="comment">/* 2 * a3 + a2 + a1 + 3 * a0 */
  
-}
+</span>}
 
 
-<span class="kw">fn</span> <span class="ident">transpose</span>(<span class="ident">s</span>: <span class="kw-2">&amp;mut</span>[[<span class="ident">u8</span>; <span class="number">4</span>]; <span class="number">4</span>]) {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">temp</span>: [[<span class="ident">u8</span>; <span class="number">4</span>]; <span class="number">4</span>] <span class="op">=</span> [
-        [<span class="ident">s</span>[<span class="number">0</span>][<span class="number">0</span>], <span class="ident">s</span>[<span class="number">1</span>][<span class="number">0</span>], <span class="ident">s</span>[<span class="number">2</span>][<span class="number">0</span>], <span class="ident">s</span>[<span class="number">3</span>][<span class="number">0</span>]],
-        [<span class="ident">s</span>[<span class="number">0</span>][<span class="number">1</span>], <span class="ident">s</span>[<span class="number">1</span>][<span class="number">1</span>], <span class="ident">s</span>[<span class="number">2</span>][<span class="number">1</span>], <span class="ident">s</span>[<span class="number">3</span>][<span class="number">1</span>]],
-        [<span class="ident">s</span>[<span class="number">0</span>][<span class="number">2</span>], <span class="ident">s</span>[<span class="number">1</span>][<span class="number">2</span>], <span class="ident">s</span>[<span class="number">2</span>][<span class="number">2</span>], <span class="ident">s</span>[<span class="number">3</span>][<span class="number">2</span>]],
-        [<span class="ident">s</span>[<span class="number">0</span>][<span class="number">3</span>], <span class="ident">s</span>[<span class="number">1</span>][<span class="number">3</span>], <span class="ident">s</span>[<span class="number">2</span>][<span class="number">3</span>], <span class="ident">s</span>[<span class="number">3</span>][<span class="number">3</span>]]
+<span class="kw">fn </span>transpose(s: <span class="kw-2">&amp;mut</span>[[u8; <span class="number">4</span>]; <span class="number">4</span>]) {
+    <span class="kw">let </span><span class="kw-2">mut </span>temp: [[u8; <span class="number">4</span>]; <span class="number">4</span>] = [
+        [s[<span class="number">0</span>][<span class="number">0</span>], s[<span class="number">1</span>][<span class="number">0</span>], s[<span class="number">2</span>][<span class="number">0</span>], s[<span class="number">3</span>][<span class="number">0</span>]],
+        [s[<span class="number">0</span>][<span class="number">1</span>], s[<span class="number">1</span>][<span class="number">1</span>], s[<span class="number">2</span>][<span class="number">1</span>], s[<span class="number">3</span>][<span class="number">1</span>]],
+        [s[<span class="number">0</span>][<span class="number">2</span>], s[<span class="number">1</span>][<span class="number">2</span>], s[<span class="number">2</span>][<span class="number">2</span>], s[<span class="number">3</span>][<span class="number">2</span>]],
+        [s[<span class="number">0</span>][<span class="number">3</span>], s[<span class="number">1</span>][<span class="number">3</span>], s[<span class="number">2</span>][<span class="number">3</span>], s[<span class="number">3</span>][<span class="number">3</span>]]
     ];
-    <span class="ident">swap</span>(<span class="ident">s</span>, <span class="kw-2">&amp;mut</span> <span class="ident">temp</span>);
+    swap(s, <span class="kw-2">&amp;mut </span>temp);
 }
 
-<span class="kw">fn</span> <span class="ident">aes_mix_columns</span>(<span class="ident">s</span>: <span class="kw-2">&amp;mut</span> [[<span class="ident">u8</span>; <span class="number">4</span>]; <span class="number">4</span>]) {
-    <span class="ident">transpose</span>(<span class="ident">s</span>);
-    <span class="ident">mix_column</span>(<span class="kw-2">&amp;mut</span> <span class="ident">s</span>[<span class="number">0</span>]);
-    <span class="ident">mix_column</span>(<span class="kw-2">&amp;mut</span> <span class="ident">s</span>[<span class="number">1</span>]);
-    <span class="ident">mix_column</span>(<span class="kw-2">&amp;mut</span> <span class="ident">s</span>[<span class="number">2</span>]);
-    <span class="ident">mix_column</span>(<span class="kw-2">&amp;mut</span> <span class="ident">s</span>[<span class="number">3</span>]);
-    <span class="ident">transpose</span>(<span class="ident">s</span>);
+<span class="kw">fn </span>aes_mix_columns(s: <span class="kw-2">&amp;mut </span>[[u8; <span class="number">4</span>]; <span class="number">4</span>]) {
+    transpose(s);
+    mix_column(<span class="kw-2">&amp;mut </span>s[<span class="number">0</span>]);
+    mix_column(<span class="kw-2">&amp;mut </span>s[<span class="number">1</span>]);
+    mix_column(<span class="kw-2">&amp;mut </span>s[<span class="number">2</span>]);
+    mix_column(<span class="kw-2">&amp;mut </span>s[<span class="number">3</span>]);
+    transpose(s);
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="kw">mod</span> <span class="ident">tests_mix_columns</span> {
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">mix_column</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">t</span> <span class="op">=</span> [<span class="number">0xdb</span>, <span class="number">0x13</span>, <span class="number">0x53</span>, <span class="number">0x45</span>];
-        <span class="ident"><span class="kw">super</span>::mix_column</span>(<span class="kw-2">&amp;mut</span> <span class="ident">t</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">t</span>, [<span class="number">0x8e</span>, <span class="number">0x4d</span>, <span class="number">0xa1</span>, <span class="number">0xbc</span>]);
+<span class="attribute">#[cfg(test)]
+</span><span class="kw">mod </span>tests_mix_columns {
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>mix_column() {
+        <span class="kw">let </span><span class="kw-2">mut </span>t = [<span class="number">0xdb</span>, <span class="number">0x13</span>, <span class="number">0x53</span>, <span class="number">0x45</span>];
+        <span class="kw">super</span>::mix_column(<span class="kw-2">&amp;mut </span>t);
+        <span class="macro">assert_eq!</span>(t, [<span class="number">0x8e</span>, <span class="number">0x4d</span>, <span class="number">0xa1</span>, <span class="number">0xbc</span>]);
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">t</span> <span class="op">=</span> [<span class="number">0xf2</span>, <span class="number">0x0a</span>, <span class="number">0x22</span>, <span class="number">0x5c</span>];	
-        <span class="ident"><span class="kw">super</span>::mix_column</span>(<span class="kw-2">&amp;mut</span> <span class="ident">t</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">t</span>, [<span class="number">0x9f</span>, <span class="number">0xdc</span>, <span class="number">0x58</span>, <span class="number">0x9d</span>]);
+        <span class="kw">let </span><span class="kw-2">mut </span>t = [<span class="number">0xf2</span>, <span class="number">0x0a</span>, <span class="number">0x22</span>, <span class="number">0x5c</span>];	
+        <span class="kw">super</span>::mix_column(<span class="kw-2">&amp;mut </span>t);
+        <span class="macro">assert_eq!</span>(t, [<span class="number">0x9f</span>, <span class="number">0xdc</span>, <span class="number">0x58</span>, <span class="number">0x9d</span>]);
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">t</span> <span class="op">=</span> [<span class="number">0x01</span>, <span class="number">0x01</span>, <span class="number">0x01</span>, <span class="number">0x01</span>];	
-        <span class="ident"><span class="kw">super</span>::mix_column</span>(<span class="kw-2">&amp;mut</span> <span class="ident">t</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">t</span>, [<span class="number">0x01</span>, <span class="number">0x01</span>, <span class="number">0x01</span>, <span class="number">0x01</span>]);
+        <span class="kw">let </span><span class="kw-2">mut </span>t = [<span class="number">0x01</span>, <span class="number">0x01</span>, <span class="number">0x01</span>, <span class="number">0x01</span>];	
+        <span class="kw">super</span>::mix_column(<span class="kw-2">&amp;mut </span>t);
+        <span class="macro">assert_eq!</span>(t, [<span class="number">0x01</span>, <span class="number">0x01</span>, <span class="number">0x01</span>, <span class="number">0x01</span>]);
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">t</span> <span class="op">=</span> [<span class="number">0xc6</span>, <span class="number">0xc6</span>, <span class="number">0xc6</span>, <span class="number">0xc6</span>];
-        <span class="ident"><span class="kw">super</span>::mix_column</span>(<span class="kw-2">&amp;mut</span> <span class="ident">t</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">t</span>, [<span class="number">0xc6</span>, <span class="number">0xc6</span>, <span class="number">0xc6</span>, <span class="number">0xc6</span>]);
+        <span class="kw">let </span><span class="kw-2">mut </span>t = [<span class="number">0xc6</span>, <span class="number">0xc6</span>, <span class="number">0xc6</span>, <span class="number">0xc6</span>];
+        <span class="kw">super</span>::mix_column(<span class="kw-2">&amp;mut </span>t);
+        <span class="macro">assert_eq!</span>(t, [<span class="number">0xc6</span>, <span class="number">0xc6</span>, <span class="number">0xc6</span>, <span class="number">0xc6</span>]);
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">t</span> <span class="op">=</span> [<span class="number">0xd4</span>, <span class="number">0xd4</span>, <span class="number">0xd4</span>, <span class="number">0xd5</span>];
-        <span class="ident"><span class="kw">super</span>::mix_column</span>(<span class="kw-2">&amp;mut</span> <span class="ident">t</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">t</span>, [<span class="number">0xd5</span>, <span class="number">0xd5</span>, <span class="number">0xd7</span>, <span class="number">0xd6</span>]);
+        <span class="kw">let </span><span class="kw-2">mut </span>t = [<span class="number">0xd4</span>, <span class="number">0xd4</span>, <span class="number">0xd4</span>, <span class="number">0xd5</span>];
+        <span class="kw">super</span>::mix_column(<span class="kw-2">&amp;mut </span>t);
+        <span class="macro">assert_eq!</span>(t, [<span class="number">0xd5</span>, <span class="number">0xd5</span>, <span class="number">0xd7</span>, <span class="number">0xd6</span>]);
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">t</span> <span class="op">=</span> [<span class="number">0x2d</span>, <span class="number">0x26</span>, <span class="number">0x31</span>, <span class="number">0x4c</span>];
-        <span class="ident"><span class="kw">super</span>::mix_column</span>(<span class="kw-2">&amp;mut</span> <span class="ident">t</span>);
-	    <span class="macro">assert_eq!</span>(<span class="ident">t</span>, [<span class="number">0x4d</span>, <span class="number">0x7e</span>, <span class="number">0xbd</span>, <span class="number">0xf8</span>]);
+        <span class="kw">let </span><span class="kw-2">mut </span>t = [<span class="number">0x2d</span>, <span class="number">0x26</span>, <span class="number">0x31</span>, <span class="number">0x4c</span>];
+        <span class="kw">super</span>::mix_column(<span class="kw-2">&amp;mut </span>t);
+	    <span class="macro">assert_eq!</span>(t, [<span class="number">0x4d</span>, <span class="number">0x7e</span>, <span class="number">0xbd</span>, <span class="number">0xf8</span>]);
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">mix_columns</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">s</span> <span class="op">=</span> [
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>mix_columns() {
+        <span class="kw">let </span><span class="kw-2">mut </span>s = [
             [<span class="number">0xdb</span>, <span class="number">0xf2</span>, <span class="number">0x01</span>, <span class="number">0x2d</span>],
             [<span class="number">0x13</span>, <span class="number">0x0a</span>, <span class="number">0x01</span>, <span class="number">0x26</span>],
             [<span class="number">0x53</span>, <span class="number">0x22</span>, <span class="number">0x01</span>, <span class="number">0x31</span>],
             [<span class="number">0x45</span>, <span class="number">0x5c</span>, <span class="number">0x01</span>, <span class="number">0x4c</span>]
         ];
-        <span class="ident"><span class="kw">super</span>::aes_mix_columns</span>(<span class="kw-2">&amp;mut</span> <span class="ident">s</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">s</span>[<span class="number">0</span>], [<span class="number">0x8e</span>, <span class="number">0x9f</span>, <span class="number">0x01</span>, <span class="number">0x4d</span>]);
+        <span class="kw">super</span>::aes_mix_columns(<span class="kw-2">&amp;mut </span>s);
+        <span class="macro">assert_eq!</span>(s[<span class="number">0</span>], [<span class="number">0x8e</span>, <span class="number">0x9f</span>, <span class="number">0x01</span>, <span class="number">0x4d</span>]);
     }
 
 }
 
-<span class="kw">fn</span> <span class="ident">xor</span>(<span class="ident">state</span>: <span class="kw-2">&amp;mut</span> [<span class="ident">u8</span>; <span class="number">4</span>], <span class="ident">sub_key</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>; <span class="number">4</span>]) {
-    <span class="kw">for</span> <span class="ident">it</span> <span class="kw">in</span> <span class="ident">state</span>.<span class="ident">iter_mut</span>().<span class="ident">zip</span>(<span class="ident">sub_key</span>.<span class="ident">iter</span>()) {
-        <span class="kw">let</span> (<span class="ident">s</span>, <span class="ident">k</span>) <span class="op">=</span> <span class="ident">it</span>;
-        <span class="kw-2">*</span><span class="ident">s</span> <span class="op">^</span><span class="op">=</span> <span class="ident">k</span>; 
+<span class="kw">fn </span>xor(state: <span class="kw-2">&amp;mut </span>[u8; <span class="number">4</span>], sub_key: <span class="kw-2">&amp;</span>[u8; <span class="number">4</span>]) {
+    <span class="kw">for </span>it <span class="kw">in </span>state.iter_mut().zip(sub_key.iter()) {
+        <span class="kw">let </span>(s, k) = it;
+        <span class="kw-2">*</span>s ^= k; 
     }
 }
 
-<span class="kw">fn</span> <span class="ident">aes_add_round_key</span>(<span class="ident">state</span>: <span class="kw-2">&amp;mut</span> [[<span class="ident">u8</span>; <span class="number">4</span>]; <span class="number">4</span>], <span class="ident">w</span>: <span class="kw-2">&amp;</span>[[<span class="ident">u8</span>; <span class="number">4</span>]; <span class="number">60</span>], <span class="ident">round</span>: <span class="ident">usize</span>) {  <span class="comment">// xor Round Key into state S [§5.1.4]</span>
-    <span class="comment">// combine like for matrix multiplication</span>
-    <span class="ident">xor</span>(<span class="kw-2">&amp;mut</span> <span class="ident">state</span>[<span class="number">0</span>], <span class="op">&amp;</span> [<span class="ident">w</span>[<span class="ident">round</span> <span class="op">*</span> <span class="number">4</span>][<span class="number">0</span>], <span class="ident">w</span>[<span class="ident">round</span> <span class="op">*</span> <span class="number">4</span> <span class="op">+</span> <span class="number">1</span>][<span class="number">0</span>], <span class="ident">w</span>[<span class="ident">round</span> <span class="op">*</span> <span class="number">4</span> <span class="op">+</span> <span class="number">2</span>][<span class="number">0</span>], <span class="ident">w</span>[<span class="ident">round</span> <span class="op">*</span> <span class="number">4</span> <span class="op">+</span> <span class="number">3</span>][<span class="number">0</span>],]);
-    <span class="ident">xor</span>(<span class="kw-2">&amp;mut</span> <span class="ident">state</span>[<span class="number">1</span>], <span class="op">&amp;</span> [<span class="ident">w</span>[<span class="ident">round</span> <span class="op">*</span> <span class="number">4</span>][<span class="number">1</span>], <span class="ident">w</span>[<span class="ident">round</span> <span class="op">*</span> <span class="number">4</span> <span class="op">+</span> <span class="number">1</span>][<span class="number">1</span>], <span class="ident">w</span>[<span class="ident">round</span> <span class="op">*</span> <span class="number">4</span> <span class="op">+</span> <span class="number">2</span>][<span class="number">1</span>], <span class="ident">w</span>[<span class="ident">round</span> <span class="op">*</span> <span class="number">4</span> <span class="op">+</span> <span class="number">3</span>][<span class="number">1</span>],]);
-    <span class="ident">xor</span>(<span class="kw-2">&amp;mut</span> <span class="ident">state</span>[<span class="number">2</span>], <span class="op">&amp;</span> [<span class="ident">w</span>[<span class="ident">round</span> <span class="op">*</span> <span class="number">4</span>][<span class="number">2</span>], <span class="ident">w</span>[<span class="ident">round</span> <span class="op">*</span> <span class="number">4</span> <span class="op">+</span> <span class="number">1</span>][<span class="number">2</span>], <span class="ident">w</span>[<span class="ident">round</span> <span class="op">*</span> <span class="number">4</span> <span class="op">+</span> <span class="number">2</span>][<span class="number">2</span>], <span class="ident">w</span>[<span class="ident">round</span> <span class="op">*</span> <span class="number">4</span> <span class="op">+</span> <span class="number">3</span>][<span class="number">2</span>],]);
-    <span class="ident">xor</span>(<span class="kw-2">&amp;mut</span> <span class="ident">state</span>[<span class="number">3</span>], <span class="op">&amp;</span> [<span class="ident">w</span>[<span class="ident">round</span> <span class="op">*</span> <span class="number">4</span>][<span class="number">3</span>], <span class="ident">w</span>[<span class="ident">round</span> <span class="op">*</span> <span class="number">4</span> <span class="op">+</span> <span class="number">1</span>][<span class="number">3</span>], <span class="ident">w</span>[<span class="ident">round</span> <span class="op">*</span> <span class="number">4</span> <span class="op">+</span> <span class="number">2</span>][<span class="number">3</span>], <span class="ident">w</span>[<span class="ident">round</span> <span class="op">*</span> <span class="number">4</span> <span class="op">+</span> <span class="number">3</span>][<span class="number">3</span>],]);
+<span class="kw">fn </span>aes_add_round_key(state: <span class="kw-2">&amp;mut </span>[[u8; <span class="number">4</span>]; <span class="number">4</span>], w: <span class="kw-2">&amp;</span>[[u8; <span class="number">4</span>]; <span class="number">60</span>], round: usize) {  <span class="comment">// xor Round Key into state S [§5.1.4]
+    // combine like for matrix multiplication
+    </span>xor(<span class="kw-2">&amp;mut </span>state[<span class="number">0</span>], &amp; [w[round * <span class="number">4</span>][<span class="number">0</span>], w[round * <span class="number">4 </span>+ <span class="number">1</span>][<span class="number">0</span>], w[round * <span class="number">4 </span>+ <span class="number">2</span>][<span class="number">0</span>], w[round * <span class="number">4 </span>+ <span class="number">3</span>][<span class="number">0</span>],]);
+    xor(<span class="kw-2">&amp;mut </span>state[<span class="number">1</span>], &amp; [w[round * <span class="number">4</span>][<span class="number">1</span>], w[round * <span class="number">4 </span>+ <span class="number">1</span>][<span class="number">1</span>], w[round * <span class="number">4 </span>+ <span class="number">2</span>][<span class="number">1</span>], w[round * <span class="number">4 </span>+ <span class="number">3</span>][<span class="number">1</span>],]);
+    xor(<span class="kw-2">&amp;mut </span>state[<span class="number">2</span>], &amp; [w[round * <span class="number">4</span>][<span class="number">2</span>], w[round * <span class="number">4 </span>+ <span class="number">1</span>][<span class="number">2</span>], w[round * <span class="number">4 </span>+ <span class="number">2</span>][<span class="number">2</span>], w[round * <span class="number">4 </span>+ <span class="number">3</span>][<span class="number">2</span>],]);
+    xor(<span class="kw-2">&amp;mut </span>state[<span class="number">3</span>], &amp; [w[round * <span class="number">4</span>][<span class="number">3</span>], w[round * <span class="number">4 </span>+ <span class="number">1</span>][<span class="number">3</span>], w[round * <span class="number">4 </span>+ <span class="number">2</span>][<span class="number">3</span>], w[round * <span class="number">4 </span>+ <span class="number">3</span>][<span class="number">3</span>],]);
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="kw">mod</span> <span class="ident">tests_aes_add_round_key</span> {
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">aes_add_round_key</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">state</span> <span class="op">=</span> [
+<span class="attribute">#[cfg(test)]
+</span><span class="kw">mod </span>tests_aes_add_round_key {
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>aes_add_round_key() {
+        <span class="kw">let </span><span class="kw-2">mut </span>state = [
             [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>],
             [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>],
             [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>],
             [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>],
         ];
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">w</span>:[[<span class="ident">u8</span>; <span class="number">4</span>]; <span class="number">60</span>] <span class="op">=</span> [[<span class="number">0</span>; <span class="number">4</span>]; <span class="number">60</span>];
-        <span class="ident">w</span>[<span class="number">5</span>][<span class="number">0</span>] <span class="op">=</span> <span class="number">1</span>;
-        <span class="ident"><span class="kw">super</span>::aes_add_round_key</span>(<span class="kw-2">&amp;mut</span> <span class="ident">state</span>, <span class="kw-2">&amp;</span><span class="ident">w</span>, <span class="number">1</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">state</span>[<span class="number">0</span>][<span class="number">1</span>], <span class="number">1</span>);
+        <span class="kw">let </span><span class="kw-2">mut </span>w:[[u8; <span class="number">4</span>]; <span class="number">60</span>] = [[<span class="number">0</span>; <span class="number">4</span>]; <span class="number">60</span>];
+        w[<span class="number">5</span>][<span class="number">0</span>] = <span class="number">1</span>;
+        <span class="kw">super</span>::aes_add_round_key(<span class="kw-2">&amp;mut </span>state, <span class="kw-2">&amp;</span>w, <span class="number">1</span>);
+        <span class="macro">assert_eq!</span>(state[<span class="number">0</span>][<span class="number">1</span>], <span class="number">1</span>);
     }
 }
 
 
-<span class="kw">fn</span> <span class="ident">aes_key_expansion</span>(<span class="ident">key</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>; <span class="number">32</span>]) -&gt; [[<span class="ident">u8</span>; <span class="number">4</span>]; <span class="number">60</span>] {  <span class="comment">// generate Key Schedule (byte-array Nr+1 x Nb) from Key [§5.2]</span>
-    <span class="comment">//4 int Nb = 4;            // block size (in words): no of columns in state (fixed at 4 for AES)</span>
-    <span class="kw">let</span> <span class="ident">key_length_words</span> <span class="op">=</span> <span class="ident">key</span>.<span class="ident">len</span>() <span class="op">/</span> <span class="number">4</span>;  <span class="comment">// key length (in words): 4/6/8 for 128/192/256-bit keys</span>
-    <span class="kw">let</span> <span class="ident">_rounds</span> <span class="op">=</span> <span class="ident">key_length_words</span> <span class="op">+</span> <span class="number">6</span>;       <span class="comment">// no of rounds: 10/12/14 for 128/192/256-bit keys</span>
+<span class="kw">fn </span>aes_key_expansion(key: <span class="kw-2">&amp;</span>[u8; <span class="number">32</span>]) -&gt; [[u8; <span class="number">4</span>]; <span class="number">60</span>] {  <span class="comment">// generate Key Schedule (byte-array Nr+1 x Nb) from Key [§5.2]
+    //4 int Nb = 4;            // block size (in words): no of columns in state (fixed at 4 for AES)
+    </span><span class="kw">let </span>key_length_words = key.len() / <span class="number">4</span>;  <span class="comment">// key length (in words): 4/6/8 for 128/192/256-bit keys
+    </span><span class="kw">let </span>_rounds = key_length_words + <span class="number">6</span>;       <span class="comment">// no of rounds: 10/12/14 for 128/192/256-bit keys
 
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">w</span>: [[<span class="ident">u8</span>; <span class="number">4</span>]; <span class="number">60</span>] <span class="op">=</span> [[<span class="number">8</span>; <span class="number">4</span>]; <span class="number">60</span>];
+    </span><span class="kw">let </span><span class="kw-2">mut </span>w: [[u8; <span class="number">4</span>]; <span class="number">60</span>] = [[<span class="number">8</span>; <span class="number">4</span>]; <span class="number">60</span>];
 
-    <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">key_length_words</span> {
-        <span class="ident">w</span>[<span class="ident">i</span>] <span class="op">=</span> [<span class="ident">key</span>[<span class="number">4</span> <span class="op">*</span> <span class="ident">i</span>], <span class="ident">key</span>[<span class="number">4</span> <span class="op">*</span> <span class="ident">i</span> <span class="op">+</span> <span class="number">1</span>], <span class="ident">key</span>[<span class="number">4</span> <span class="op">*</span> <span class="ident">i</span> <span class="op">+</span> <span class="number">2</span>], <span class="ident">key</span>[<span class="number">4</span> <span class="op">*</span> <span class="ident">i</span> <span class="op">+</span> <span class="number">3</span>]];
+    <span class="kw">for </span>i <span class="kw">in </span><span class="number">0</span>..key_length_words {
+        w[i] = [key[<span class="number">4 </span>* i], key[<span class="number">4 </span>* i + <span class="number">1</span>], key[<span class="number">4 </span>* i + <span class="number">2</span>], key[<span class="number">4 </span>* i + <span class="number">3</span>]];
     }
 
-    <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="ident">key_length_words</span>..<span class="number">60</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">temp</span> <span class="op">=</span> [<span class="ident">w</span>[<span class="ident">i</span> <span class="op">-</span> <span class="number">1</span>][<span class="number">0</span>], <span class="ident">w</span>[<span class="ident">i</span> <span class="op">-</span> <span class="number">1</span>][<span class="number">1</span>], <span class="ident">w</span>[<span class="ident">i</span> <span class="op">-</span> <span class="number">1</span>][<span class="number">2</span>], <span class="ident">w</span>[<span class="ident">i</span> <span class="op">-</span> <span class="number">1</span>][<span class="number">3</span>]];
-        <span class="kw">if</span> <span class="ident">i</span> <span class="op">%</span> <span class="ident">key_length_words</span> <span class="op">==</span> <span class="number">0</span> {
-            <span class="ident">aes_rot_word</span>(<span class="kw-2">&amp;mut</span> <span class="ident">temp</span>);
-            <span class="ident">aes_sub_word</span>(<span class="kw-2">&amp;mut</span> <span class="ident">temp</span>);
-            <span class="ident">temp</span>[<span class="number">0</span>] <span class="op">^</span><span class="op">=</span> <span class="ident">R_CON</span>[<span class="ident">i</span> <span class="op">/</span> <span class="ident">key_length_words</span>][<span class="number">0</span>];
-            <span class="ident">temp</span>[<span class="number">1</span>] <span class="op">^</span><span class="op">=</span> <span class="ident">R_CON</span>[<span class="ident">i</span> <span class="op">/</span> <span class="ident">key_length_words</span>][<span class="number">1</span>];
-            <span class="ident">temp</span>[<span class="number">2</span>] <span class="op">^</span><span class="op">=</span> <span class="ident">R_CON</span>[<span class="ident">i</span> <span class="op">/</span> <span class="ident">key_length_words</span>][<span class="number">2</span>];
-            <span class="ident">temp</span>[<span class="number">3</span>] <span class="op">^</span><span class="op">=</span> <span class="ident">R_CON</span>[<span class="ident">i</span> <span class="op">/</span> <span class="ident">key_length_words</span>][<span class="number">3</span>];
-        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">i</span><span class="op">%</span><span class="ident">key_length_words</span> <span class="op">==</span> <span class="number">4</span> {
-            <span class="ident">aes_sub_word</span>(<span class="kw-2">&amp;mut</span> <span class="ident">temp</span>);
+    <span class="kw">for </span>i <span class="kw">in </span>key_length_words..<span class="number">60 </span>{
+        <span class="kw">let </span><span class="kw-2">mut </span>temp = [w[i - <span class="number">1</span>][<span class="number">0</span>], w[i - <span class="number">1</span>][<span class="number">1</span>], w[i - <span class="number">1</span>][<span class="number">2</span>], w[i - <span class="number">1</span>][<span class="number">3</span>]];
+        <span class="kw">if </span>i % key_length_words == <span class="number">0 </span>{
+            aes_rot_word(<span class="kw-2">&amp;mut </span>temp);
+            aes_sub_word(<span class="kw-2">&amp;mut </span>temp);
+            temp[<span class="number">0</span>] ^= R_CON[i / key_length_words][<span class="number">0</span>];
+            temp[<span class="number">1</span>] ^= R_CON[i / key_length_words][<span class="number">1</span>];
+            temp[<span class="number">2</span>] ^= R_CON[i / key_length_words][<span class="number">2</span>];
+            temp[<span class="number">3</span>] ^= R_CON[i / key_length_words][<span class="number">3</span>];
+        } <span class="kw">else if </span>i%key_length_words == <span class="number">4 </span>{
+            aes_sub_word(<span class="kw-2">&amp;mut </span>temp);
         }
-        <span class="ident">w</span>[<span class="ident">i</span>][<span class="number">0</span>] <span class="op">=</span> <span class="ident">w</span>[<span class="ident">i</span> <span class="op">-</span> <span class="ident">key_length_words</span>][<span class="number">0</span>] <span class="op">^</span> <span class="ident">temp</span>[<span class="number">0</span>];
-        <span class="ident">w</span>[<span class="ident">i</span>][<span class="number">1</span>] <span class="op">=</span> <span class="ident">w</span>[<span class="ident">i</span> <span class="op">-</span> <span class="ident">key_length_words</span>][<span class="number">1</span>] <span class="op">^</span> <span class="ident">temp</span>[<span class="number">1</span>];
-        <span class="ident">w</span>[<span class="ident">i</span>][<span class="number">2</span>] <span class="op">=</span> <span class="ident">w</span>[<span class="ident">i</span> <span class="op">-</span> <span class="ident">key_length_words</span>][<span class="number">2</span>] <span class="op">^</span> <span class="ident">temp</span>[<span class="number">2</span>];
-        <span class="ident">w</span>[<span class="ident">i</span>][<span class="number">3</span>] <span class="op">=</span> <span class="ident">w</span>[<span class="ident">i</span> <span class="op">-</span> <span class="ident">key_length_words</span>][<span class="number">3</span>] <span class="op">^</span> <span class="ident">temp</span>[<span class="number">3</span>];
+        w[i][<span class="number">0</span>] = w[i - key_length_words][<span class="number">0</span>] ^ temp[<span class="number">0</span>];
+        w[i][<span class="number">1</span>] = w[i - key_length_words][<span class="number">1</span>] ^ temp[<span class="number">1</span>];
+        w[i][<span class="number">2</span>] = w[i - key_length_words][<span class="number">2</span>] ^ temp[<span class="number">2</span>];
+        w[i][<span class="number">3</span>] = w[i - key_length_words][<span class="number">3</span>] ^ temp[<span class="number">3</span>];
     }
-    <span class="ident">w</span>
+    w
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="kw">mod</span> <span class="ident">tests_key_expansion</span> {
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">expand_key</span>() {
-        <span class="kw">let</span> <span class="ident">expected</span> <span class="op">=</span> [
+<span class="attribute">#[cfg(test)]
+</span><span class="kw">mod </span>tests_key_expansion {
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>expand_key() {
+        <span class="kw">let </span>expected = [
             [<span class="number">0x73</span>, <span class="number">0x65</span>, <span class="number">0x63</span>, <span class="number">0x72</span>],
             [<span class="number">0x65</span>, <span class="number">0x74</span>, <span class="number">0x20</span>, <span class="number">0x73</span>],
             [<span class="number">0x65</span>, <span class="number">0x63</span>, <span class="number">0x72</span>, <span class="number">0x65</span>],
@@ -883,22 +879,22 @@
             [<span class="number">0xb1</span>, <span class="number">0xca</span>, <span class="number">0xae</span>, <span class="number">0x1b</span>],
         ];
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">key</span>:[<span class="ident">u8</span>; <span class="number">32</span>] <span class="op">=</span> [<span class="number">0</span>; <span class="number">32</span>];
-        <span class="kw">for</span> (<span class="ident">i</span>, <span class="ident">c</span>) <span class="kw">in</span> <span class="string">&quot;secret secret secret secret&quot;</span>.<span class="ident">char_indices</span>() {
-            <span class="ident">key</span>[<span class="ident">i</span>] <span class="op">=</span> <span class="ident">c</span> <span class="kw">as</span> <span class="ident">u8</span>;
+        <span class="kw">let </span><span class="kw-2">mut </span>key:[u8; <span class="number">32</span>] = [<span class="number">0</span>; <span class="number">32</span>];
+        <span class="kw">for </span>(i, c) <span class="kw">in </span><span class="string">&quot;secret secret secret secret&quot;</span>.char_indices() {
+            key[i] = c <span class="kw">as </span>u8;
         }
-        <span class="kw">let</span> <span class="ident">expanded_key</span> <span class="op">=</span> <span class="ident"><span class="kw">super</span>::aes_key_expansion</span>(<span class="kw-2">&amp;</span><span class="ident">key</span>);
-        <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="number">60</span> {
-            <span class="macro">assert_eq!</span>(<span class="ident">expanded_key</span>[<span class="ident">i</span>], <span class="ident">expected</span>[<span class="ident">i</span>], <span class="string">&quot;row {}&quot;</span>, <span class="ident">i</span>);
+        <span class="kw">let </span>expanded_key = <span class="kw">super</span>::aes_key_expansion(<span class="kw-2">&amp;</span>key);
+        <span class="kw">for </span>i <span class="kw">in </span><span class="number">0</span>..<span class="number">60 </span>{
+            <span class="macro">assert_eq!</span>(expanded_key[i], expected[i], <span class="string">&quot;row {}&quot;</span>, i);
         }
 
-        <span class="macro">assert_eq!</span>(<span class="ident">std::mem::size_of_val</span>(<span class="kw-2">&amp;</span><span class="ident">expected</span>), <span class="number">240</span>, <span class="string">&quot;Expect the array to be 60 x 4 bytes in size&quot;</span>);
+        <span class="macro">assert_eq!</span>(std::mem::size_of_val(<span class="kw-2">&amp;</span>expected), <span class="number">240</span>, <span class="string">&quot;Expect the array to be 60 x 4 bytes in size&quot;</span>);
     }
 
 }
 
-<span class="comment">// no of rounds: 10/12/14 for 128/192/256-bit keys</span>
-<span class="kw">const</span> <span class="ident">ROUNDS</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">14</span>;
+<span class="comment">// no of rounds: 10/12/14 for 128/192/256-bit keys
+</span><span class="kw">const </span>ROUNDS: usize = <span class="number">14</span>;
 
 <span class="doccomment">/**
  * AES Cipher function: encrypt &#39;input&#39; state with Rijndael algorithm
@@ -907,241 +903,242 @@
  * @param input 16-byte (128-bit) input state array
  * @param w   Key schedule as 2D byte-array (Nr+1 x Nb bytes) 11 x 4
  * @return Encrypted output state array
- */</span>
-<span class="kw">fn</span> <span class="ident">aes_cipher</span>(<span class="ident">input</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>], <span class="ident">w</span>: <span class="kw-2">&amp;</span>[[<span class="ident">u8</span>; <span class="number">4</span>]; <span class="number">60</span>]) -&gt; [<span class="ident">u8</span>; <span class="number">16</span>] {    <span class="comment">// main Cipher function [§5.1]</span>
-    <span class="comment">// initialise 4xNb byte-array &#39;state&#39; with input [§3.4]</span>
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">state</span>: [[<span class="ident">u8</span>; <span class="number">4</span>]; <span class="number">4</span>] <span class="op">=</span> [
-        [<span class="ident">input</span>[<span class="number">0</span>], <span class="ident">input</span>[<span class="number">4</span>], <span class="ident">input</span>[<span class="number">8</span>], <span class="ident">input</span>[<span class="number">12</span>]],
-        [<span class="ident">input</span>[<span class="number">1</span>], <span class="ident">input</span>[<span class="number">5</span>], <span class="ident">input</span>[<span class="number">9</span>], <span class="ident">input</span>[<span class="number">13</span>]],
-        [<span class="ident">input</span>[<span class="number">2</span>], <span class="ident">input</span>[<span class="number">6</span>], <span class="ident">input</span>[<span class="number">10</span>], <span class="ident">input</span>[<span class="number">14</span>]],
-        [<span class="ident">input</span>[<span class="number">3</span>], <span class="ident">input</span>[<span class="number">7</span>], <span class="ident">input</span>[<span class="number">11</span>], <span class="ident">input</span>[<span class="number">15</span>]],
+ */
+</span><span class="kw">fn </span>aes_cipher(input: <span class="kw-2">&amp;</span>[u8], w: <span class="kw-2">&amp;</span>[[u8; <span class="number">4</span>]; <span class="number">60</span>]) -&gt; [u8; <span class="number">16</span>] {    <span class="comment">// main Cipher function [§5.1]
+    // initialise 4xNb byte-array &#39;state&#39; with input [§3.4]
+    </span><span class="kw">let </span><span class="kw-2">mut </span>state: [[u8; <span class="number">4</span>]; <span class="number">4</span>] = [
+        [input[<span class="number">0</span>], input[<span class="number">4</span>], input[<span class="number">8</span>], input[<span class="number">12</span>]],
+        [input[<span class="number">1</span>], input[<span class="number">5</span>], input[<span class="number">9</span>], input[<span class="number">13</span>]],
+        [input[<span class="number">2</span>], input[<span class="number">6</span>], input[<span class="number">10</span>], input[<span class="number">14</span>]],
+        [input[<span class="number">3</span>], input[<span class="number">7</span>], input[<span class="number">11</span>], input[<span class="number">15</span>]],
     ];
-    <span class="comment">//print_w(w);</span>
-    <span class="ident">aes_add_round_key</span>(<span class="kw-2">&amp;mut</span> <span class="ident">state</span>, <span class="ident">w</span>, <span class="number">0</span>);
+    <span class="comment">//print_w(w);
+    </span>aes_add_round_key(<span class="kw-2">&amp;mut </span>state, w, <span class="number">0</span>);
 
-    <span class="kw">for</span> <span class="ident">round</span> <span class="kw">in</span> <span class="number">1</span>..<span class="ident">ROUNDS</span> {
-        <span class="ident">aes_sub_bytes</span>(<span class="kw-2">&amp;mut</span> <span class="ident">state</span>);
-        <span class="ident">aes_shift_rows</span>(<span class="kw-2">&amp;mut</span> <span class="ident">state</span>);
-        <span class="ident">aes_mix_columns</span>(<span class="kw-2">&amp;mut</span> <span class="ident">state</span>);
-        <span class="ident">aes_add_round_key</span>(<span class="kw-2">&amp;mut</span> <span class="ident">state</span>, <span class="ident">w</span>, <span class="ident">round</span>);
+    <span class="kw">for </span>round <span class="kw">in </span><span class="number">1</span>..ROUNDS {
+        aes_sub_bytes(<span class="kw-2">&amp;mut </span>state);
+        aes_shift_rows(<span class="kw-2">&amp;mut </span>state);
+        aes_mix_columns(<span class="kw-2">&amp;mut </span>state);
+        aes_add_round_key(<span class="kw-2">&amp;mut </span>state, w, round);
     }
 
-    <span class="ident">aes_sub_bytes</span>(<span class="kw-2">&amp;mut</span> <span class="ident">state</span>);
-    <span class="ident">aes_shift_rows</span>(<span class="kw-2">&amp;mut</span> <span class="ident">state</span>);
-    <span class="ident">aes_add_round_key</span>(<span class="kw-2">&amp;mut</span> <span class="ident">state</span>, <span class="ident">w</span>, <span class="ident">ROUNDS</span>);
+    aes_sub_bytes(<span class="kw-2">&amp;mut </span>state);
+    aes_shift_rows(<span class="kw-2">&amp;mut </span>state);
+    aes_add_round_key(<span class="kw-2">&amp;mut </span>state, w, ROUNDS);
 
     [
-        <span class="ident">state</span>[<span class="number">0</span>][<span class="number">0</span>], <span class="ident">state</span>[<span class="number">1</span>][<span class="number">0</span>], <span class="ident">state</span>[<span class="number">2</span>][<span class="number">0</span>], <span class="ident">state</span>[<span class="number">3</span>][<span class="number">0</span>],
-        <span class="ident">state</span>[<span class="number">0</span>][<span class="number">1</span>], <span class="ident">state</span>[<span class="number">1</span>][<span class="number">1</span>], <span class="ident">state</span>[<span class="number">2</span>][<span class="number">1</span>], <span class="ident">state</span>[<span class="number">3</span>][<span class="number">1</span>],
-        <span class="ident">state</span>[<span class="number">0</span>][<span class="number">2</span>], <span class="ident">state</span>[<span class="number">1</span>][<span class="number">2</span>], <span class="ident">state</span>[<span class="number">2</span>][<span class="number">2</span>], <span class="ident">state</span>[<span class="number">3</span>][<span class="number">2</span>],
-        <span class="ident">state</span>[<span class="number">0</span>][<span class="number">3</span>], <span class="ident">state</span>[<span class="number">1</span>][<span class="number">3</span>], <span class="ident">state</span>[<span class="number">2</span>][<span class="number">3</span>], <span class="ident">state</span>[<span class="number">3</span>][<span class="number">3</span>],
+        state[<span class="number">0</span>][<span class="number">0</span>], state[<span class="number">1</span>][<span class="number">0</span>], state[<span class="number">2</span>][<span class="number">0</span>], state[<span class="number">3</span>][<span class="number">0</span>],
+        state[<span class="number">0</span>][<span class="number">1</span>], state[<span class="number">1</span>][<span class="number">1</span>], state[<span class="number">2</span>][<span class="number">1</span>], state[<span class="number">3</span>][<span class="number">1</span>],
+        state[<span class="number">0</span>][<span class="number">2</span>], state[<span class="number">1</span>][<span class="number">2</span>], state[<span class="number">2</span>][<span class="number">2</span>], state[<span class="number">3</span>][<span class="number">2</span>],
+        state[<span class="number">0</span>][<span class="number">3</span>], state[<span class="number">1</span>][<span class="number">3</span>], state[<span class="number">2</span>][<span class="number">3</span>], state[<span class="number">3</span>][<span class="number">3</span>],
     ]
-    <span class="comment">//for (int i = 0; i &lt; 4*Nb; i++) output[i] = state[i%4][i/4];</span>
-}
+    <span class="comment">//for (int i = 0; i &lt; 4*Nb; i++) output[i] = state[i%4][i/4];
+</span>}
 
-<span class="comment">// number of bytes in the key, 256 max for AES = 32 bytes</span>
-<span class="kw">const</span> <span class="ident">KEY_BYTES</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">32</span>;
-<span class="comment">// block size fixed at 16 bytes / 128 bits (Nb=4) for AES</span>
-<span class="kw">const</span> <span class="ident">BLOCK_SIZE</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">16</span>;
+<span class="comment">// number of bytes in the key, 256 max for AES = 32 bytes
+</span><span class="kw">const </span>KEY_BYTES: usize = <span class="number">32</span>;
+<span class="comment">// block size fixed at 16 bytes / 128 bits (Nb=4) for AES
+</span><span class="kw">const </span>BLOCK_SIZE: usize = <span class="number">16</span>;
 
-<span class="doccomment">///</span>
-<span class="doccomment">/// Encrypt a text using AES encryption in Counter mode of operation</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Unicode multi-byte character safe</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// * `plain_text` Source text to be encrypted</span>
-<span class="doccomment">/// * `password`  The password to use to generate a key</span>
-<span class="doccomment">/// * `nonce`     Unique number, e.g. time in seconds</span>
-<span class="doccomment">/// * `return`    Encrypted text</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// The way it works: we split the text into blocks. For each block we prepare</span>
-<span class="doccomment">/// a mask: first half the nonce, the second a counter. Then we cipher the mask</span>
-<span class="doccomment">/// with the secret key and xor the plaintext block with the ciphered mask.</span>
-<span class="doccomment">///</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">aes_ctr_encrypt</span>(<span class="ident">plain_text</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">password</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">nonce</span>: <span class="ident">u64</span>) -&gt; <span class="ident">String</span> {
+<span class="doccomment">///
+/// Encrypt a text using AES encryption in Counter mode of operation
+///
+/// Unicode multi-byte character safe
+///
+/// * `plain_text` Source text to be encrypted
+/// * `password`  The password to use to generate a key
+/// * `nonce`     Unique number, e.g. time in seconds
+/// * `return`    Encrypted text
+///
+/// The way it works: we split the text into blocks. For each block we prepare
+/// a mask: first half the nonce, the second a counter. Then we cipher the mask
+/// with the secret key and xor the plaintext block with the ciphered mask.
+///
+</span><span class="kw">pub fn </span>aes_ctr_encrypt(plain_text: <span class="kw-2">&amp;</span>str, password: <span class="kw-2">&amp;</span>str, nonce: u64) -&gt; String {
 
-    <span class="kw">let</span> <span class="ident">plain_bytes</span> <span class="op">=</span> <span class="ident">plain_text</span>.<span class="ident">as_bytes</span>();
-    <span class="comment">// let blockSize = 16;  </span>
-    <span class="comment">//if (!(nBits==128 || nBits==192 || nBits==256)) return &quot;&quot;;  // standard allows 128/192/256 bit keys</span>
+    <span class="kw">let </span>plain_bytes = plain_text.as_bytes();
+    <span class="comment">// let blockSize = 16;  
+    //if (!(nBits==128 || nBits==192 || nBits==256)) return &quot;&quot;;  // standard allows 128/192/256 bit keys
 
-    <span class="comment">// use AES itself to encrypt password to get cipher key (using plain password as source for key</span>
-    <span class="comment">// expansion) - gives us well encrypted key</span>
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">password_bytes</span>:[<span class="ident">u8</span>; <span class="ident">KEY_BYTES</span>] <span class="op">=</span> [<span class="number">0</span>; <span class="ident">KEY_BYTES</span>];
-    <span class="comment">// copy as much from the password as possible, longer passwords will not be fully used</span>
-    <span class="kw">let</span> <span class="ident">min_size</span> <span class="op">=</span> <span class="ident">std::cmp::min</span>(<span class="ident">password</span>.<span class="ident">len</span>(), <span class="ident">KEY_BYTES</span>);
-    <span class="ident">password_bytes</span>[..<span class="ident">min_size</span>].<span class="ident">copy_from_slice</span>(<span class="kw-2">&amp;</span><span class="ident">password</span>.<span class="ident">as_bytes</span>()[..<span class="ident">min_size</span>]);
+    // use AES itself to encrypt password to get cipher key (using plain password as source for key
+    // expansion) - gives us well encrypted key
+    </span><span class="kw">let </span><span class="kw-2">mut </span>password_bytes:[u8; KEY_BYTES] = [<span class="number">0</span>; KEY_BYTES];
+    <span class="comment">// copy as much from the password as possible, longer passwords will not be fully used
+    </span><span class="kw">let </span>min_size = std::cmp::min(password.len(), KEY_BYTES);
+    password_bytes[..min_size].copy_from_slice(<span class="kw-2">&amp;</span>password.as_bytes()[..min_size]);
     
-    <span class="kw">let</span> <span class="ident">key16</span> <span class="op">=</span> <span class="ident">aes_cipher</span>(<span class="kw-2">&amp;</span><span class="ident">password_bytes</span>[..<span class="number">16</span>], <span class="kw-2">&amp;</span><span class="ident">aes_key_expansion</span>(<span class="kw-2">&amp;</span><span class="ident">password_bytes</span>));  <span class="comment">// gives us 16-byte key</span>
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">key</span> <span class="op">=</span> [<span class="number">0</span>; <span class="ident">KEY_BYTES</span>];
+    <span class="kw">let </span>key16 = aes_cipher(<span class="kw-2">&amp;</span>password_bytes[..<span class="number">16</span>], <span class="kw-2">&amp;</span>aes_key_expansion(<span class="kw-2">&amp;</span>password_bytes));  <span class="comment">// gives us 16-byte key
+    </span><span class="kw">let </span><span class="kw-2">mut </span>key = [<span class="number">0</span>; KEY_BYTES];
     
-    <span class="comment">// expand key to 16/24/32 bytes long</span>
-    <span class="ident">key</span>[..<span class="number">16</span>].<span class="ident">copy_from_slice</span>(<span class="kw-2">&amp;</span><span class="ident">key16</span>);
-    <span class="ident">key</span>[<span class="number">16</span>..].<span class="ident">copy_from_slice</span>(<span class="kw-2">&amp;</span><span class="ident">key16</span>);
+    <span class="comment">// expand key to 16/24/32 bytes long
+    </span>key[..<span class="number">16</span>].copy_from_slice(<span class="kw-2">&amp;</span>key16);
+    key[<span class="number">16</span>..].copy_from_slice(<span class="kw-2">&amp;</span>key16);
 
-    <span class="comment">// initialise counter block (NIST SP800-38A §B.2): millisecond time-stamp for nonce in 1st 8 bytes,</span>
-    <span class="comment">// block counter in 2nd 8 bytes</span>
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">counter_block</span>:[<span class="ident">u8</span>; <span class="ident">BLOCK_SIZE</span>] <span class="op">=</span> [<span class="number">0</span>; <span class="ident">BLOCK_SIZE</span>];
+    <span class="comment">// initialise counter block (NIST SP800-38A §B.2): millisecond time-stamp for nonce in 1st 8 bytes,
+    // block counter in 2nd 8 bytes
+    </span><span class="kw">let </span><span class="kw-2">mut </span>counter_block:[u8; BLOCK_SIZE] = [<span class="number">0</span>; BLOCK_SIZE];
     
-    <span class="ident">counter_block</span>[..<span class="number">8</span>].<span class="ident">copy_from_slice</span>(<span class="kw-2">&amp;</span><span class="ident">nonce</span>.<span class="ident">to_le_bytes</span>());
+    counter_block[..<span class="number">8</span>].copy_from_slice(<span class="kw-2">&amp;</span>nonce.to_le_bytes());
 
-    <span class="comment">// and convert it to a string to go on the front of the ciphertext</span>
-    <span class="comment">// char[] ctrTxt = new char[8];</span>
-    <span class="comment">// for (int i = 0; i &lt; 8; i++) ctrTxt[i] = counterBlock[i];</span>
+    <span class="comment">// and convert it to a string to go on the front of the ciphertext
+    // char[] ctrTxt = new char[8];
+    // for (int i = 0; i &lt; 8; i++) ctrTxt[i] = counterBlock[i];
 
-    <span class="comment">// generate key schedule - an expansion of the key into distinct Key Rounds for each round</span>
-    <span class="kw">let</span> <span class="ident">key_schedule</span> <span class="op">=</span> <span class="ident">aes_key_expansion</span>(<span class="kw-2">&amp;</span><span class="ident">key</span>);
+    // generate key schedule - an expansion of the key into distinct Key Rounds for each round
+    </span><span class="kw">let </span>key_schedule = aes_key_expansion(<span class="kw-2">&amp;</span>key);
 
-    <span class="kw">let</span> <span class="ident">block_count</span> <span class="op">=</span> (<span class="ident">plain_bytes</span>.<span class="ident">len</span>() <span class="op">+</span> <span class="ident">BLOCK_SIZE</span> <span class="op">-</span> <span class="number">1</span>) <span class="op">/</span> <span class="ident">BLOCK_SIZE</span>;
+    <span class="kw">let </span>block_count = (plain_bytes.len() + BLOCK_SIZE - <span class="number">1</span>) / BLOCK_SIZE;
 
-    <span class="comment">// allocate enough space to fill in the last block</span>
-    <span class="kw">let</span> <span class="ident">result_size</span> <span class="op">=</span> <span class="number">8</span> <span class="op">+</span> <span class="ident">BLOCK_SIZE</span> <span class="op">*</span> <span class="ident">block_count</span>;
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">cipher_txt</span> <span class="op">=</span> <span class="ident">Vec::with_capacity</span>(<span class="ident">result_size</span>);
+    <span class="comment">// allocate enough space to fill in the last block
+    </span><span class="kw">let </span>result_size = <span class="number">8 </span>+ BLOCK_SIZE * block_count;
+    <span class="kw">let </span><span class="kw-2">mut </span>cipher_txt = Vec::with_capacity(result_size);
 
-    <span class="comment">// nonce goes at the beginning of the encripted string</span>
-    <span class="ident">cipher_txt</span>.<span class="ident">extend_from_slice</span>(<span class="kw-2">&amp;</span><span class="ident">counter_block</span>[..<span class="number">8</span>]);
+    <span class="comment">// nonce goes at the beginning of the encripted string
+    </span>cipher_txt.extend_from_slice(<span class="kw-2">&amp;</span>counter_block[..<span class="number">8</span>]);
 
-    <span class="comment">// copy the plain text into the destination</span>
-    <span class="ident">cipher_txt</span>.<span class="ident">extend_from_slice</span>(<span class="ident">plain_bytes</span>);
+    <span class="comment">// copy the plain text into the destination
+    </span>cipher_txt.extend_from_slice(plain_bytes);
 
-    <span class="comment">// extend with zeroes</span>
-    <span class="kw">for</span> <span class="ident">_i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">result_size</span> <span class="op">-</span> <span class="ident">cipher_txt</span>.<span class="ident">len</span>() {
-        <span class="ident">cipher_txt</span>.<span class="ident">push</span>(<span class="number">0</span>);
+    <span class="comment">// extend with zeroes
+    </span><span class="kw">for </span>_i <span class="kw">in </span><span class="number">0</span>..result_size - cipher_txt.len() {
+        cipher_txt.push(<span class="number">0</span>);
     }
 
-    <span class="kw">for</span> <span class="ident">b</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">block_count</span> { 
-        <span class="comment">// set counter (block #) in last 8 bytes of counter block (leaving nonce in 1st 8 bytes)</span>
-        <span class="comment">// done in two stages for 32-bit ops: using two words allows us to go past 2^32 blocks (68GB)</span>
-        <span class="ident">counter_block</span>[<span class="number">8</span>..].<span class="ident">copy_from_slice</span>(<span class="kw-2">&amp;</span>(<span class="ident">b</span> <span class="kw">as</span> <span class="ident">u64</span>).<span class="ident">to_be_bytes</span>());
+    <span class="kw">for </span>b <span class="kw">in </span><span class="number">0</span>..block_count { 
+        <span class="comment">// set counter (block #) in last 8 bytes of counter block (leaving nonce in 1st 8 bytes)
+        // done in two stages for 32-bit ops: using two words allows us to go past 2^32 blocks (68GB)
+        </span>counter_block[<span class="number">8</span>..].copy_from_slice(<span class="kw-2">&amp;</span>(b <span class="kw">as </span>u64).to_be_bytes());
 
-        <span class="kw">let</span> <span class="ident">cipher_counter_block</span> <span class="op">=</span> <span class="ident">aes_cipher</span>(<span class="kw-2">&amp;</span><span class="ident">counter_block</span>, <span class="kw-2">&amp;</span><span class="ident">key_schedule</span>);  <span class="comment">// -- encrypt counter block --</span>
+        <span class="kw">let </span>cipher_counter_block = aes_cipher(<span class="kw-2">&amp;</span>counter_block, <span class="kw-2">&amp;</span>key_schedule);  <span class="comment">// -- encrypt counter block --
 
-        <span class="kw">let</span> <span class="ident">block_start</span> <span class="op">=</span> <span class="number">8</span> <span class="op">+</span> <span class="ident">b</span> <span class="op">*</span> <span class="ident">BLOCK_SIZE</span>;
-        <span class="ident">cipher_txt</span>[<span class="ident">block_start</span>..<span class="ident">block_start</span> <span class="op">+</span> <span class="ident">BLOCK_SIZE</span>].<span class="ident">iter_mut</span>()
-            .<span class="ident">zip</span>(<span class="ident">cipher_counter_block</span>.<span class="ident">iter</span>())
-            .<span class="ident">for_each</span>(<span class="op">|</span>(<span class="ident">x</span>, <span class="ident">y</span>)<span class="op">|</span> <span class="kw-2">*</span><span class="ident">x</span> <span class="op">^</span><span class="op">=</span> <span class="kw-2">*</span><span class="ident">y</span>);
+        </span><span class="kw">let </span>block_start = <span class="number">8 </span>+ b * BLOCK_SIZE;
+        cipher_txt[block_start..block_start + BLOCK_SIZE].iter_mut()
+            .zip(cipher_counter_block.iter())
+            .for_each(|(x, y)| <span class="kw-2">*</span>x ^= <span class="kw-2">*</span>y);
     }
 
-    <span class="ident">base64::encode</span>(<span class="kw-2">&amp;</span><span class="ident">cipher_txt</span>)  <span class="comment">// encode in base64</span>
-}
+    base64::encode(<span class="kw-2">&amp;</span>cipher_txt)  <span class="comment">// encode in base64
+</span>}
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="kw">mod</span> <span class="ident">test_encryption</span> {
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">encrypt</span>() {
-        <span class="kw">let</span> <span class="ident">s</span> <span class="op">=</span> <span class="ident"><span class="kw">super</span>::aes_ctr_encrypt</span>(<span class="string">&quot;aha&quot;</span>, <span class="string">&quot;secret&quot;</span>, <span class="number">0</span> <span class="kw">as</span> <span class="ident">u64</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">s</span>, <span class="string">&quot;AAAAAAAAAACTrCPYN+ib5rRz+0RQx0qD&quot;</span>);
+<span class="attribute">#[cfg(test)]
+</span><span class="kw">mod </span>test_encryption {
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>encrypt() {
+        <span class="kw">let </span>s = <span class="kw">super</span>::aes_ctr_encrypt(<span class="string">&quot;aha&quot;</span>, <span class="string">&quot;secret&quot;</span>, <span class="number">0 </span><span class="kw">as </span>u64);
+        <span class="macro">assert_eq!</span>(s, <span class="string">&quot;AAAAAAAAAACTrCPYN+ib5rRz+0RQx0qD&quot;</span>);
     }
 }
 
-<span class="kw">fn</span> <span class="ident">print_state</span>(<span class="ident">state</span>: <span class="kw-2">&amp;</span>[[<span class="ident">u8</span>; <span class="number">4</span>]; <span class="number">4</span>]) {
+<span class="attribute">#[allow(dead_code)]
+</span><span class="kw">fn </span>print_state(state: <span class="kw-2">&amp;</span>[[u8; <span class="number">4</span>]; <span class="number">4</span>]) {
     <span class="macro">println!</span>(<span class="string">&quot;state [&quot;</span>);
-    <span class="kw">for</span> <span class="ident">row</span> <span class="kw">in</span> <span class="ident">state</span> {
-        <span class="macro">println!</span>(<span class="string">&quot;{:x?}&quot;</span>, <span class="ident">row</span>);
+    <span class="kw">for </span>row <span class="kw">in </span>state {
+        <span class="macro">println!</span>(<span class="string">&quot;{:x?}&quot;</span>, row);
     }
     <span class="macro">println!</span>(<span class="string">&quot;]&quot;</span>);
 }
 
-<span class="kw">fn</span> <span class="ident">print_w</span>(<span class="ident">state</span>: <span class="kw-2">&amp;</span>[[<span class="ident">u8</span>; <span class="number">4</span>]; <span class="number">60</span>]) {
-    <span class="macro">println!</span>(<span class="string">&quot;w [&quot;</span>);
-    <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="number">60</span> {
-        <span class="macro">println!</span>(<span class="string">&quot;{:x?}&quot;</span>, <span class="ident">state</span>[<span class="ident">i</span>]);
+<span class="attribute">#[allow(dead_code)]
+</span><span class="kw">fn </span>print_w(state: <span class="kw-2">&amp;</span>[[u8; <span class="number">4</span>]; <span class="number">60</span>]) {
+    <span class="macro">println!</span>(<span class="string">&quot;w 「&quot;</span>);
+    <span class="kw">for </span>item <span class="kw">in </span>state.iter().take(<span class="number">60</span>) {
+        <span class="macro">println!</span>(<span class="string">&quot;{:x?}&quot;</span>, item);
     }
-    <span class="macro">println!</span>(<span class="string">&quot;]&quot;</span>);
+    <span class="macro">println!</span>(<span class="string">&quot;」&quot;</span>);
 }
 
-<span class="doccomment">///</span>
-<span class="doccomment">/// Decrypt a text encrypted by AES in counter mode of operation</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// * `ciphertext` Source text to be decrypted</span>
-<span class="doccomment">/// * `password`   The password to generate the key from</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```rust</span>
-<span class="doccomment">///  # use memo_rust::aes::aes_ctr_decrypt;</span>
-<span class="doccomment">///  # use memo_rust::aes::aes_ctr_encrypt;</span>
-<span class="doccomment">///  # use std::time::SystemTime;</span>
-<span class="doccomment">///</span>
-<span class="doccomment">///    let now = SystemTime::now().duration_since(SystemTime::UNIX_EPOCH).unwrap().as_millis();</span>
-<span class="doccomment">///</span>
-<span class="doccomment">///    let enc = aes_ctr_encrypt(&quot;aha&quot;, &quot;secret&quot;, now as u64);</span>
-<span class="doccomment">///    let dec = aes_ctr_decrypt(&amp;enc, &quot;secret&quot;);</span>
-<span class="doccomment">///    assert_eq!(dec, &quot;aha&quot;);</span>
-<span class="doccomment">/// ```</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">aes_ctr_decrypt</span>(<span class="ident">original_ciphertext</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">password</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">String</span> {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ciphertext</span> <span class="op">=</span> <span class="ident">base64::decode</span>(<span class="ident">original_ciphertext</span>).<span class="ident">unwrap</span>();
+<span class="doccomment">///
+/// Decrypt a text encrypted by AES in counter mode of operation
+///
+/// * `ciphertext` Source text to be decrypted
+/// * `password`   The password to generate the key from
+///
+/// ```rust
+///  # use memo_rust::aes::aes_ctr_decrypt;
+///  # use memo_rust::aes::aes_ctr_encrypt;
+///  # use std::time::SystemTime;
+///
+///    let now = SystemTime::now().duration_since(SystemTime::UNIX_EPOCH).unwrap().as_millis();
+///
+///    let enc = aes_ctr_encrypt(&quot;aha&quot;, &quot;secret&quot;, now as u64);
+///    let dec = aes_ctr_decrypt(&amp;enc, &quot;secret&quot;);
+///    assert_eq!(dec, &quot;aha&quot;);
+/// ```
+</span><span class="kw">pub fn </span>aes_ctr_decrypt(original_ciphertext: <span class="kw-2">&amp;</span>str, password: <span class="kw-2">&amp;</span>str) -&gt; String {
+    <span class="kw">let </span><span class="kw-2">mut </span>ciphertext = base64::decode(original_ciphertext).unwrap();
 
-    <span class="comment">// use AES to encrypt password (mirroring encrypt routine)</span>
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">password_bytes</span>:[<span class="ident">u8</span>; <span class="ident">KEY_BYTES</span>] <span class="op">=</span> [<span class="number">0</span>; <span class="ident">KEY_BYTES</span>];
-    <span class="comment">// copy as much from the password as possible, longer passwords will not be fully used</span>
-    <span class="kw">let</span> <span class="ident">min_size</span> <span class="op">=</span> <span class="ident">std::cmp::min</span>(<span class="ident">password</span>.<span class="ident">len</span>(), <span class="ident">KEY_BYTES</span>);
-    <span class="ident">password_bytes</span>[..<span class="ident">min_size</span>].<span class="ident">copy_from_slice</span>(<span class="kw-2">&amp;</span><span class="ident">password</span>.<span class="ident">as_bytes</span>()[..<span class="ident">min_size</span>]);
+    <span class="comment">// use AES to encrypt password (mirroring encrypt routine)
+    </span><span class="kw">let </span><span class="kw-2">mut </span>password_bytes:[u8; KEY_BYTES] = [<span class="number">0</span>; KEY_BYTES];
+    <span class="comment">// copy as much from the password as possible, longer passwords will not be fully used
+    </span><span class="kw">let </span>min_size = std::cmp::min(password.len(), KEY_BYTES);
+    password_bytes[..min_size].copy_from_slice(<span class="kw-2">&amp;</span>password.as_bytes()[..min_size]);
     
-    <span class="kw">let</span> <span class="ident">key16</span> <span class="op">=</span> <span class="ident">aes_cipher</span>(<span class="kw-2">&amp;</span><span class="ident">password_bytes</span>[..<span class="number">16</span>], <span class="kw-2">&amp;</span><span class="ident">aes_key_expansion</span>(<span class="kw-2">&amp;</span><span class="ident">password_bytes</span>));  <span class="comment">// gives us 16-byte key</span>
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">key</span> <span class="op">=</span> [<span class="number">0</span>; <span class="ident">KEY_BYTES</span>];
+    <span class="kw">let </span>key16 = aes_cipher(<span class="kw-2">&amp;</span>password_bytes[..<span class="number">16</span>], <span class="kw-2">&amp;</span>aes_key_expansion(<span class="kw-2">&amp;</span>password_bytes));  <span class="comment">// gives us 16-byte key
+    </span><span class="kw">let </span><span class="kw-2">mut </span>key = [<span class="number">0</span>; KEY_BYTES];
     
-    <span class="comment">// expand key to 16/24/32 bytes long</span>
-    <span class="ident">key</span>[..<span class="number">16</span>].<span class="ident">copy_from_slice</span>(<span class="kw-2">&amp;</span><span class="ident">key16</span>);
-    <span class="ident">key</span>[<span class="number">16</span>..].<span class="ident">copy_from_slice</span>(<span class="kw-2">&amp;</span><span class="ident">key16</span>);
+    <span class="comment">// expand key to 16/24/32 bytes long
+    </span>key[..<span class="number">16</span>].copy_from_slice(<span class="kw-2">&amp;</span>key16);
+    key[<span class="number">16</span>..].copy_from_slice(<span class="kw-2">&amp;</span>key16);
 
-    <span class="comment">// recover nonce from 1st 8 bytes of ciphertext</span>
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">counter_block</span>:[<span class="ident">u8</span>; <span class="ident">BLOCK_SIZE</span>] <span class="op">=</span> [<span class="number">0</span>; <span class="ident">BLOCK_SIZE</span>];
-    <span class="ident">counter_block</span>[..<span class="number">8</span>].<span class="ident">copy_from_slice</span>(<span class="kw-2">&amp;</span><span class="ident">ciphertext</span>[..<span class="number">8</span>]);
-    <span class="comment">// now that we copied the nonce to the counter block remove it from the cipher text</span>
-    <span class="ident">ciphertext</span>.<span class="ident">drain</span>(<span class="number">0</span>..<span class="number">8</span>);
+    <span class="comment">// recover nonce from 1st 8 bytes of ciphertext
+    </span><span class="kw">let </span><span class="kw-2">mut </span>counter_block:[u8; BLOCK_SIZE] = [<span class="number">0</span>; BLOCK_SIZE];
+    counter_block[..<span class="number">8</span>].copy_from_slice(<span class="kw-2">&amp;</span>ciphertext[..<span class="number">8</span>]);
+    <span class="comment">// now that we copied the nonce to the counter block remove it from the cipher text
+    </span>ciphertext.drain(<span class="number">0</span>..<span class="number">8</span>);
 
-    <span class="comment">// generate key schedule</span>
-    <span class="kw">let</span> <span class="ident">key_schedule</span> <span class="op">=</span> <span class="ident">aes_key_expansion</span>(<span class="kw-2">&amp;</span><span class="ident">key</span>);
+    <span class="comment">// generate key schedule
+    </span><span class="kw">let </span>key_schedule = aes_key_expansion(<span class="kw-2">&amp;</span>key);
 
-    <span class="comment">// separate ciphertext into blocks (skipping past initial 8 bytes)</span>
-    <span class="kw">let</span> <span class="ident">block_count</span> <span class="op">=</span> (<span class="ident">ciphertext</span>.<span class="ident">len</span>() <span class="op">+</span> <span class="ident">BLOCK_SIZE</span> <span class="op">-</span> <span class="number">1</span>) <span class="op">/</span> <span class="ident">BLOCK_SIZE</span>;
+    <span class="comment">// separate ciphertext into blocks (skipping past initial 8 bytes)
+    </span><span class="kw">let </span>block_count = (ciphertext.len() + BLOCK_SIZE - <span class="number">1</span>) / BLOCK_SIZE;
 
-    <span class="comment">// plaintext will get generated block-by-block into array of block-length strings</span>
+    <span class="comment">// plaintext will get generated block-by-block into array of block-length strings
 
-    <span class="kw">for</span> <span class="ident">b</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">block_count</span> {
-        <span class="comment">// set counter (block #) in last 8 bytes of counter block (leaving nonce in 1st 8 bytes)</span>
-        <span class="ident">counter_block</span>[<span class="number">8</span>..].<span class="ident">copy_from_slice</span>(<span class="kw-2">&amp;</span>(<span class="ident">b</span> <span class="kw">as</span> <span class="ident">u64</span>).<span class="ident">to_be_bytes</span>());
-        <span class="kw">let</span> <span class="ident">cipher_counter_block</span> <span class="op">=</span> <span class="ident">aes_cipher</span>(<span class="kw-2">&amp;</span><span class="ident">counter_block</span>, <span class="kw-2">&amp;</span><span class="ident">key_schedule</span>);  <span class="comment">// -- encrypt counter block --</span>
+    </span><span class="kw">for </span>b <span class="kw">in </span><span class="number">0</span>..block_count {
+        <span class="comment">// set counter (block #) in last 8 bytes of counter block (leaving nonce in 1st 8 bytes)
+        </span>counter_block[<span class="number">8</span>..].copy_from_slice(<span class="kw-2">&amp;</span>(b <span class="kw">as </span>u64).to_be_bytes());
+        <span class="kw">let </span>cipher_counter_block = aes_cipher(<span class="kw-2">&amp;</span>counter_block, <span class="kw-2">&amp;</span>key_schedule);  <span class="comment">// -- encrypt counter block --
 
-        <span class="comment">// block size is reduced on final block</span>
-        <span class="kw">let</span> <span class="ident">block_length</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">b</span> <span class="op">&lt;</span> <span class="ident">block_count</span> <span class="op">-</span> <span class="number">1</span> { <span class="ident">BLOCK_SIZE</span> } <span class="kw">else</span> { (<span class="ident">ciphertext</span>.<span class="ident">len</span>() <span class="op">-</span> <span class="number">1</span>) <span class="op">%</span> <span class="ident">BLOCK_SIZE</span> <span class="op">+</span> <span class="number">1</span> };
+        // block size is reduced on final block
+        </span><span class="kw">let </span>block_length = <span class="kw">if </span>b &lt; block_count - <span class="number">1 </span>{ BLOCK_SIZE } <span class="kw">else </span>{ (ciphertext.len() - <span class="number">1</span>) % BLOCK_SIZE + <span class="number">1 </span>};
 
-        <span class="ident">ciphertext</span>[<span class="ident">BLOCK_SIZE</span> <span class="op">*</span> <span class="ident">b</span>..<span class="ident">BLOCK_SIZE</span> <span class="op">*</span> <span class="ident">b</span> <span class="op">+</span> <span class="ident">block_length</span>].<span class="ident">iter_mut</span>()
-            .<span class="ident">zip</span>(<span class="ident">cipher_counter_block</span>.<span class="ident">iter</span>())
-            .<span class="ident">for_each</span>(<span class="op">|</span>(<span class="ident">x</span>, <span class="ident">y</span>)<span class="op">|</span> <span class="kw-2">*</span><span class="ident">x</span> <span class="op">=</span> <span class="kw-2">*</span><span class="ident">x</span> <span class="op">^</span> <span class="kw-2">*</span><span class="ident">y</span>);
+        ciphertext[BLOCK_SIZE * b..BLOCK_SIZE * b + block_length].iter_mut()
+            .zip(cipher_counter_block.iter())
+            .for_each(|(x, y)| <span class="kw-2">*</span>x ^= <span class="kw-2">*</span>y);
     }
 
-    <span class="comment">// remove any trailing zeroes</span>
-    <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">index</span>) <span class="op">=</span> <span class="ident">ciphertext</span>.<span class="ident">iter</span>().<span class="ident">rev</span>().<span class="ident">position</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="kw-2">*</span><span class="ident">x</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span>) {
-        <span class="ident">ciphertext</span>.<span class="ident">truncate</span>(<span class="ident">ciphertext</span>.<span class="ident">len</span>() <span class="op">-</span> <span class="ident">index</span>);
+    <span class="comment">// remove any trailing zeroes
+    </span><span class="kw">if let </span><span class="prelude-val">Some</span>(index) = ciphertext.iter().rev().position(|x| <span class="kw-2">*</span>x != <span class="number">0</span>) {
+        ciphertext.truncate(ciphertext.len() - index);
     }
 
-    <span class="kw">match</span> <span class="ident">String::from_utf8</span>(<span class="ident">ciphertext</span>) {
-        <span class="prelude-val">Ok</span>(<span class="ident">s</span>) =&gt; <span class="ident">s</span>,
-        <span class="prelude-val">Err</span>(<span class="ident">_v</span>) =&gt; <span class="ident">String::from</span>(<span class="ident">original_ciphertext</span>),
+    <span class="kw">match </span>String::from_utf8(ciphertext) {
+        <span class="prelude-val">Ok</span>(s) =&gt; s,
+        <span class="prelude-val">Err</span>(_v) =&gt; String::from(original_ciphertext),
     }
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="kw">mod</span> <span class="ident">test_decryption</span> {
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">decrypt</span>() {
-        <span class="kw">let</span> <span class="ident">now</span> <span class="op">=</span> <span class="ident">std::time::SystemTime::now</span>().<span class="ident">duration_since</span>(<span class="ident">std::time::UNIX_EPOCH</span>).<span class="ident">unwrap</span>().<span class="ident">as_millis</span>();
+<span class="attribute">#[cfg(test)]
+</span><span class="kw">mod </span>test_decryption {
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>decrypt() {
+        <span class="kw">let </span>now = std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_millis();
 
-        <span class="kw">let</span> <span class="ident">enc</span> <span class="op">=</span> <span class="ident"><span class="kw">super</span>::aes_ctr_encrypt</span>(<span class="string">&quot;aha&quot;</span>, <span class="string">&quot;secret&quot;</span>, <span class="ident">now</span> <span class="kw">as</span> <span class="ident">u64</span>);
-        <span class="kw">let</span> <span class="ident">dec</span> <span class="op">=</span> <span class="ident"><span class="kw">super</span>::aes_ctr_decrypt</span>(<span class="kw-2">&amp;</span><span class="ident">enc</span>, <span class="string">&quot;secret&quot;</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">dec</span>, <span class="string">&quot;aha&quot;</span>);
+        <span class="kw">let </span>enc = <span class="kw">super</span>::aes_ctr_encrypt(<span class="string">&quot;aha&quot;</span>, <span class="string">&quot;secret&quot;</span>, now <span class="kw">as </span>u64);
+        <span class="kw">let </span>dec = <span class="kw">super</span>::aes_ctr_decrypt(<span class="kw-2">&amp;</span>enc, <span class="string">&quot;secret&quot;</span>);
+        <span class="macro">assert_eq!</span>(dec, <span class="string">&quot;aha&quot;</span>);
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">longer_string</span>() {
-        <span class="kw">let</span> <span class="ident">text</span> <span class="op">=</span> <span class="string">&quot;A text longer than 16 characters.&quot;</span>;
-        <span class="kw">let</span> <span class="ident">now</span> <span class="op">=</span> <span class="ident">std::time::SystemTime::now</span>().<span class="ident">duration_since</span>(<span class="ident">std::time::UNIX_EPOCH</span>).<span class="ident">unwrap</span>().<span class="ident">as_millis</span>();
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>longer_string() {
+        <span class="kw">let </span>text = <span class="string">&quot;A text longer than 16 characters.&quot;</span>;
+        <span class="kw">let </span>now = std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_millis();
 
-        <span class="kw">let</span> <span class="ident">enc</span> <span class="op">=</span> <span class="ident"><span class="kw">super</span>::aes_ctr_encrypt</span>(<span class="ident">text</span>, <span class="string">&quot;secret&quot;</span>, <span class="ident">now</span> <span class="kw">as</span> <span class="ident">u64</span>);
-        <span class="macro">println!</span>(<span class="string">&quot;Encrypted string: {}&quot;</span>, <span class="ident">enc</span>);
-        <span class="kw">let</span> <span class="ident">dec</span> <span class="op">=</span> <span class="ident"><span class="kw">super</span>::aes_ctr_decrypt</span>(<span class="kw-2">&amp;</span><span class="ident">enc</span>, <span class="string">&quot;secret&quot;</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">dec</span>, <span class="ident">text</span>);
+        <span class="kw">let </span>enc = <span class="kw">super</span>::aes_ctr_encrypt(text, <span class="string">&quot;secret&quot;</span>, now <span class="kw">as </span>u64);
+        <span class="macro">println!</span>(<span class="string">&quot;Encrypted string: {}&quot;</span>, enc);
+        <span class="kw">let </span>dec = <span class="kw">super</span>::aes_ctr_decrypt(<span class="kw-2">&amp;</span>enc, <span class="string">&quot;secret&quot;</span>);
+        <span class="macro">assert_eq!</span>(dec, text);
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="memo_rust" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (9067d5277 2022-07-28)" ></div>
-</body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="memo_rust" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0-nightly (015a824f2 2022-08-22)" ></div></body></html>

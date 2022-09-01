@@ -8,3 +8,6 @@ edition = "2018"
 
 [dependencies]
 base64="*"
+
+[dev-dependencies]
+indoc = "1.0"

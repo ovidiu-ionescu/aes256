@@ -458,6 +458,7 @@ mod test_encryption {
     }
 }
 
+#[allow(dead_code)]
 fn print_state(state: &[[u8; 4]; 4]) {
     println!("state [");
     for row in state {
@@ -466,12 +467,13 @@ fn print_state(state: &[[u8; 4]; 4]) {
     println!("]");
 }
 
+#[allow(dead_code)]
 fn print_w(state: &[[u8; 4]; 60]) {
-    println!("w [");
-    for i in 0..60 {
-        println!("{:x?}", state[i]);
+    println!("w 「");
+    for item in state.iter().take(60) {
+        println!("{:x?}", item);
     }
-    println!("]");
+    println!("」");
 }
 
 ///
@@ -531,7 +533,7 @@ pub fn aes_ctr_decrypt(original_ciphertext: &str, password: &str) -> String {
 
         ciphertext[BLOCK_SIZE * b..BLOCK_SIZE * b + block_length].iter_mut()
             .zip(cipher_counter_block.iter())
-            .for_each(|(x, y)| *x = *x ^ *y);
+            .for_each(|(x, y)| *x ^= *y);
     }
 
     // remove any trailing zeroes

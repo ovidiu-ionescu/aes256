@@ -1,10 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../memo_rust/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div>
-        </a><h2 class="location"></h2>
-    </nav>
-    <nav class="sidebar"><a class="sidebar-logo" href="../../memo_rust/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../memo_rust/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1">
-                                <a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div>
-                        </div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../memo_rust/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../memo_rust/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../memo_rust/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -428,114 +422,180 @@
 <span id="422">422</span>
 <span id="423">423</span>
 <span id="424">424</span>
-</pre><pre class="rust"><code><span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">aes</span>;
+<span id="425">425</span>
+<span id="426">426</span>
+<span id="427">427</span>
+<span id="428">428</span>
+<span id="429">429</span>
+<span id="430">430</span>
+<span id="431">431</span>
+<span id="432">432</span>
+<span id="433">433</span>
+<span id="434">434</span>
+<span id="435">435</span>
+<span id="436">436</span>
+<span id="437">437</span>
+<span id="438">438</span>
+<span id="439">439</span>
+<span id="440">440</span>
+<span id="441">441</span>
+<span id="442">442</span>
+<span id="443">443</span>
+<span id="444">444</span>
+<span id="445">445</span>
+<span id="446">446</span>
+<span id="447">447</span>
+<span id="448">448</span>
+<span id="449">449</span>
+<span id="450">450</span>
+<span id="451">451</span>
+<span id="452">452</span>
+<span id="453">453</span>
+<span id="454">454</span>
+<span id="455">455</span>
+<span id="456">456</span>
+<span id="457">457</span>
+<span id="458">458</span>
+<span id="459">459</span>
+<span id="460">460</span>
+<span id="461">461</span>
+<span id="462">462</span>
+<span id="463">463</span>
+<span id="464">464</span>
+<span id="465">465</span>
+<span id="466">466</span>
+<span id="467">467</span>
+<span id="468">468</span>
+<span id="469">469</span>
+<span id="470">470</span>
+<span id="471">471</span>
+</pre><pre class="rust"><code><span class="doccomment">//! A library for processing text in the memos in Organizator.
+//!
+//! As Organizator allows encrypting data on the client, this library will be
+//! compiled to webassembly and mostly used in the browser.
+//!
+//! ### Encryption
+//! The parts of the text that are supposed to be encrypted will be marked with
+//! Japanese quotes: `「secret」`.
+//! The encryption algorithm is AES-256 with a timestamp nonce and a counter.
+//! After encryption, the text will be replaced with a base64-encoded string.
+//!
+//! ### Decryption
+//! The text will be decrypted with the same algorithm and the same key. The bits
+//! to be decrypted are automatically detected by looking for base64-encoded
+//! sequences.
+//!
+//! ### Presentation
+//! Because long base64-encoded strings are not very readable, those sequences
+//! will be replaced with a shorter version followed by &amp;hellip; (ellipsis).
+</span><span class="kw">pub mod </span>aes;
 
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::aes</span>::{ <span class="ident">aes_ctr_decrypt</span>, <span class="ident">aes_ctr_encrypt</span>};
-<span class="kw">use</span> <span class="ident">std::cmp</span>::{ <span class="ident">min</span> };
+<span class="kw">use </span><span class="kw">crate</span>::aes::{ aes_ctr_decrypt, aes_ctr_encrypt};
+<span class="kw">use </span>std::cmp::{ min };
 
-<span class="kw">struct</span>  <span class="ident">Part</span> <span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="ident">text</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>,
-    <span class="ident">clear</span>: <span class="ident">bool</span>,
+<span class="kw">struct  </span>Part &lt;<span class="lifetime">&#39;a</span>&gt; {
+    text: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str,
+    clear: bool,
 }
 
-<span class="kw">struct</span> <span class="ident">PartDescriptor</span> {
-  <span class="ident">start</span>: <span class="ident">usize</span>,
-  <span class="ident">end</span>: <span class="ident">usize</span>,
-  <span class="ident">base64</span>: <span class="ident">bool</span>
+<span class="kw">struct </span>PartDescriptor {
+  start: usize,
+  end: usize,
+  base64: bool
 }
 
-<span class="kw">struct</span> <span class="ident">Status</span> {
-    <span class="ident">char_count</span>: <span class="ident">usize</span>,
-    <span class="ident">equal_count</span>: <span class="ident">usize</span>,
-    <span class="ident">inside</span>: <span class="ident">bool</span>,
-    <span class="ident">found</span>: <span class="ident">isize</span>,
-    <span class="ident">prev_pos</span>: <span class="ident">usize</span>,
-    <span class="comment">// in the tuple the bool is true if we have a base64 value, opposite of Part.clear</span>
-    <span class="ident">parts</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">PartDescriptor</span><span class="op">&gt;</span>,
+<span class="kw">struct </span>Status {
+    char_count: usize,
+    equal_count: usize,
+    inside: bool,
+    found: isize,
+    prev_pos: usize,
+    <span class="comment">// in the tuple the bool is true if we have a base64 value, opposite of Part.clear
+    </span>parts: Vec&lt;PartDescriptor&gt;,
 }
 
-<span class="kw">impl</span> <span class="ident">Status</span> {
-    <span class="kw">fn</span> <span class="ident">new</span> () -&gt; <span class="ident">Status</span> {
-        <span class="ident">Status</span> {
-            <span class="ident">char_count</span>: <span class="number">0</span>,
-            <span class="ident">equal_count</span>: <span class="number">0</span>,
-            <span class="comment">// wether we think we are inside a b64 string</span>
-            <span class="ident">inside</span>: <span class="bool-val">false</span>,
-            <span class="ident">found</span>: <span class="number">0</span>,
-            <span class="comment">// the last position that was included in the parts</span>
-            <span class="ident">prev_pos</span>: <span class="number">0</span>,
-            <span class="ident">parts</span>: <span class="ident">Vec::with_capacity</span>(<span class="number">10</span>),
+<span class="kw">impl </span>Status {
+    <span class="kw">fn </span>new () -&gt; Status {
+        Status {
+            char_count: <span class="number">0</span>,
+            equal_count: <span class="number">0</span>,
+            <span class="comment">// wether we think we are inside a b64 string
+            </span>inside: <span class="bool-val">false</span>,
+            found: <span class="number">0</span>,
+            <span class="comment">// the last position that was included in the parts
+            </span>prev_pos: <span class="number">0</span>,
+            parts: Vec::with_capacity(<span class="number">10</span>),
         }
     }
 
-    <span class="doccomment">/// Check if we have advanced to the end of a base64 segment</span>
-    <span class="kw">fn</span> <span class="ident">check_base64</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">pos</span>: <span class="ident">usize</span>) {
-        <span class="kw">let</span> <span class="ident">total_chars</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">char_count</span> <span class="op">+</span> <span class="self">self</span>.<span class="ident">equal_count</span>;
-        <span class="kw">if</span> <span class="ident">total_chars</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">16</span> <span class="op">&amp;&amp;</span> <span class="ident">total_chars</span> <span class="op">%</span><span class="number">4</span> <span class="op">==</span> <span class="number">0</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">inside</span> {
-            <span class="self">self</span>.<span class="ident">found</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
-            <span class="comment">// add the clear string if it is non empty</span>
-            <span class="kw">if</span> <span class="self">self</span>.<span class="ident">prev_pos</span> <span class="op">&lt;</span> <span class="ident">pos</span> <span class="op">-</span> <span class="ident">total_chars</span> {
-                <span class="self">self</span>.<span class="ident">parts</span>.<span class="ident">push</span>(<span class="ident">PartDescriptor</span> {<span class="ident">start</span>: <span class="self">self</span>.<span class="ident">prev_pos</span>, <span class="ident">end</span>: <span class="ident">pos</span> <span class="op">-</span> <span class="ident">total_chars</span>, <span class="ident">base64</span>: <span class="bool-val">false</span>});
+    <span class="doccomment">/// Check if we have advanced to the end of a base64 segment
+    </span><span class="kw">fn </span>check_base64(<span class="kw-2">&amp;mut </span><span class="self">self</span>, pos: usize) {
+        <span class="kw">let </span>total_chars = <span class="self">self</span>.char_count + <span class="self">self</span>.equal_count;
+        <span class="kw">if </span>total_chars &gt;= <span class="number">16 </span>&amp;&amp; total_chars %<span class="number">4 </span>== <span class="number">0 </span>&amp;&amp; <span class="self">self</span>.inside {
+            <span class="self">self</span>.found += <span class="number">1</span>;
+            <span class="comment">// add the clear string if it is non empty
+            </span><span class="kw">if </span><span class="self">self</span>.prev_pos &lt; pos - total_chars {
+                <span class="self">self</span>.parts.push(PartDescriptor {start: <span class="self">self</span>.prev_pos, end: pos - total_chars, base64: <span class="bool-val">false</span>});
             }
-            <span class="self">self</span>.<span class="ident">parts</span>.<span class="ident">push</span>(<span class="ident">PartDescriptor</span> {<span class="ident">start</span>: <span class="ident">pos</span> <span class="op">-</span> <span class="ident">total_chars</span>, <span class="ident">end</span>: <span class="ident">pos</span>, <span class="ident">base64</span>: <span class="bool-val">true</span>});
-            <span class="comment">// println!(&quot;Found a base64&quot;);</span>
-            <span class="self">self</span>.<span class="ident">prev_pos</span> <span class="op">=</span> <span class="ident">pos</span>;
+            <span class="self">self</span>.parts.push(PartDescriptor {start: pos - total_chars, end: pos, base64: <span class="bool-val">true</span>});
+            <span class="comment">// println!(&quot;Found a base64&quot;);
+            </span><span class="self">self</span>.prev_pos = pos;
         }
-        <span class="comment">// println!(&quot;prev_pos: {}, total_chars {}&quot;, self.prev_pos, total_chars);</span>
-        <span class="self">self</span>.<span class="ident">char_count</span> <span class="op">=</span> <span class="number">0</span>;
-        <span class="self">self</span>.<span class="ident">equal_count</span> <span class="op">=</span> <span class="number">0</span>;
-        <span class="self">self</span>.<span class="ident">inside</span> <span class="op">=</span> <span class="bool-val">false</span>;
+        <span class="comment">// println!(&quot;prev_pos: {}, total_chars {}&quot;, self.prev_pos, total_chars);
+        </span><span class="self">self</span>.char_count = <span class="number">0</span>;
+        <span class="self">self</span>.equal_count = <span class="number">0</span>;
+        <span class="self">self</span>.inside = <span class="bool-val">false</span>;
     }
 }
 
-<span class="kw">fn</span> <span class="ident">is_space</span>(<span class="ident">c</span>: <span class="ident">char</span>) -&gt; <span class="ident">bool</span> {
-  <span class="ident">c</span> <span class="op">==</span> <span class="string">&#39; &#39;</span> <span class="op">|</span><span class="op">|</span> <span class="ident">c</span> <span class="op">==</span> <span class="string">&#39;\t&#39;</span> <span class="op">|</span><span class="op">|</span> <span class="ident">c</span> <span class="op">==</span> <span class="string">&#39;\n&#39;</span> <span class="op">|</span><span class="op">|</span> <span class="ident">c</span> <span class="op">==</span> <span class="string">&#39;\r&#39;</span>
+<span class="kw">fn </span>is_space(c: char) -&gt; bool {
+    [<span class="string">&#39; &#39;</span>, <span class="string">&#39;\t&#39;</span>, <span class="string">&#39;\n&#39;</span>, <span class="string">&#39;\r&#39;</span>].contains(<span class="kw-2">&amp;</span>c)
 }
 
-<span class="kw">fn</span> <span class="ident">b64here</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">PartDescriptor</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">status</span> <span class="op">=</span> <span class="ident">Status::new</span>();
+<span class="kw">fn </span>b64here(s: <span class="kw-2">&amp;</span>str) -&gt; Vec&lt;PartDescriptor&gt; {
+    <span class="kw">let </span><span class="kw-2">mut </span>status = Status::new();
 
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">prev_space</span> <span class="op">=</span> <span class="bool-val">true</span>;
-    <span class="kw">for</span> (<span class="ident">pos</span>, <span class="ident">c</span>) <span class="kw">in</span> <span class="ident">s</span>.<span class="ident">char_indices</span>() {
-        <span class="kw">if</span> <span class="ident">status</span>.<span class="ident">inside</span> {
-            <span class="comment">// we can only have = signs at the end and max three of them</span>
-            <span class="kw">if</span> (<span class="ident">c</span> <span class="op">!</span><span class="op">=</span> <span class="string">&#39;=&#39;</span> <span class="op">&amp;&amp;</span> <span class="ident">status</span>.<span class="ident">equal_count</span> <span class="op">&gt;</span> <span class="number">0</span>) <span class="op">|</span><span class="op">|</span> (<span class="ident">c</span> <span class="op">==</span> <span class="string">&#39;=&#39;</span> <span class="op">&amp;&amp;</span> <span class="ident">status</span>.<span class="ident">equal_count</span> <span class="op">&gt;</span> <span class="number">2</span>) {
-                <span class="ident">status</span>.<span class="ident">check_base64</span>(<span class="ident">pos</span>);
+    <span class="kw">let </span><span class="kw-2">mut </span>prev_space = <span class="bool-val">true</span>;
+    <span class="kw">for </span>(pos, c) <span class="kw">in </span>s.char_indices() {
+        <span class="kw">if </span>status.inside {
+            <span class="comment">// we can only have = signs at the end and max three of them
+            </span><span class="kw">if </span>(c != <span class="string">&#39;=&#39; </span>&amp;&amp; status.equal_count &gt; <span class="number">0</span>) || (c == <span class="string">&#39;=&#39; </span>&amp;&amp; status.equal_count &gt; <span class="number">2</span>) {
+                status.check_base64(pos);
                 <span class="kw">continue</span>;
             }
 
-            <span class="kw">if</span> <span class="ident">c</span> <span class="op">==</span> <span class="string">&#39;=&#39;</span> {
-                <span class="ident">status</span>.<span class="ident">equal_count</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
+            <span class="kw">if </span>c == <span class="string">&#39;=&#39; </span>{
+                status.equal_count += <span class="number">1</span>;
                 <span class="kw">continue</span>;
             }
         }
 
-        <span class="kw">if</span> (<span class="string">&#39;A&#39;</span>..<span class="op">=</span><span class="string">&#39;Z&#39;</span>).<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">c</span>) <span class="op">|</span><span class="op">|</span> (<span class="string">&#39;a&#39;</span>..<span class="op">=</span> <span class="string">&#39;z&#39;</span>).<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">c</span>) <span class="op">|</span><span class="op">|</span> (<span class="string">&#39;0&#39;</span> ..<span class="op">=</span> <span class="string">&#39;9&#39;</span>).<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">c</span>) <span class="op">|</span><span class="op">|</span> <span class="string">&#39;/&#39;</span> <span class="op">==</span> <span class="ident">c</span> <span class="op">|</span><span class="op">|</span> <span class="string">&#39;+&#39;</span> <span class="op">==</span> <span class="ident">c</span> {
-            <span class="kw">if</span> <span class="ident">status</span>.<span class="ident">inside</span> <span class="op">|</span><span class="op">|</span> <span class="ident">prev_space</span> {
-                <span class="ident">status</span>.<span class="ident">char_count</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
-                <span class="ident">status</span>.<span class="ident">inside</span> <span class="op">=</span> <span class="bool-val">true</span>;
-                <span class="ident">prev_space</span> <span class="op">=</span> <span class="bool-val">false</span>;
+        <span class="kw">if </span>(<span class="string">&#39;A&#39;</span>..=<span class="string">&#39;Z&#39;</span>).contains(<span class="kw-2">&amp;</span>c) || (<span class="string">&#39;a&#39;</span>..= <span class="string">&#39;z&#39;</span>).contains(<span class="kw-2">&amp;</span>c) || (<span class="string">&#39;0&#39; </span>..= <span class="string">&#39;9&#39;</span>).contains(<span class="kw-2">&amp;</span>c) || <span class="string">&#39;/&#39; </span>== c || <span class="string">&#39;+&#39; </span>== c {
+            <span class="kw">if </span>status.inside || prev_space {
+                status.char_count += <span class="number">1</span>;
+                status.inside = <span class="bool-val">true</span>;
+                prev_space = <span class="bool-val">false</span>;
             }
-        } <span class="kw">else</span> {
-            <span class="kw">if</span> <span class="ident">status</span>.<span class="ident">inside</span>  {
-                <span class="ident">status</span>.<span class="ident">check_base64</span>(<span class="ident">pos</span>);
+        } <span class="kw">else </span>{
+            <span class="kw">if </span>status.inside  {
+                status.check_base64(pos);
             }
-            <span class="ident">prev_space</span> <span class="op">=</span> <span class="ident">is_space</span>(<span class="ident">c</span>);
+            prev_space = is_space(c);
         }
     }
-    <span class="ident">status</span>.<span class="ident">check_base64</span>(<span class="ident">s</span>.<span class="ident">len</span>());
-    <span class="kw">if</span> <span class="ident">status</span>.<span class="ident">prev_pos</span> <span class="op">&lt;</span> <span class="ident">s</span>.<span class="ident">len</span>() {
-        <span class="ident">status</span>.<span class="ident">parts</span>.<span class="ident">push</span>(<span class="ident">PartDescriptor</span> {<span class="ident">start</span>: <span class="ident">status</span>.<span class="ident">prev_pos</span>, <span class="ident">end</span>: <span class="ident">s</span>.<span class="ident">len</span>(), <span class="ident">base64</span>: <span class="bool-val">false</span>});
+    status.check_base64(s.len());
+    <span class="kw">if </span>status.prev_pos &lt; s.len() {
+        status.parts.push(PartDescriptor {start: status.prev_pos, end: s.len(), base64: <span class="bool-val">false</span>});
     }
-    <span class="ident">status</span>.<span class="ident">parts</span>
+    status.parts
  }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="kw">mod</span> <span class="ident">tests</span> {
+<span class="attribute">#[cfg(test)]
+</span><span class="kw">mod </span>tests {
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">b64here_test</span>() {
-        <span class="kw">let</span> <span class="ident">s</span> <span class="op">=</span> <span class="string">r#&quot;
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>b64here_test() {
+        <span class="kw">let </span>s = <span class="string">r#&quot;
 This is a sample test text
 
 First secret
@@ -548,174 +608,202 @@ Third secret
 DhVyXUxMTEwpo9eX4aw7dJnT1zaZ9DBqISbEU0rj6pPcoWZk5m1xTDqQouV4pyOxdLLVIeBfZG/bF2Rlm4AVR7dnn28t8Sr5
 Fourth secret
 JhVyXYWFhYVkprM94+hLMA==&quot;#</span>;
-        <span class="kw">let</span> <span class="ident">parts</span> <span class="op">=</span> <span class="ident"><span class="kw">super</span>::b64here</span>(<span class="kw-2">&amp;</span><span class="ident">s</span>);
-        <span class="ident">parts</span>.<span class="ident">iter</span>().<span class="ident">for_each</span>(<span class="op">|</span><span class="ident">p</span><span class="op">|</span> <span class="macro">print!</span>(<span class="string">&quot;\u{300C}{}\u{300D}{} &quot;</span>, <span class="kw-2">&amp;</span><span class="ident">s</span>[<span class="ident">p</span>.<span class="ident">start</span>..<span class="ident">p</span>.<span class="ident">end</span>], <span class="ident">p</span>.<span class="ident">base64</span>));
-        <span class="macro">assert_eq!</span>(<span class="ident">parts</span>.<span class="ident">len</span>(), <span class="number">8</span>);
-        <span class="kw">let</span> <span class="ident">encrypted_parts_count</span> <span class="op">=</span> <span class="ident">parts</span>.<span class="ident">iter</span>().<span class="ident">filter</span>(<span class="op">|</span><span class="ident">p</span><span class="op">|</span> <span class="ident">p</span>.<span class="ident">base64</span>).<span class="ident">count</span>();
-        <span class="macro">assert_eq!</span>(<span class="ident">encrypted_parts_count</span>, <span class="number">4</span>);
+        <span class="kw">let </span>parts = <span class="kw">super</span>::b64here(<span class="kw-2">&amp;</span>s);
+        parts.iter().for_each(|p| <span class="macro">print!</span>(<span class="string">&quot;\u{300C}{}\u{300D}{} &quot;</span>, <span class="kw-2">&amp;</span>s[p.start..p.end], p.base64));
+        <span class="macro">assert_eq!</span>(parts.len(), <span class="number">8</span>);
+        <span class="kw">let </span>encrypted_parts_count = parts.iter().filter(|p| p.base64).count();
+        <span class="macro">assert_eq!</span>(encrypted_parts_count, <span class="number">4</span>);
         <span class="macro">println!</span>(<span class="string">&quot;The parsed parts=====================&quot;</span>);
-        <span class="ident">parts</span>.<span class="ident">iter</span>().<span class="ident">for_each</span>(<span class="op">|</span><span class="ident">p</span><span class="op">|</span> <span class="macro">print!</span>(<span class="string">&quot;{}&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">s</span>[<span class="ident">p</span>.<span class="ident">start</span>..<span class="ident">p</span>.<span class="ident">end</span>]));
+        parts.iter().for_each(|p| <span class="macro">print!</span>(<span class="string">&quot;{}&quot;</span>, <span class="kw-2">&amp;</span>s[p.start..p.end]));
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">b64here_test2</span>() {
-        <span class="kw">let</span> <span class="ident">s</span> <span class="op">=</span> <span class="string">&quot;Everything is in clear&quot;</span>;
-        <span class="kw">let</span> <span class="ident">parts</span> <span class="op">=</span> <span class="ident"><span class="kw">super</span>::b64here</span>(<span class="kw-2">&amp;</span><span class="ident">s</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">parts</span>.<span class="ident">len</span>(), <span class="number">1</span>);
-        <span class="kw">let</span> <span class="ident">t</span> <span class="op">=</span> <span class="ident">parts</span>.<span class="ident">first</span>().<span class="ident">unwrap</span>();
-        <span class="macro">assert_eq!</span>(<span class="ident">t</span>.<span class="ident">start</span>, <span class="number">0</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">t</span>.<span class="ident">end</span>, <span class="ident">s</span>.<span class="ident">len</span>());
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>b64here_test2() {
+        <span class="kw">let </span>s = <span class="string">&quot;Everything is in clear&quot;</span>;
+        <span class="kw">let </span>parts = <span class="kw">super</span>::b64here(<span class="kw-2">&amp;</span>s);
+        <span class="macro">assert_eq!</span>(parts.len(), <span class="number">1</span>);
+        <span class="kw">let </span>t = parts.first().unwrap();
+        <span class="macro">assert_eq!</span>(t.start, <span class="number">0</span>);
+        <span class="macro">assert_eq!</span>(t.end, s.len());
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">b64here_test3</span>() {
-        <span class="kw">let</span> <span class="ident">s</span> <span class="op">=</span> <span class="string">&quot;JhVyXYWFhYVkprM94+hLMA== &quot;</span>;
-        <span class="kw">let</span> <span class="ident">parts</span> <span class="op">=</span> <span class="ident"><span class="kw">super</span>::b64here</span>(<span class="kw-2">&amp;</span><span class="ident">s</span>);
-        <span class="ident">parts</span>.<span class="ident">iter</span>().<span class="ident">for_each</span>(<span class="op">|</span><span class="ident">p</span><span class="op">|</span> <span class="macro">print!</span>(<span class="string">&quot;[{}]&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">s</span>[<span class="ident">p</span>.<span class="ident">start</span>..<span class="ident">p</span>.<span class="ident">end</span>]));
-        <span class="macro">assert_eq!</span>(<span class="ident">parts</span>.<span class="ident">len</span>(), <span class="number">2</span>);
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>b64here_test3() {
+        <span class="kw">let </span>s = <span class="string">&quot;JhVyXYWFhYVkprM94+hLMA== &quot;</span>;
+        <span class="kw">let </span>parts = <span class="kw">super</span>::b64here(<span class="kw-2">&amp;</span>s);
+        parts.iter().for_each(|p| <span class="macro">print!</span>(<span class="string">&quot;[{}]&quot;</span>, <span class="kw-2">&amp;</span>s[p.start..p.end]));
+        <span class="macro">assert_eq!</span>(parts.len(), <span class="number">2</span>);
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">fake_b64</span>() {
-        <span class="kw">let</span> <span class="ident">s</span> <span class="op">=</span> <span class="string">&quot;http://www.positioniseverything&quot;</span>;
-        <span class="kw">let</span> <span class="ident">parts</span> <span class="op">=</span> <span class="ident"><span class="kw">super</span>::b64here</span>(<span class="kw-2">&amp;</span><span class="ident">s</span>);
-        <span class="ident">parts</span>.<span class="ident">iter</span>().<span class="ident">for_each</span>(<span class="op">|</span><span class="ident">p</span><span class="op">|</span> <span class="macro">print!</span>(<span class="string">&quot;[{}]&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">s</span>[<span class="ident">p</span>.<span class="ident">start</span>..<span class="ident">p</span>.<span class="ident">end</span>]));
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>fake_b64() {
+        <span class="kw">let </span>s = <span class="string">&quot;http://www.positioniseverything&quot;</span>;
+        <span class="kw">let </span>parts = <span class="kw">super</span>::b64here(<span class="kw-2">&amp;</span>s);
+        parts.iter().for_each(|p| <span class="macro">print!</span>(<span class="string">&quot;[{}]&quot;</span>, <span class="kw-2">&amp;</span>s[p.start..p.end]));
         <span class="macro">println!</span>(<span class="string">&quot;Above are the fake parts&quot;</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">parts</span>.<span class="ident">len</span>(), <span class="number">1</span>);
+        <span class="macro">assert_eq!</span>(parts.len(), <span class="number">1</span>);
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">fake_b64_2</span>() {
-      <span class="kw">let</span> <span class="ident">s</span> <span class="op">=</span> <span class="string">r#&quot;# Serverless
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>fake_b64_2() {
+      <span class="kw">let </span>s = <span class="string">r#&quot;# Serverless
 _2020-05-08_  
 
 [www.cs.utah.edu](https://www.cs.utah.edu/~lifeifei/papers/shredder.pdf) 
 
 [blog.acolyer.org](https://blog.acolyer.org/2020/01/29/narrowing-the-gap/) Narrowing the gap between serverless and its state with storage functions
 &quot;#</span>;
-      <span class="kw">let</span> <span class="ident">parts</span> <span class="op">=</span> <span class="ident"><span class="kw">super</span>::b64here</span>(<span class="kw-2">&amp;</span><span class="ident">s</span>);
-      <span class="ident">parts</span>.<span class="ident">iter</span>().<span class="ident">for_each</span>(<span class="op">|</span><span class="ident">p</span><span class="op">|</span> <span class="macro">print!</span>(<span class="string">&quot;\u{300C}{}\u{300D}{} &quot;</span>, <span class="kw-2">&amp;</span><span class="ident">s</span>[<span class="ident">p</span>.<span class="ident">start</span>..<span class="ident">p</span>.<span class="ident">end</span>], <span class="ident">p</span>.<span class="ident">base64</span>));
-      <span class="macro">assert_eq!</span>(<span class="ident">parts</span>.<span class="ident">len</span>(), <span class="number">1</span>);
+      <span class="kw">let </span>parts = <span class="kw">super</span>::b64here(<span class="kw-2">&amp;</span>s);
+      parts.iter().for_each(|p| <span class="macro">print!</span>(<span class="string">&quot;\u{300C}{}\u{300D}{} &quot;</span>, <span class="kw-2">&amp;</span>s[p.start..p.end], p.base64));
+      <span class="macro">assert_eq!</span>(parts.len(), <span class="number">1</span>);
     }
 }
 
-<span class="doccomment">/**
- * Truncates the large segments of base64 and adds an ellipsis
- */</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">prepare_memo_for_view</span>(<span class="ident">memo_text</span>: <span class="kw-2">&amp;mut</span> <span class="ident">str</span>, <span class="ident">max_size</span>: <span class="ident">usize</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">str</span> {
-  <span class="kw">let</span> <span class="ident">parts</span> <span class="op">=</span> <span class="ident">b64here</span>(<span class="ident">memo_text</span>);
-  <span class="macro">println!</span>(<span class="string">&quot;Found {} parts&quot;</span>, <span class="ident">parts</span>.<span class="ident">len</span>());
-  <span class="kw">let</span> <span class="ident">ellipsis</span> <span class="op">=</span> [<span class="number">0xE2</span>, <span class="number">0x80</span>, <span class="number">0xA6</span>];
 
-  <span class="comment">// we store here how much we removed from the string so far</span>
-  <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">removed</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">0</span>;
-  <span class="ident">parts</span>.<span class="ident">iter</span>().<span class="ident">filter</span>(<span class="op">|</span><span class="ident">p</span><span class="op">|</span> <span class="ident">p</span>.<span class="ident">base64</span> <span class="op">&amp;&amp;</span> (<span class="ident">p</span>.<span class="ident">end</span> <span class="op">-</span> <span class="ident">p</span>.<span class="ident">start</span>) <span class="op">&gt;</span> <span class="ident">max_size</span>).<span class="ident">for_each</span>(<span class="op">|</span><span class="ident">p</span><span class="op">|</span> {
-    <span class="kw">unsafe</span> {
-      <span class="kw">let</span> <span class="ident">bt</span> <span class="op">=</span> <span class="ident">memo_text</span>.<span class="ident">as_bytes_mut</span>();
+<span class="doccomment">/// Truncates the large segments of base64 and adds an ellipsis (uses unsafe)
+</span><span class="kw">pub fn </span>prepare_memo_for_view(memo_text: <span class="kw-2">&amp;mut </span>str, max_size: usize) -&gt; <span class="kw-2">&amp;</span>str {
+  <span class="kw">let </span>parts = b64here(memo_text);
+  <span class="macro">println!</span>(<span class="string">&quot;Found {} parts&quot;</span>, parts.len());
+  <span class="kw">let </span>ellipsis = [<span class="number">0xE2</span>, <span class="number">0x80</span>, <span class="number">0xA6</span>];
 
-      <span class="comment">// recalculate the offsets at every iteration</span>
-      <span class="kw">let</span> <span class="ident">start</span> <span class="op">=</span> <span class="ident">p</span>.<span class="ident">start</span> <span class="op">-</span> <span class="ident">removed</span>;
-      <span class="kw">let</span> <span class="ident">end</span> <span class="op">=</span> <span class="ident">p</span>.<span class="ident">end</span> <span class="op">-</span> <span class="ident">removed</span>;
-      <span class="comment">// this is how much we remove now</span>
-      <span class="kw">let</span> <span class="ident">extra</span> <span class="op">=</span> <span class="ident">end</span> <span class="op">-</span> <span class="ident">start</span> <span class="op">-</span> <span class="ident">max_size</span>;
+  <span class="comment">// we store here how much we removed from the string so far
+  </span><span class="kw">let </span><span class="kw-2">mut </span>removed: usize = <span class="number">0</span>;
+  parts.iter().filter(|p| p.base64 &amp;&amp; (p.end - p.start) &gt; max_size).for_each(|p| {
+    <span class="kw">unsafe </span>{
+      <span class="kw">let </span>bt = memo_text.as_bytes_mut();
+
+      <span class="comment">// recalculate the offsets at every iteration
+      </span><span class="kw">let </span>start = p.start - removed;
+      <span class="kw">let </span>end = p.end - removed;
+      <span class="comment">// this is how much we remove now
+      </span><span class="kw">let </span>extra = end - start - max_size;
       
-      <span class="ident">bt</span>[<span class="ident">start</span> <span class="op">+</span> <span class="ident">max_size</span> <span class="op">-</span> <span class="ident">ellipsis</span>.<span class="ident">len</span>()..<span class="ident">start</span> <span class="op">+</span> <span class="ident">max_size</span>].<span class="ident">copy_from_slice</span>(<span class="kw-2">&amp;</span><span class="ident">ellipsis</span>);
-      <span class="ident">bt</span>.<span class="ident">copy_within</span>(<span class="ident">end</span>.., <span class="ident">start</span> <span class="op">+</span> <span class="ident">max_size</span>);
-      <span class="ident">removed</span> <span class="op">+</span><span class="op">=</span> <span class="ident">extra</span>;
+      bt[start + max_size - ellipsis.len()..start + max_size].copy_from_slice(<span class="kw-2">&amp;</span>ellipsis);
+      bt.copy_within(end.., start + max_size);
+      removed += extra;
     }
   });
-  <span class="kw-2">&amp;</span><span class="ident">memo_text</span>[..<span class="ident">memo_text</span>.<span class="ident">len</span>() <span class="op">-</span> <span class="ident">removed</span>]
+  <span class="kw-2">&amp;</span>memo_text[..memo_text.len() - removed]
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="kw">mod</span> <span class="ident">test_prepare_memo</span> {
-  <span class="attribute">#[<span class="ident">test</span>]</span>
-  <span class="kw">fn</span> <span class="ident">memo_ellipsis_test</span>() {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">s</span> <span class="op">=</span> <span class="ident">String::from</span>(<span class="string">r#&quot;
+<span class="attribute">#[cfg(test)]
+</span><span class="kw">mod </span>test_prepare_memo {
+  <span class="attribute">#[test]
+  </span><span class="kw">fn </span>memo_ellipsis_test() {
+    <span class="kw">let </span><span class="kw-2">mut </span>s = String::from(<span class="string">r#&quot;
     Third secret
 DhVyXUxMTEwpo9eX4aw7dJnT1zaZ9DBqISbEU0rj6pPcoWZk5m1xTDqQouV4pyOxdLLVIeBfZG/bF2Rlm4AVR7dnn28t8Sr5
 aha
 8xRyXaSkpKQGqlTMpMssgnNsZDnatopg
 123   x&quot;#</span>);
-    <span class="kw">let</span> <span class="ident">short</span> <span class="op">=</span> <span class="ident"><span class="kw">super</span>::prepare_memo_for_view</span>(<span class="kw-2">&amp;mut</span> <span class="ident">s</span>, <span class="number">16</span>);
-    <span class="macro">println!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">short</span>);
+    <span class="kw">let </span>short = <span class="kw">super</span>::prepare_memo_for_view(<span class="kw-2">&amp;mut </span>s, <span class="number">16</span>);
+    <span class="macro">println!</span>(<span class="string">&quot;{}&quot;</span>, short);
   }
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">truncate_base64</span>(<span class="ident">text</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">max_b64</span>: <span class="ident">usize</span>) -&gt; <span class="ident">String</span> {
-  <span class="kw">let</span> <span class="ident">parts</span> <span class="op">=</span> <span class="ident">b64here</span>(<span class="ident">text</span>);
-  <span class="comment">// calculate the size of the reduced string</span>
-  <span class="kw">let</span> <span class="ident">short_size</span> <span class="op">=</span> <span class="ident">parts</span>.<span class="ident">iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">p</span><span class="op">|</span> <span class="kw">if</span> <span class="ident">p</span>.<span class="ident">base64</span> { <span class="ident">min</span>(<span class="ident">p</span>.<span class="ident">end</span> <span class="op">-</span> <span class="ident">p</span>.<span class="ident">start</span>, <span class="ident">max_b64</span>) } <span class="kw">else</span> { <span class="ident">p</span>.<span class="ident">end</span> <span class="op">-</span> <span class="ident">p</span>.<span class="ident">start</span> })
-    .<span class="ident">sum</span>();
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">String::with_capacity</span>(<span class="ident">short_size</span>);
+<span class="doccomment">/// Truncates the large segments of base64 and adds an ellipsis.
+/// Trailing spaces are removed.
+///
+/// Currently the size is expressed in bytes. As the ellipsis character has
+/// three bytes, the resulting string will have a total 14 visible characters 
+/// including the ellipsis.
+///
+/// ```rust
+/// use indoc::indoc;
+/// # use memo_rust::truncate_base64;
+///
+/// let mut s = String::from(indoc! {r#&quot;
+///     Third secret
+///     cXVpIGRvbG9yZW0gaXBzdW0gcXVpYSBkb2xvciBzaXQgYW1ldCwgY29uc2VjdGV0dXIsIGFkaXBpc2NpIHZlbGl0
+///     aha
+///     8xRyXaSkpKQGqlTMpMssgnNsZDnatopg
+///     123   x
+/// &quot;#});
+///
+/// assert_eq!(
+///     indoc! {r#&quot;
+///          Third secret
+///          cXVpIGRvbG9yZ…
+///          aha
+///          8xRyXaSkpKQGq…
+///          123   x&quot;#},
+///     truncate_base64(&amp;mut s, 16)
+/// );
+/// ```
+</span><span class="kw">pub fn </span>truncate_base64(text: <span class="kw-2">&amp;</span>str, max_b64: usize) -&gt; String {
+  <span class="kw">let </span>parts = b64here(text);
+  <span class="comment">// calculate the size of the reduced string
+  </span><span class="kw">let </span>short_size = parts.iter().map(|p| <span class="kw">if </span>p.base64 { min(p.end - p.start, max_b64) } <span class="kw">else </span>{ p.end - p.start })
+    .sum();
+    <span class="kw">let </span><span class="kw-2">mut </span>result = String::with_capacity(short_size);
 
-    <span class="ident">parts</span>.<span class="ident">iter</span>().<span class="ident">for_each</span>(<span class="op">|</span><span class="ident">p</span><span class="op">|</span> 
-      <span class="kw">if</span> <span class="ident">p</span>.<span class="ident">base64</span> {
-        <span class="kw">if</span> <span class="ident">p</span>.<span class="ident">end</span> <span class="op">-</span> <span class="ident">p</span>.<span class="ident">start</span> <span class="op">&gt;</span> <span class="ident">max_b64</span> {
-          <span class="comment">// in utf-8 this is E2 80 A6, three bytes</span>
-          <span class="kw">let</span> <span class="ident">ellipsis</span> <span class="op">=</span> <span class="string">&quot;\u{2026}&quot;</span>;
-          <span class="ident">result</span>.<span class="ident">push_str</span>(<span class="kw-2">&amp;</span><span class="ident">text</span>[<span class="ident">p</span>.<span class="ident">start</span> .. <span class="ident">p</span>.<span class="ident">start</span> <span class="op">+</span> <span class="ident">max_b64</span> <span class="op">-</span> <span class="ident">ellipsis</span>.<span class="ident">len</span>()]);
-          <span class="ident">result</span>.<span class="ident">push_str</span>(<span class="ident">ellipsis</span>); 
-        } <span class="kw">else</span> {
-          <span class="ident">result</span>.<span class="ident">push_str</span>(<span class="kw-2">&amp;</span><span class="ident">text</span>[<span class="ident">p</span>.<span class="ident">start</span>..<span class="ident">p</span>.<span class="ident">end</span>]);
+    parts.iter().for_each(|p| 
+      <span class="kw">if </span>p.base64 {
+        <span class="kw">if </span>p.end - p.start &gt; max_b64 {
+          <span class="comment">// in utf-8 this is E2 80 A6, three bytes
+          </span><span class="kw">let </span>ellipsis = <span class="string">&quot;\u{2026}&quot;</span>;
+          result.push_str(<span class="kw-2">&amp;</span>text[p.start .. p.start + max_b64 - ellipsis.len()]);
+          result.push_str(ellipsis); 
+        } <span class="kw">else </span>{
+          result.push_str(<span class="kw-2">&amp;</span>text[p.start..p.end]);
         }
-      } <span class="kw">else</span> {
-        <span class="ident">result</span>.<span class="ident">push_str</span>(<span class="kw-2">&amp;</span><span class="ident">text</span>[<span class="ident">p</span>.<span class="ident">start</span>..<span class="ident">p</span>.<span class="ident">end</span>]);
+      } <span class="kw">else </span>{
+        result.push_str(<span class="kw-2">&amp;</span>text[p.start..p.end]);
       }
     );
-    <span class="ident">result</span>
+    result
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="kw">mod</span> <span class="ident">test_truncate_base64</span> {
-  <span class="attribute">#[<span class="ident">test</span>]</span>
-  <span class="kw">fn</span> <span class="ident">memo_ellipsis_test</span>() {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">s</span> <span class="op">=</span> <span class="ident">String::from</span>(<span class="string">r#&quot;
+<span class="attribute">#[cfg(test)]
+</span><span class="kw">mod </span>test_truncate_base64 {
+  <span class="attribute">#[test]
+  </span><span class="kw">fn </span>memo_ellipsis_test() {
+    <span class="kw">let </span><span class="kw-2">mut </span>s = String::from(<span class="string">r#&quot;
     Third secret
 DhVyXUxMTEwpo9eX4aw7dJnT1zaZ9DBqISbEU0rj6pPcoWZk5m1xTDqQouV4pyOxdLLVIeBfZG/bF2Rlm4AVR7dnn28t8Sr5
 aha
 8xRyXaSkpKQGqlTMpMssgnNsZDnatopg
 123   x&quot;#</span>);
-    <span class="kw">let</span> <span class="ident">short</span> <span class="op">=</span> <span class="ident"><span class="kw">super</span>::truncate_base64</span>(<span class="kw-2">&amp;mut</span> <span class="ident">s</span>, <span class="number">16</span>);
-    <span class="macro">println!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">short</span>);
+    <span class="kw">let </span>short = <span class="kw">super</span>::truncate_base64(<span class="kw-2">&amp;mut </span>s, <span class="number">16</span>);
+    <span class="macro">println!</span>(<span class="string">&quot;{}&quot;</span>, short);
   }
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">memo_decrypt</span>(<span class="ident">encrypted_memo</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">secret</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">String</span> {
-    <span class="kw">let</span> <span class="ident">parts</span> <span class="op">=</span> <span class="ident">b64here</span>(<span class="ident">encrypted_memo</span>);
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">String::with_capacity</span>(<span class="ident">encrypted_memo</span>.<span class="ident">len</span>());
-    <span class="ident">parts</span>.<span class="ident">iter</span>()
-      .<span class="ident">map</span>(<span class="op">|</span><span class="ident">p</span><span class="op">|</span> <span class="ident">Part</span> { <span class="ident">text</span>: <span class="kw-2">&amp;</span><span class="ident">encrypted_memo</span>[<span class="ident">p</span>.<span class="ident">start</span>..<span class="ident">p</span>.<span class="ident">end</span>], <span class="ident">clear</span>: <span class="op">!</span><span class="ident">p</span>.<span class="ident">base64</span> })
-      .<span class="ident">for_each</span>(<span class="op">|</span><span class="ident">p</span><span class="op">|</span> {
-        <span class="kw">if</span> <span class="ident">p</span>.<span class="ident">clear</span> {
-          <span class="ident">result</span>.<span class="ident">push_str</span>(<span class="ident">p</span>.<span class="ident">text</span>);
-        } <span class="kw">else</span> {
-          <span class="kw">let</span> <span class="ident">clear_text</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">aes_ctr_decrypt</span>(<span class="ident">p</span>.<span class="ident">text</span>, <span class="ident">secret</span>);
-          <span class="kw">if</span> <span class="ident">clear_text</span>.<span class="ident">len</span>() <span class="op">==</span> <span class="ident">p</span>.<span class="ident">text</span>.<span class="ident">len</span>() {
-            <span class="comment">// decryption failed, encrypted text is the same length as clear text</span>
-            <span class="ident">result</span>.<span class="ident">push_str</span>(<span class="ident">clear_text</span>);
-          } <span class="kw">else</span> {
-            <span class="ident">result</span>.<span class="ident">push</span>(<span class="string">&#39;\u{300c}&#39;</span>);
-            <span class="ident">result</span>.<span class="ident">push_str</span>(<span class="ident">clear_text</span>);
-            <span class="ident">result</span>.<span class="ident">push</span>(<span class="string">&#39;\u{300d}&#39;</span>);
+<span class="kw">pub fn </span>memo_decrypt(encrypted_memo: <span class="kw-2">&amp;</span>str, secret: <span class="kw-2">&amp;</span>str) -&gt; String {
+    <span class="kw">let </span>parts = b64here(encrypted_memo);
+    <span class="kw">let </span><span class="kw-2">mut </span>result = String::with_capacity(encrypted_memo.len());
+    parts.iter()
+      .map(|p| Part { text: <span class="kw-2">&amp;</span>encrypted_memo[p.start..p.end], clear: !p.base64 })
+      .for_each(|p| {
+        <span class="kw">if </span>p.clear {
+          result.push_str(p.text);
+        } <span class="kw">else </span>{
+          <span class="kw">let </span>clear_text = <span class="kw-2">&amp;</span>aes_ctr_decrypt(p.text, secret);
+          <span class="kw">if </span>clear_text.len() == p.text.len() {
+            <span class="comment">// decryption failed, encrypted text is the same length as clear text
+            </span>result.push_str(clear_text);
+          } <span class="kw">else </span>{
+            result.push(<span class="string">&#39;\u{300c}&#39;</span>);
+            result.push_str(clear_text);
+            result.push(<span class="string">&#39;\u{300d}&#39;</span>);
           }
         }
       });
-    <span class="ident">result</span>
+    result
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="kw">mod</span> <span class="ident">test_memo_decryption</span> {
-  <span class="attribute">#[<span class="ident">test</span>]</span>
-  <span class="kw">fn</span> <span class="ident">memo_decrypt_test</span>() {
-    <span class="kw">let</span> <span class="ident">memo_encrypted</span> <span class="op">=</span> <span class="string">r#&quot;
+<span class="attribute">#[cfg(test)]
+</span><span class="kw">mod </span>test_memo_decryption {
+  <span class="attribute">#[test]
+  </span><span class="kw">fn </span>memo_decrypt_test() {
+    <span class="kw">let </span>memo_encrypted = <span class="string">r#&quot;
 First secret
 8xRyXaSkpKQGqlTMpMssgnNsZDnatopg
 
 Second secret
 /xRyXY6Ojo7/u45hZut8f41Uf6C2GvNCdA==
 &quot;#</span>;
-    <span class="kw">let</span> <span class="ident">memo_clear</span> <span class="op">=</span> <span class="string">&quot;
+    <span class="kw">let </span>memo_clear = <span class="string">&quot;
 First secret
 \u{300c}The first secret\u{300d}
 
@@ -723,83 +811,83 @@ Second secret
 \u{300c}The second secret\u{300d}
 &quot;</span>;
 
-  <span class="macro">assert_eq!</span>(<span class="ident">memo_clear</span>, <span class="ident"><span class="kw">super</span>::memo_decrypt</span>(<span class="ident">memo_encrypted</span>, <span class="string">&quot;secret&quot;</span>));
+  <span class="macro">assert_eq!</span>(memo_clear, <span class="kw">super</span>::memo_decrypt(memo_encrypted, <span class="string">&quot;secret&quot;</span>));
   }
 
-  <span class="attribute">#[<span class="ident">test</span>]</span>
-  <span class="kw">fn</span> <span class="ident">memo_decryption_false_test</span>() {
-    <span class="kw">let</span> <span class="ident">encrypted_memo</span> <span class="op">=</span> <span class="string">&quot;http://www.positioniseverything&quot;</span>;
-    <span class="kw">let</span> <span class="ident">clear_memo</span> <span class="op">=</span> <span class="ident"><span class="kw">super</span>::memo_decrypt</span>(<span class="ident">encrypted_memo</span>, <span class="string">&quot;secret&quot;</span>);
-    <span class="macro">assert_eq!</span>(<span class="ident">encrypted_memo</span>, <span class="ident">clear_memo</span>);
+  <span class="attribute">#[test]
+  </span><span class="kw">fn </span>memo_decryption_false_test() {
+    <span class="kw">let </span>encrypted_memo = <span class="string">&quot;http://www.positioniseverything&quot;</span>;
+    <span class="kw">let </span>clear_memo = <span class="kw">super</span>::memo_decrypt(encrypted_memo, <span class="string">&quot;secret&quot;</span>);
+    <span class="macro">assert_eq!</span>(encrypted_memo, clear_memo);
   }
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">memo_encrypt</span>(<span class="ident">clear_memo</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">secret</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">initial_nonce</span>: <span class="ident">u64</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span><span class="op">&gt;</span> {
-  <span class="kw">let</span> <span class="ident">opening_quote_size</span> <span class="op">=</span> <span class="string">&quot;\u{300c}&quot;</span>.<span class="ident">len</span>();
-  <span class="kw">let</span> <span class="ident">closing_quote_size</span> <span class="op">=</span> <span class="string">&quot;\u{300d}&quot;</span>.<span class="ident">len</span>();
+<span class="kw">pub fn </span>memo_encrypt(clear_memo: <span class="kw-2">&amp;</span>str, secret: <span class="kw-2">&amp;</span>str, initial_nonce: u64) -&gt; <span class="prelude-ty">Result</span>&lt;String, <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str&gt; {
+  <span class="kw">let </span>opening_quote_size = <span class="string">&quot;\u{300c}&quot;</span>.len();
+  <span class="kw">let </span>closing_quote_size = <span class="string">&quot;\u{300d}&quot;</span>.len();
 
-  <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">nonce</span> <span class="op">=</span> <span class="ident">initial_nonce</span>;
-  <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">String::with_capacity</span>(<span class="ident">clear_memo</span>.<span class="ident">len</span>() <span class="op">*</span> <span class="number">2</span>);
-  <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">start</span> <span class="op">=</span> <span class="number">0</span>;
-  <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">encrypt</span> <span class="op">=</span> <span class="bool-val">false</span>;
+  <span class="kw">let </span><span class="kw-2">mut </span>nonce = initial_nonce;
+  <span class="kw">let </span><span class="kw-2">mut </span>result = String::with_capacity(clear_memo.len() * <span class="number">2</span>);
+  <span class="kw">let </span><span class="kw-2">mut </span>start = <span class="number">0</span>;
+  <span class="kw">let </span><span class="kw-2">mut </span>encrypt = <span class="bool-val">false</span>;
 
-  <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">prev_char</span> <span class="op">=</span> <span class="string">&#39;\n&#39;</span>;
-  <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">after_closing_quote</span> <span class="op">=</span> <span class="bool-val">false</span>;
-  <span class="kw">for</span> (<span class="ident">pos</span>, <span class="ident">c</span>) <span class="kw">in</span> <span class="ident">clear_memo</span>.<span class="ident">char_indices</span>() {
-      <span class="kw">match</span> <span class="ident">c</span> {
-        <span class="comment">// opening quote</span>
-        <span class="string">&#39;\u{300c}&#39;</span> =&gt; {
-            <span class="ident">after_closing_quote</span> <span class="op">=</span> <span class="bool-val">false</span>;
-            <span class="kw">if</span> <span class="ident">pos</span> <span class="op">&gt;</span> <span class="ident">start</span> {
-              <span class="ident">result</span>.<span class="ident">push_str</span>(<span class="kw-2">&amp;</span><span class="ident">clear_memo</span>[<span class="ident">start</span>..<span class="ident">pos</span>]);
-              <span class="comment">// make sure the encrypted result does not touch the text before it</span>
-              <span class="kw">match</span> <span class="ident">prev_char</span> {
-                <span class="string">&#39; &#39;</span><span class="op">|</span> <span class="string">&#39;\n&#39;</span> <span class="op">|</span><span class="string">&#39;\r&#39;</span> <span class="op">|</span> <span class="string">&#39;\t&#39;</span> =&gt; (),
-                <span class="kw">_</span> =&gt; <span class="ident">result</span>.<span class="ident">push</span>(<span class="string">&#39; &#39;</span>), 
+  <span class="kw">let </span><span class="kw-2">mut </span>prev_char = <span class="string">&#39;\n&#39;</span>;
+  <span class="kw">let </span><span class="kw-2">mut </span>after_closing_quote = <span class="bool-val">false</span>;
+  <span class="kw">for </span>(pos, c) <span class="kw">in </span>clear_memo.char_indices() {
+      <span class="kw">match </span>c {
+        <span class="comment">// opening quote
+        </span><span class="string">&#39;\u{300c}&#39; </span>=&gt; {
+            after_closing_quote = <span class="bool-val">false</span>;
+            <span class="kw">if </span>pos &gt; start {
+              result.push_str(<span class="kw-2">&amp;</span>clear_memo[start..pos]);
+              <span class="comment">// make sure the encrypted result does not touch the text before it
+              </span><span class="kw">match </span>prev_char {
+                <span class="string">&#39; &#39;</span>| <span class="string">&#39;\n&#39; </span>|<span class="string">&#39;\r&#39; </span>| <span class="string">&#39;\t&#39; </span>=&gt; (),
+                <span class="kw">_ </span>=&gt; result.push(<span class="string">&#39; &#39;</span>), 
               }
             }
-            <span class="ident">start</span> <span class="op">=</span> <span class="ident">pos</span> <span class="op">+</span> <span class="ident">opening_quote_size</span>;
-            <span class="kw">if</span> <span class="ident">encrypt</span> {
-                <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="string">&quot;Previous quote was not ended&quot;</span>);
+            start = pos + opening_quote_size;
+            <span class="kw">if </span>encrypt {
+                <span class="kw">return </span><span class="prelude-val">Err</span>(<span class="string">&quot;Previous quote was not ended&quot;</span>);
             }
-            <span class="ident">encrypt</span> <span class="op">=</span> <span class="bool-val">true</span>;
+            encrypt = <span class="bool-val">true</span>;
           },
-        <span class="comment">// closing quote</span>
-        <span class="string">&#39;\u{300d}&#39;</span> =&gt; {
-            <span class="ident">after_closing_quote</span> <span class="op">=</span> <span class="bool-val">true</span>;
-            <span class="kw">if</span> <span class="op">!</span><span class="ident">encrypt</span> {
-                <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="string">&quot;Closing quote has no opening quote&quot;</span>);
+        <span class="comment">// closing quote
+        </span><span class="string">&#39;\u{300d}&#39; </span>=&gt; {
+            after_closing_quote = <span class="bool-val">true</span>;
+            <span class="kw">if </span>!encrypt {
+                <span class="kw">return </span><span class="prelude-val">Err</span>(<span class="string">&quot;Closing quote has no opening quote&quot;</span>);
             }
-            <span class="ident">result</span>.<span class="ident">push_str</span>(<span class="kw-2">&amp;</span><span class="ident">aes_ctr_encrypt</span>(<span class="kw-2">&amp;</span><span class="ident">clear_memo</span>[<span class="ident">start</span>..<span class="ident">pos</span>], <span class="ident">secret</span>, <span class="ident">nonce</span>));
-            <span class="ident">nonce</span> <span class="op">+</span><span class="op">=</span> (<span class="number">2</span> <span class="op">+</span> (<span class="ident">pos</span> <span class="op">-</span> <span class="ident">start</span>) <span class="op">/</span> <span class="number">16</span>) <span class="kw">as</span> <span class="ident">u64</span>;
-            <span class="ident">start</span> <span class="op">=</span> <span class="ident">pos</span> <span class="op">+</span> <span class="ident">closing_quote_size</span>;
-            <span class="ident">encrypt</span> <span class="op">=</span> <span class="bool-val">false</span>;
+            result.push_str(<span class="kw-2">&amp;</span>aes_ctr_encrypt(<span class="kw-2">&amp;</span>clear_memo[start..pos], secret, nonce));
+            nonce += (<span class="number">2 </span>+ (pos - start) / <span class="number">16</span>) <span class="kw">as </span>u64;
+            start = pos + closing_quote_size;
+            encrypt = <span class="bool-val">false</span>;
           },
-          <span class="kw">_</span> =&gt; {
-            <span class="comment">// if we just added an encrypted section make sure it does not touch subsequent chars</span>
-            <span class="kw">if</span> <span class="ident">after_closing_quote</span> {
-              <span class="kw">match</span> <span class="ident">c</span> {
-                <span class="string">&#39; &#39;</span><span class="op">|</span> <span class="string">&#39;\n&#39;</span> <span class="op">|</span><span class="string">&#39;\r&#39;</span> <span class="op">|</span> <span class="string">&#39;\t&#39;</span> =&gt; (),
-                <span class="kw">_</span> =&gt; <span class="ident">result</span>.<span class="ident">push</span>(<span class="string">&#39; &#39;</span>), 
+          <span class="kw">_ </span>=&gt; {
+            <span class="comment">// if we just added an encrypted section make sure it does not touch subsequent chars
+            </span><span class="kw">if </span>after_closing_quote {
+              <span class="kw">match </span>c {
+                <span class="string">&#39; &#39;</span>| <span class="string">&#39;\n&#39; </span>|<span class="string">&#39;\r&#39; </span>| <span class="string">&#39;\t&#39; </span>=&gt; (),
+                <span class="kw">_ </span>=&gt; result.push(<span class="string">&#39; &#39;</span>), 
               }
-                <span class="ident">after_closing_quote</span> <span class="op">=</span> <span class="bool-val">false</span>; 
+                after_closing_quote = <span class="bool-val">false</span>; 
             }
-              <span class="ident">prev_char</span> <span class="op">=</span> <span class="ident">c</span>
+              prev_char = c
           },
 
       }
   }
-  <span class="kw">if</span> <span class="ident">start</span> <span class="op">&lt;</span> <span class="ident">clear_memo</span>.<span class="ident">len</span>() {
-    <span class="ident">result</span>.<span class="ident">push_str</span>(<span class="kw-2">&amp;</span><span class="ident">clear_memo</span>[<span class="ident">start</span>..]);
+  <span class="kw">if </span>start &lt; clear_memo.len() {
+    result.push_str(<span class="kw-2">&amp;</span>clear_memo[start..]);
   }
-  <span class="prelude-val">Ok</span>(<span class="ident">result</span>)
+  <span class="prelude-val">Ok</span>(result)
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="kw">mod</span> <span class="ident">test_memo_encrypt</span> {
-  <span class="attribute">#[<span class="ident">test</span>]</span>
-  <span class="kw">fn</span> <span class="ident">memo_encrypt_test</span>() {
-    <span class="kw">let</span> <span class="ident">clear_memo</span> <span class="op">=</span> <span class="string">&quot;
+<span class="attribute">#[cfg(test)]
+</span><span class="kw">mod </span>test_memo_encrypt {
+  <span class="attribute">#[test]
+  </span><span class="kw">fn </span>memo_encrypt_test() {
+    <span class="kw">let </span>clear_memo = <span class="string">&quot;
 First secret
 \u{300c}The first secret\u{300d} a
 
@@ -808,7 +896,7 @@ Second secret
 End
 &quot;</span>;
 
-    <span class="kw">let</span> <span class="ident">encrypted_memo</span> <span class="op">=</span> <span class="string">&quot;
+    <span class="kw">let </span>encrypted_memo = <span class="string">&quot;
 First secret
 AAAAAAAAAACmrCf4UYHplcBTiCEztS/3 a
 
@@ -816,42 +904,41 @@ Second secret
 AwAAAAAAAADSUdXvchKudrwyi9q+mYmOUtD762Z48LL6PfIqyh+TyQ==
 End
 &quot;</span>;
-    <span class="kw">match</span> <span class="ident"><span class="kw">super</span>::memo_encrypt</span>(<span class="kw-2">&amp;</span><span class="ident">clear_memo</span>, <span class="string">&quot;secret&quot;</span>, <span class="number">0</span>) {
-      <span class="prelude-val">Ok</span>(<span class="ident">s</span>) =&gt; <span class="macro">assert_eq!</span>(<span class="ident">encrypted_memo</span>, <span class="ident">s</span>),
-      <span class="prelude-val">Err</span>(<span class="ident">s</span>) =&gt; <span class="macro">println!</span>(<span class="string">&quot;Failed to process memo: {}&quot;</span>, <span class="ident">s</span>),
+    <span class="kw">match </span><span class="kw">super</span>::memo_encrypt(<span class="kw-2">&amp;</span>clear_memo, <span class="string">&quot;secret&quot;</span>, <span class="number">0</span>) {
+      <span class="prelude-val">Ok</span>(s) =&gt; <span class="macro">assert_eq!</span>(encrypted_memo, s),
+      <span class="prelude-val">Err</span>(s) =&gt; <span class="macro">println!</span>(<span class="string">&quot;Failed to process memo: {}&quot;</span>, s),
     }
   }
 
-  <span class="attribute">#[<span class="ident">test</span>]</span>
-  <span class="kw">fn</span> <span class="ident">memo_encrypt_spaces</span>() {
-    <span class="kw">let</span> <span class="ident">clear_memo</span> <span class="op">=</span> <span class="string">&quot;
+  <span class="attribute">#[test]
+  </span><span class="kw">fn </span>memo_encrypt_spaces() {
+    <span class="kw">let </span>clear_memo = <span class="string">&quot;
 First secret\u{300c}The first secret\u{300d}
 Second secret
 \u{300c}The second secret\u{300d}is here
 &quot;</span>;
-    <span class="kw">let</span> <span class="ident">encrypted_memo</span> <span class="op">=</span> <span class="string">&quot;
+    <span class="kw">let </span>encrypted_memo = <span class="string">&quot;
 First secret AAAAAAAAAACmrCf4UYHplcBTiCEztS/3
 Second secret
 AwAAAAAAAADSUdXvchKudrwyi9q+mYmOUtD762Z48LL6PfIqyh+TyQ== is here
 &quot;</span>;   
   
-    <span class="kw">match</span> <span class="ident"><span class="kw">super</span>::memo_encrypt</span>(<span class="kw-2">&amp;</span><span class="ident">clear_memo</span>, <span class="string">&quot;secret&quot;</span>, <span class="number">0</span>) {
-      <span class="prelude-val">Ok</span>(<span class="ident">s</span>) =&gt; <span class="macro">assert_eq!</span>(<span class="ident">encrypted_memo</span>, <span class="ident">s</span>),
-      <span class="prelude-val">Err</span>(<span class="ident">s</span>) =&gt; <span class="macro">println!</span>(<span class="string">&quot;Failed to process memo: {}&quot;</span>, <span class="ident">s</span>),
+    <span class="kw">match </span><span class="kw">super</span>::memo_encrypt(<span class="kw-2">&amp;</span>clear_memo, <span class="string">&quot;secret&quot;</span>, <span class="number">0</span>) {
+      <span class="prelude-val">Ok</span>(s) =&gt; <span class="macro">assert_eq!</span>(encrypted_memo, s),
+      <span class="prelude-val">Err</span>(s) =&gt; <span class="macro">println!</span>(<span class="string">&quot;Failed to process memo: {}&quot;</span>, s),
     }
   }
 
-  <span class="attribute">#[<span class="ident">test</span>]</span>
-  <span class="kw">fn</span> <span class="ident">memo_encrypt_short</span>() {
-    <span class="kw">let</span> <span class="ident">clear_memo</span> <span class="op">=</span> <span class="string">&quot;Secret \u{300c}secret\u{300d}&quot;</span>;
-    <span class="kw">let</span> <span class="ident">encrypted_memo</span> <span class="op">=</span> <span class="string">&quot;Secret AAAAAAAAAACBoSGqUpyb5rRz+0RQx0qD&quot;</span>;
+  <span class="attribute">#[test]
+  </span><span class="kw">fn </span>memo_encrypt_short() {
+    <span class="kw">let </span>clear_memo = <span class="string">&quot;Secret \u{300c}secret\u{300d}&quot;</span>;
+    <span class="kw">let </span>encrypted_memo = <span class="string">&quot;Secret AAAAAAAAAACBoSGqUpyb5rRz+0RQx0qD&quot;</span>;
 
-    <span class="kw">match</span> <span class="ident"><span class="kw">super</span>::memo_encrypt</span>(<span class="kw-2">&amp;</span><span class="ident">clear_memo</span>, <span class="string">&quot;secret&quot;</span>, <span class="number">0</span>) {
-      <span class="prelude-val">Ok</span>(<span class="ident">s</span>) =&gt; <span class="macro">assert_eq!</span>(<span class="ident">encrypted_memo</span>, <span class="ident">s</span>),
-      <span class="prelude-val">Err</span>(<span class="ident">s</span>) =&gt; <span class="macro">println!</span>(<span class="string">&quot;Failed to process memo: {}&quot;</span>, <span class="ident">s</span>),
+    <span class="kw">match </span><span class="kw">super</span>::memo_encrypt(<span class="kw-2">&amp;</span>clear_memo, <span class="string">&quot;secret&quot;</span>, <span class="number">0</span>) {
+      <span class="prelude-val">Ok</span>(s) =&gt; <span class="macro">assert_eq!</span>(encrypted_memo, s),
+      <span class="prelude-val">Err</span>(s) =&gt; <span class="macro">println!</span>(<span class="string">&quot;Failed to process memo: {}&quot;</span>, s),
     }      
   }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="memo_rust" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (9067d5277 2022-07-28)" ></div>
-</body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="memo_rust" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0-nightly (015a824f2 2022-08-22)" ></div></body></html>

@@ -1,3 +1,22 @@
+//! A library for processing text in the memos in Organizator.
+//!
+//! As Organizator allows encrypting data on the client, this library will be
+//! compiled to webassembly and mostly used in the browser.
+//!
+//! ### Encryption
+//! The parts of the text that are supposed to be encrypted will be marked with
+//! Japanese quotes: `「secret」`.
+//! The encryption algorithm is AES-256 with a timestamp nonce and a counter.
+//! After encryption, the text will be replaced with a base64-encoded string.
+//!
+//! ### Decryption
+//! The text will be decrypted with the same algorithm and the same key. The bits
+//! to be decrypted are automatically detected by looking for base64-encoded
+//! sequences.
+//!
+//! ### Presentation
+//! Because long base64-encoded strings are not very readable, those sequences
+//! will be replaced with a shorter version followed by &hellip; (ellipsis).
 pub mod aes;
 
 use crate::aes::{ aes_ctr_decrypt, aes_ctr_encrypt};
@@ -59,7 +78,7 @@ impl Status {
 }
 
 fn is_space(c: char) -> bool {
-  c == ' ' || c == '\t' || c == '\n' || c == '\r'
+    [' ', '\t', '\n', '\r'].contains(&c)
 }
 
 fn b64here(s: &str) -> Vec<PartDescriptor> {
@@ -169,9 +188,8 @@ _2020-05-08_
     }
 }
 
-/**
- * Truncates the large segments of base64 and adds an ellipsis
- */
+
+/// Truncates the large segments of base64 and adds an ellipsis (uses unsafe)
 pub fn prepare_memo_for_view(memo_text: &mut str, max_size: usize) -> &str {
   let parts = b64here(memo_text);
   println!("Found {} parts", parts.len());
@@ -212,6 +230,35 @@ aha
   }
 }
 
+/// Truncates the large segments of base64 and adds an ellipsis.
+/// Trailing spaces are removed.
+///
+/// Currently the size is expressed in bytes. As the ellipsis character has
+/// three bytes, the resulting string will have a total 14 visible characters 
+/// including the ellipsis.
+///
+/// ```rust
+/// use indoc::indoc;
+/// # use memo_rust::truncate_base64;
+///
+/// let mut s = String::from(indoc! {r#"
+///     Third secret
+///     cXVpIGRvbG9yZW0gaXBzdW0gcXVpYSBkb2xvciBzaXQgYW1ldCwgY29uc2VjdGV0dXIsIGFkaXBpc2NpIHZlbGl0
+///     aha
+///     8xRyXaSkpKQGqlTMpMssgnNsZDnatopg
+///     123   x
+/// "#});
+///
+/// assert_eq!(
+///     indoc! {r#"
+///          Third secret
+///          cXVpIGRvbG9yZ…
+///          aha
+///          8xRyXaSkpKQGq…
+///          123   x"#},
+///     truncate_base64(&mut s, 16)
+/// );
+/// ```
 pub fn truncate_base64(text: &str, max_b64: usize) -> String {
   let parts = b64here(text);
   // calculate the size of the reduced string
