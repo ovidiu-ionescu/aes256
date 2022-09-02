@@ -469,6 +469,18 @@
 <span id="469">469</span>
 <span id="470">470</span>
 <span id="471">471</span>
+<span id="472">472</span>
+<span id="473">473</span>
+<span id="474">474</span>
+<span id="475">475</span>
+<span id="476">476</span>
+<span id="477">477</span>
+<span id="478">478</span>
+<span id="479">479</span>
+<span id="480">480</span>
+<span id="481">481</span>
+<span id="482">482</span>
+<span id="483">483</span>
 </pre><pre class="rust"><code><span class="doccomment">//! A library for processing text in the memos in Organizator.
 //!
 //! As Organizator allows encrypting data on the client, this library will be
@@ -476,9 +488,9 @@
 //!
 //! ### Encryption
 //! The parts of the text that are supposed to be encrypted will be marked with
-//! Japanese quotes: `「secret」`.
+//! Japanese quotes: `「secret」`.\
 //! The encryption algorithm is AES-256 with a timestamp nonce and a counter.
-//! After encryption, the text will be replaced with a base64-encoded string.
+//! After encryption, the text will be base64 encoded.
 //!
 //! ### Decryption
 //! The text will be decrypted with the same algorithm and the same key. The bits
@@ -660,7 +672,12 @@ _2020-05-08_
 }
 
 
-<span class="doccomment">/// Truncates the large segments of base64 and adds an ellipsis (uses unsafe)
+<span class="doccomment">/// Truncates the large segments of base64 and adds an ellipsis inside input string
+/// (uses unsafe)
+///
+/// The replacement is done in place. The string is not reallocated.\
+/// Because the ellipsis is 3 bytes long, the visible truncation will end up 
+/// being 2 characters shorter, 2 extra bytes are used by the ellipsis.
 </span><span class="kw">pub fn </span>prepare_memo_for_view(memo_text: <span class="kw-2">&amp;mut </span>str, max_size: usize) -&gt; <span class="kw-2">&amp;</span>str {
   <span class="kw">let </span>parts = b64here(memo_text);
   <span class="macro">println!</span>(<span class="string">&quot;Found {} parts&quot;</span>, parts.len());
@@ -701,12 +718,14 @@ aha
   }
 }
 
-<span class="doccomment">/// Truncates the large segments of base64 and adds an ellipsis.
+<span class="doccomment">/// Truncates the large segments of base64 if they are larger than `max_b64` 
+/// and adds an ellipsis.
+/// 
 /// Trailing spaces are removed.
 ///
-/// Currently the size is expressed in bytes. As the ellipsis character has
-/// three bytes, the resulting string will have a total 14 visible characters 
-/// including the ellipsis.
+/// The truncated strings will have `max_b64` visible characters including the 
+/// ellipsis. Because the ellipsis is 3 bytes long in utf-8, the actual number 
+/// of bytes in the truncated segment will be `max_b64 + 2`.
 ///
 /// ```rust
 /// use indoc::indoc;
@@ -723,17 +742,20 @@ aha
 /// assert_eq!(
 ///     indoc! {r#&quot;
 ///          Third secret
-///          cXVpIGRvbG9yZ…
+///          cXVpIGRvbG9yZW0…
 ///          aha
-///          8xRyXaSkpKQGq…
+///          8xRyXaSkpKQGqlT…
 ///          123   x&quot;#},
 ///     truncate_base64(&amp;mut s, 16)
 /// );
 /// ```
 </span><span class="kw">pub fn </span>truncate_base64(text: <span class="kw-2">&amp;</span>str, max_b64: usize) -&gt; String {
+  <span class="kw">let </span>ellipsis = <span class="string">&quot;\u{2026}&quot;</span>;
   <span class="kw">let </span>parts = b64here(text);
-  <span class="comment">// calculate the size of the reduced string
-  </span><span class="kw">let </span>short_size = parts.iter().map(|p| <span class="kw">if </span>p.base64 { min(p.end - p.start, max_b64) } <span class="kw">else </span>{ p.end - p.start })
+
+  <span class="kw">let </span>truncated_base64_size = |start, end| <span class="kw">if </span>end - start &gt; max_b64 { max_b64 + ellipsis.len() - <span class="number">1 </span>} <span class="kw">else </span>{ end - start };
+  <span class="comment">// calculate the total size of the reduced string
+  </span><span class="kw">let </span>short_size = parts.iter().map(|p| <span class="kw">if </span>p.base64 { truncated_base64_size(p.start, p.end) } <span class="kw">else </span>{ p.end - p.start })
     .sum();
     <span class="kw">let </span><span class="kw-2">mut </span>result = String::with_capacity(short_size);
 
@@ -741,8 +763,7 @@ aha
       <span class="kw">if </span>p.base64 {
         <span class="kw">if </span>p.end - p.start &gt; max_b64 {
           <span class="comment">// in utf-8 this is E2 80 A6, three bytes
-          </span><span class="kw">let </span>ellipsis = <span class="string">&quot;\u{2026}&quot;</span>;
-          result.push_str(<span class="kw-2">&amp;</span>text[p.start .. p.start + max_b64 - ellipsis.len()]);
+          </span>result.push_str(<span class="kw-2">&amp;</span>text[p.start .. p.start + max_b64 - <span class="number">1</span>]);
           result.push_str(ellipsis); 
         } <span class="kw">else </span>{
           result.push_str(<span class="kw-2">&amp;</span>text[p.start..p.end]);
@@ -769,7 +790,8 @@ aha
   }
 }
 
-<span class="kw">pub fn </span>memo_decrypt(encrypted_memo: <span class="kw-2">&amp;</span>str, secret: <span class="kw-2">&amp;</span>str) -&gt; String {
+<span class="doccomment">/// Decrypts the base64 encoded segments in a memo
+</span><span class="kw">pub fn </span>memo_decrypt(encrypted_memo: <span class="kw-2">&amp;</span>str, secret: <span class="kw-2">&amp;</span>str) -&gt; String {
     <span class="kw">let </span>parts = b64here(encrypted_memo);
     <span class="kw">let </span><span class="kw-2">mut </span>result = String::with_capacity(encrypted_memo.len());
     parts.iter()
@@ -822,7 +844,9 @@ Second secret
   }
 }
 
-<span class="kw">pub fn </span>memo_encrypt(clear_memo: <span class="kw-2">&amp;</span>str, secret: <span class="kw-2">&amp;</span>str, initial_nonce: u64) -&gt; <span class="prelude-ty">Result</span>&lt;String, <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str&gt; {
+<span class="doccomment">/// Encrypts all segments surrounded by Japanes quotation marks in the memo 
+/// `「secret」`
+</span><span class="kw">pub fn </span>memo_encrypt(clear_memo: <span class="kw-2">&amp;</span>str, secret: <span class="kw-2">&amp;</span>str, initial_nonce: u64) -&gt; <span class="prelude-ty">Result</span>&lt;String, <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str&gt; {
   <span class="kw">let </span>opening_quote_size = <span class="string">&quot;\u{300c}&quot;</span>.len();
   <span class="kw">let </span>closing_quote_size = <span class="string">&quot;\u{300d}&quot;</span>.len();
 

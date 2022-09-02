@@ -383,6 +383,8 @@ const BLOCK_SIZE: usize = 16;
 /// a mask: first half the nonce, the second a counter. Then we cipher the mask
 /// with the secret key and xor the plaintext block with the ciphered mask.
 ///
+/// See example usage at [`aes_ctr_decrypt`]
+///
 pub fn aes_ctr_encrypt(plain_text: &str, password: &str, nonce: u64) -> String {
 
     let plain_bytes = plain_text.as_bytes();

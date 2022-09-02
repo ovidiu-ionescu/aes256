@@ -569,6 +569,8 @@
 <span id="569">569</span>
 <span id="570">570</span>
 <span id="571">571</span>
+<span id="572">572</span>
+<span id="573">573</span>
 </pre><pre class="rust"><code><span class="kw">use </span>std::mem::swap;
 <span class="kw">extern crate </span>base64;
 
@@ -953,6 +955,8 @@
 /// The way it works: we split the text into blocks. For each block we prepare
 /// a mask: first half the nonce, the second a counter. Then we cipher the mask
 /// with the secret key and xor the plaintext block with the ciphered mask.
+///
+/// See example usage at [`aes_ctr_decrypt`]
 ///
 </span><span class="kw">pub fn </span>aes_ctr_encrypt(plain_text: <span class="kw-2">&amp;</span>str, password: <span class="kw-2">&amp;</span>str, nonce: u64) -&gt; String {
 

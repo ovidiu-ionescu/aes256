@@ -5,9 +5,9 @@
 //!
 //! ### Encryption
 //! The parts of the text that are supposed to be encrypted will be marked with
-//! Japanese quotes: `「secret」`.
+//! Japanese quotes: `「secret」`.\
 //! The encryption algorithm is AES-256 with a timestamp nonce and a counter.
-//! After encryption, the text will be replaced with a base64-encoded string.
+//! After encryption, the text will be base64 encoded.
 //!
 //! ### Decryption
 //! The text will be decrypted with the same algorithm and the same key. The bits
@@ -189,7 +189,12 @@ _2020-05-08_
 }
 
 
-/// Truncates the large segments of base64 and adds an ellipsis (uses unsafe)
+/// Truncates the large segments of base64 and adds an ellipsis inside input string
+/// (uses unsafe)
+///
+/// The replacement is done in place. The string is not reallocated.\
+/// Because the ellipsis is 3 bytes long, the visible truncation will end up 
+/// being 2 characters shorter, 2 extra bytes are used by the ellipsis.
 pub fn prepare_memo_for_view(memo_text: &mut str, max_size: usize) -> &str {
   let parts = b64here(memo_text);
   println!("Found {} parts", parts.len());
@@ -230,12 +235,14 @@ aha
   }
 }
 
-/// Truncates the large segments of base64 and adds an ellipsis.
+/// Truncates the large segments of base64 if they are larger than `max_b64` 
+/// and adds an ellipsis.
+/// 
 /// Trailing spaces are removed.
 ///
-/// Currently the size is expressed in bytes. As the ellipsis character has
-/// three bytes, the resulting string will have a total 14 visible characters 
-/// including the ellipsis.
+/// The truncated strings will have `max_b64` visible characters including the 
+/// ellipsis. Because the ellipsis is 3 bytes long in utf-8, the actual number 
+/// of bytes in the truncated segment will be `max_b64 + 2`.
 ///
 /// ```rust
 /// use indoc::indoc;
@@ -252,17 +259,20 @@ aha
 /// assert_eq!(
 ///     indoc! {r#"
 ///          Third secret
-///          cXVpIGRvbG9yZ…
+///          cXVpIGRvbG9yZW0…
 ///          aha
-///          8xRyXaSkpKQGq…
+///          8xRyXaSkpKQGqlT…
 ///          123   x"#},
 ///     truncate_base64(&mut s, 16)
 /// );
 /// ```
 pub fn truncate_base64(text: &str, max_b64: usize) -> String {
+  let ellipsis = "\u{2026}";
   let parts = b64here(text);
-  // calculate the size of the reduced string
-  let short_size = parts.iter().map(|p| if p.base64 { min(p.end - p.start, max_b64) } else { p.end - p.start })
+
+  let truncated_base64_size = |start, end| if end - start > max_b64 { max_b64 + ellipsis.len() - 1 } else { end - start };
+  // calculate the total size of the reduced string
+  let short_size = parts.iter().map(|p| if p.base64 { truncated_base64_size(p.start, p.end) } else { p.end - p.start })
     .sum();
     let mut result = String::with_capacity(short_size);
 
@@ -270,8 +280,7 @@ pub fn truncate_base64(text: &str, max_b64: usize) -> String {
       if p.base64 {
         if p.end - p.start > max_b64 {
           // in utf-8 this is E2 80 A6, three bytes
-          let ellipsis = "\u{2026}";
-          result.push_str(&text[p.start .. p.start + max_b64 - ellipsis.len()]);
+          result.push_str(&text[p.start .. p.start + max_b64 - 1]);
           result.push_str(ellipsis); 
         } else {
           result.push_str(&text[p.start..p.end]);
@@ -298,6 +307,7 @@ aha
   }
 }
 
+/// Decrypts the base64 encoded segments in a memo
 pub fn memo_decrypt(encrypted_memo: &str, secret: &str) -> String {
     let parts = b64here(encrypted_memo);
     let mut result = String::with_capacity(encrypted_memo.len());
@@ -351,6 +361,8 @@ Second secret
   }
 }
 
+/// Encrypts all segments surrounded by Japanes quotation marks in the memo 
+/// `「secret」`
 pub fn memo_encrypt(clear_memo: &str, secret: &str, initial_nonce: u64) -> Result<String, &'static str> {
   let opening_quote_size = "\u{300c}".len();
   let closing_quote_size = "\u{300d}".len();
