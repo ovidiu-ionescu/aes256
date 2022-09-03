@@ -481,6 +481,57 @@
 <span id="481">481</span>
 <span id="482">482</span>
 <span id="483">483</span>
+<span id="484">484</span>
+<span id="485">485</span>
+<span id="486">486</span>
+<span id="487">487</span>
+<span id="488">488</span>
+<span id="489">489</span>
+<span id="490">490</span>
+<span id="491">491</span>
+<span id="492">492</span>
+<span id="493">493</span>
+<span id="494">494</span>
+<span id="495">495</span>
+<span id="496">496</span>
+<span id="497">497</span>
+<span id="498">498</span>
+<span id="499">499</span>
+<span id="500">500</span>
+<span id="501">501</span>
+<span id="502">502</span>
+<span id="503">503</span>
+<span id="504">504</span>
+<span id="505">505</span>
+<span id="506">506</span>
+<span id="507">507</span>
+<span id="508">508</span>
+<span id="509">509</span>
+<span id="510">510</span>
+<span id="511">511</span>
+<span id="512">512</span>
+<span id="513">513</span>
+<span id="514">514</span>
+<span id="515">515</span>
+<span id="516">516</span>
+<span id="517">517</span>
+<span id="518">518</span>
+<span id="519">519</span>
+<span id="520">520</span>
+<span id="521">521</span>
+<span id="522">522</span>
+<span id="523">523</span>
+<span id="524">524</span>
+<span id="525">525</span>
+<span id="526">526</span>
+<span id="527">527</span>
+<span id="528">528</span>
+<span id="529">529</span>
+<span id="530">530</span>
+<span id="531">531</span>
+<span id="532">532</span>
+<span id="533">533</span>
+<span id="534">534</span>
 </pre><pre class="rust"><code><span class="doccomment">//! A library for processing text in the memos in Organizator.
 //!
 //! As Organizator allows encrypting data on the client, this library will be
@@ -502,54 +553,61 @@
 //! will be replaced with a shorter version followed by &amp;hellip; (ellipsis).
 </span><span class="kw">pub mod </span>aes;
 
-<span class="kw">use </span><span class="kw">crate</span>::aes::{ aes_ctr_decrypt, aes_ctr_encrypt};
-<span class="kw">use </span>std::cmp::{ min };
+<span class="kw">use </span><span class="kw">crate</span>::aes::{aes_ctr_decrypt, aes_ctr_encrypt};
 
-<span class="kw">struct  </span>Part &lt;<span class="lifetime">&#39;a</span>&gt; {
-    text: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str,
+<span class="kw">struct </span>Part&lt;<span class="lifetime">&#39;a</span>&gt; {
+    text:  <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str,
     clear: bool,
 }
 
 <span class="kw">struct </span>PartDescriptor {
-  start: usize,
-  end: usize,
-  base64: bool
+    start:  usize,
+    end:    usize,
+    base64: bool,
 }
 
 <span class="kw">struct </span>Status {
-    char_count: usize,
+    char_count:  usize,
     equal_count: usize,
-    inside: bool,
-    found: isize,
-    prev_pos: usize,
+    inside:      bool,
+    found:       isize,
+    prev_pos:    usize,
     <span class="comment">// in the tuple the bool is true if we have a base64 value, opposite of Part.clear
-    </span>parts: Vec&lt;PartDescriptor&gt;,
+    </span>parts:       Vec&lt;PartDescriptor&gt;,
 }
 
 <span class="kw">impl </span>Status {
-    <span class="kw">fn </span>new () -&gt; Status {
+    <span class="kw">fn </span>new() -&gt; Status {
         Status {
-            char_count: <span class="number">0</span>,
+            char_count:  <span class="number">0</span>,
             equal_count: <span class="number">0</span>,
             <span class="comment">// wether we think we are inside a b64 string
-            </span>inside: <span class="bool-val">false</span>,
-            found: <span class="number">0</span>,
+            </span>inside:      <span class="bool-val">false</span>,
+            found:       <span class="number">0</span>,
             <span class="comment">// the last position that was included in the parts
-            </span>prev_pos: <span class="number">0</span>,
-            parts: Vec::with_capacity(<span class="number">10</span>),
+            </span>prev_pos:    <span class="number">0</span>,
+            parts:       Vec::with_capacity(<span class="number">10</span>),
         }
     }
 
     <span class="doccomment">/// Check if we have advanced to the end of a base64 segment
     </span><span class="kw">fn </span>check_base64(<span class="kw-2">&amp;mut </span><span class="self">self</span>, pos: usize) {
         <span class="kw">let </span>total_chars = <span class="self">self</span>.char_count + <span class="self">self</span>.equal_count;
-        <span class="kw">if </span>total_chars &gt;= <span class="number">16 </span>&amp;&amp; total_chars %<span class="number">4 </span>== <span class="number">0 </span>&amp;&amp; <span class="self">self</span>.inside {
+        <span class="kw">if </span>total_chars &gt;= <span class="number">16 </span>&amp;&amp; total_chars % <span class="number">4 </span>== <span class="number">0 </span>&amp;&amp; <span class="self">self</span>.inside {
             <span class="self">self</span>.found += <span class="number">1</span>;
             <span class="comment">// add the clear string if it is non empty
             </span><span class="kw">if </span><span class="self">self</span>.prev_pos &lt; pos - total_chars {
-                <span class="self">self</span>.parts.push(PartDescriptor {start: <span class="self">self</span>.prev_pos, end: pos - total_chars, base64: <span class="bool-val">false</span>});
+                <span class="self">self</span>.parts.push(PartDescriptor {
+                    start:  <span class="self">self</span>.prev_pos,
+                    end:    pos - total_chars,
+                    base64: <span class="bool-val">false</span>,
+                });
             }
-            <span class="self">self</span>.parts.push(PartDescriptor {start: pos - total_chars, end: pos, base64: <span class="bool-val">true</span>});
+            <span class="self">self</span>.parts.push(PartDescriptor {
+                start:  pos - total_chars,
+                end:    pos,
+                base64: <span class="bool-val">true</span>,
+            });
             <span class="comment">// println!(&quot;Found a base64&quot;);
             </span><span class="self">self</span>.prev_pos = pos;
         }
@@ -582,14 +640,19 @@
             }
         }
 
-        <span class="kw">if </span>(<span class="string">&#39;A&#39;</span>..=<span class="string">&#39;Z&#39;</span>).contains(<span class="kw-2">&amp;</span>c) || (<span class="string">&#39;a&#39;</span>..= <span class="string">&#39;z&#39;</span>).contains(<span class="kw-2">&amp;</span>c) || (<span class="string">&#39;0&#39; </span>..= <span class="string">&#39;9&#39;</span>).contains(<span class="kw-2">&amp;</span>c) || <span class="string">&#39;/&#39; </span>== c || <span class="string">&#39;+&#39; </span>== c {
+        <span class="kw">if </span>(<span class="string">&#39;A&#39;</span>..=<span class="string">&#39;Z&#39;</span>).contains(<span class="kw-2">&amp;</span>c)
+            || (<span class="string">&#39;a&#39;</span>..=<span class="string">&#39;z&#39;</span>).contains(<span class="kw-2">&amp;</span>c)
+            || (<span class="string">&#39;0&#39;</span>..=<span class="string">&#39;9&#39;</span>).contains(<span class="kw-2">&amp;</span>c)
+            || <span class="string">&#39;/&#39; </span>== c
+            || <span class="string">&#39;+&#39; </span>== c
+        {
             <span class="kw">if </span>status.inside || prev_space {
                 status.char_count += <span class="number">1</span>;
                 status.inside = <span class="bool-val">true</span>;
                 prev_space = <span class="bool-val">false</span>;
             }
         } <span class="kw">else </span>{
-            <span class="kw">if </span>status.inside  {
+            <span class="kw">if </span>status.inside {
                 status.check_base64(pos);
             }
             prev_space = is_space(c);
@@ -597,10 +660,14 @@
     }
     status.check_base64(s.len());
     <span class="kw">if </span>status.prev_pos &lt; s.len() {
-        status.parts.push(PartDescriptor {start: status.prev_pos, end: s.len(), base64: <span class="bool-val">false</span>});
+        status.parts.push(PartDescriptor {
+            start:  status.prev_pos,
+            end:    s.len(),
+            base64: <span class="bool-val">false</span>,
+        });
     }
     status.parts
- }
+}
 
 <span class="attribute">#[cfg(test)]
 </span><span class="kw">mod </span>tests {
@@ -621,7 +688,9 @@ DhVyXUxMTEwpo9eX4aw7dJnT1zaZ9DBqISbEU0rj6pPcoWZk5m1xTDqQouV4pyOxdLLVIeBfZG/bF2Rl
 Fourth secret
 JhVyXYWFhYVkprM94+hLMA==&quot;#</span>;
         <span class="kw">let </span>parts = <span class="kw">super</span>::b64here(<span class="kw-2">&amp;</span>s);
-        parts.iter().for_each(|p| <span class="macro">print!</span>(<span class="string">&quot;\u{300C}{}\u{300D}{} &quot;</span>, <span class="kw-2">&amp;</span>s[p.start..p.end], p.base64));
+        parts
+            .iter()
+            .for_each(|p| <span class="macro">print!</span>(<span class="string">&quot;\u{300C}{}\u{300D}{} &quot;</span>, <span class="kw-2">&amp;</span>s[p.start..p.end], p.base64));
         <span class="macro">assert_eq!</span>(parts.len(), <span class="number">8</span>);
         <span class="kw">let </span>encrypted_parts_count = parts.iter().filter(|p| p.base64).count();
         <span class="macro">assert_eq!</span>(encrypted_parts_count, <span class="number">4</span>);
@@ -643,7 +712,9 @@ JhVyXYWFhYVkprM94+hLMA==&quot;#</span>;
     </span><span class="kw">fn </span>b64here_test3() {
         <span class="kw">let </span>s = <span class="string">&quot;JhVyXYWFhYVkprM94+hLMA== &quot;</span>;
         <span class="kw">let </span>parts = <span class="kw">super</span>::b64here(<span class="kw-2">&amp;</span>s);
-        parts.iter().for_each(|p| <span class="macro">print!</span>(<span class="string">&quot;[{}]&quot;</span>, <span class="kw-2">&amp;</span>s[p.start..p.end]));
+        parts
+            .iter()
+            .for_each(|p| <span class="macro">print!</span>(<span class="string">&quot;[{}]&quot;</span>, <span class="kw-2">&amp;</span>s[p.start..p.end]));
         <span class="macro">assert_eq!</span>(parts.len(), <span class="number">2</span>);
     }
 
@@ -651,80 +722,88 @@ JhVyXYWFhYVkprM94+hLMA==&quot;#</span>;
     </span><span class="kw">fn </span>fake_b64() {
         <span class="kw">let </span>s = <span class="string">&quot;http://www.positioniseverything&quot;</span>;
         <span class="kw">let </span>parts = <span class="kw">super</span>::b64here(<span class="kw-2">&amp;</span>s);
-        parts.iter().for_each(|p| <span class="macro">print!</span>(<span class="string">&quot;[{}]&quot;</span>, <span class="kw-2">&amp;</span>s[p.start..p.end]));
+        parts
+            .iter()
+            .for_each(|p| <span class="macro">print!</span>(<span class="string">&quot;[{}]&quot;</span>, <span class="kw-2">&amp;</span>s[p.start..p.end]));
         <span class="macro">println!</span>(<span class="string">&quot;Above are the fake parts&quot;</span>);
         <span class="macro">assert_eq!</span>(parts.len(), <span class="number">1</span>);
     }
 
     <span class="attribute">#[test]
     </span><span class="kw">fn </span>fake_b64_2() {
-      <span class="kw">let </span>s = <span class="string">r#&quot;# Serverless
+        <span class="kw">let </span>s = <span class="string">r#&quot;# Serverless
 _2020-05-08_  
 
 [www.cs.utah.edu](https://www.cs.utah.edu/~lifeifei/papers/shredder.pdf) 
 
 [blog.acolyer.org](https://blog.acolyer.org/2020/01/29/narrowing-the-gap/) Narrowing the gap between serverless and its state with storage functions
 &quot;#</span>;
-      <span class="kw">let </span>parts = <span class="kw">super</span>::b64here(<span class="kw-2">&amp;</span>s);
-      parts.iter().for_each(|p| <span class="macro">print!</span>(<span class="string">&quot;\u{300C}{}\u{300D}{} &quot;</span>, <span class="kw-2">&amp;</span>s[p.start..p.end], p.base64));
-      <span class="macro">assert_eq!</span>(parts.len(), <span class="number">1</span>);
+        <span class="kw">let </span>parts = <span class="kw">super</span>::b64here(<span class="kw-2">&amp;</span>s);
+        parts
+            .iter()
+            .for_each(|p| <span class="macro">print!</span>(<span class="string">&quot;\u{300C}{}\u{300D}{} &quot;</span>, <span class="kw-2">&amp;</span>s[p.start..p.end], p.base64));
+        <span class="macro">assert_eq!</span>(parts.len(), <span class="number">1</span>);
     }
 }
-
 
 <span class="doccomment">/// Truncates the large segments of base64 and adds an ellipsis inside input string
 /// (uses unsafe)
 ///
 /// The replacement is done in place. The string is not reallocated.\
-/// Because the ellipsis is 3 bytes long, the visible truncation will end up 
+/// Because the ellipsis is 3 bytes long, the visible truncation will end up
 /// being 2 characters shorter, 2 extra bytes are used by the ellipsis.
 </span><span class="kw">pub fn </span>prepare_memo_for_view(memo_text: <span class="kw-2">&amp;mut </span>str, max_size: usize) -&gt; <span class="kw-2">&amp;</span>str {
-  <span class="kw">let </span>parts = b64here(memo_text);
-  <span class="macro">println!</span>(<span class="string">&quot;Found {} parts&quot;</span>, parts.len());
-  <span class="kw">let </span>ellipsis = [<span class="number">0xE2</span>, <span class="number">0x80</span>, <span class="number">0xA6</span>];
+    <span class="kw">let </span>parts = b64here(memo_text);
+    <span class="macro">println!</span>(<span class="string">&quot;Found {} parts&quot;</span>, parts.len());
+    <span class="kw">let </span>ellipsis = [<span class="number">0xE2</span>, <span class="number">0x80</span>, <span class="number">0xA6</span>];
 
-  <span class="comment">// we store here how much we removed from the string so far
-  </span><span class="kw">let </span><span class="kw-2">mut </span>removed: usize = <span class="number">0</span>;
-  parts.iter().filter(|p| p.base64 &amp;&amp; (p.end - p.start) &gt; max_size).for_each(|p| {
-    <span class="kw">unsafe </span>{
-      <span class="kw">let </span>bt = memo_text.as_bytes_mut();
+    <span class="comment">// we store here how much we removed from the string so far
+    </span><span class="kw">let </span><span class="kw-2">mut </span>removed: usize = <span class="number">0</span>;
+    parts
+        .iter()
+        .filter(|p| p.base64 &amp;&amp; (p.end - p.start) &gt; max_size)
+        .for_each(|p| {
+            <span class="kw">unsafe </span>{
+                <span class="kw">let </span>bt = memo_text.as_bytes_mut();
 
-      <span class="comment">// recalculate the offsets at every iteration
-      </span><span class="kw">let </span>start = p.start - removed;
-      <span class="kw">let </span>end = p.end - removed;
-      <span class="comment">// this is how much we remove now
-      </span><span class="kw">let </span>extra = end - start - max_size;
-      
-      bt[start + max_size - ellipsis.len()..start + max_size].copy_from_slice(<span class="kw-2">&amp;</span>ellipsis);
-      bt.copy_within(end.., start + max_size);
-      removed += extra;
-    }
-  });
-  <span class="kw-2">&amp;</span>memo_text[..memo_text.len() - removed]
+                <span class="comment">// recalculate the offsets at every iteration
+                </span><span class="kw">let </span>start = p.start - removed;
+                <span class="kw">let </span>end = p.end - removed;
+                <span class="comment">// this is how much we remove now
+                </span><span class="kw">let </span>extra = end - start - max_size;
+
+                bt[start + max_size - ellipsis.len()..start + max_size].copy_from_slice(<span class="kw-2">&amp;</span>ellipsis);
+                bt.copy_within(end.., start + max_size);
+                removed += extra;
+            }
+        });
+    <span class="kw-2">&amp;</span>memo_text[..memo_text.len() - removed]
 }
 
 <span class="attribute">#[cfg(test)]
 </span><span class="kw">mod </span>test_prepare_memo {
-  <span class="attribute">#[test]
-  </span><span class="kw">fn </span>memo_ellipsis_test() {
-    <span class="kw">let </span><span class="kw-2">mut </span>s = String::from(<span class="string">r#&quot;
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>memo_ellipsis_test() {
+        <span class="kw">let </span><span class="kw-2">mut </span>s = String::from(
+            <span class="string">r#&quot;
     Third secret
 DhVyXUxMTEwpo9eX4aw7dJnT1zaZ9DBqISbEU0rj6pPcoWZk5m1xTDqQouV4pyOxdLLVIeBfZG/bF2Rlm4AVR7dnn28t8Sr5
 aha
 8xRyXaSkpKQGqlTMpMssgnNsZDnatopg
-123   x&quot;#</span>);
-    <span class="kw">let </span>short = <span class="kw">super</span>::prepare_memo_for_view(<span class="kw-2">&amp;mut </span>s, <span class="number">16</span>);
-    <span class="macro">println!</span>(<span class="string">&quot;{}&quot;</span>, short);
-  }
+123   x&quot;#</span>,
+        );
+        <span class="kw">let </span>short = <span class="kw">super</span>::prepare_memo_for_view(<span class="kw-2">&amp;mut </span>s, <span class="number">16</span>);
+        <span class="macro">println!</span>(<span class="string">&quot;{}&quot;</span>, short);
+    }
 }
 
-<span class="doccomment">/// Truncates the large segments of base64 if they are larger than `max_b64` 
+<span class="doccomment">/// Truncates the large segments of base64 if they are larger than `max_b64`
 /// and adds an ellipsis.
-/// 
+///
 /// Trailing spaces are removed.
 ///
-/// The truncated strings will have `max_b64` visible characters including the 
-/// ellipsis. Because the ellipsis is 3 bytes long in utf-8, the actual number 
+/// The truncated strings will have `max_b64` visible characters including the
+/// ellipsis. Because the ellipsis is 3 bytes long in utf-8, the actual number
 /// of bytes in the truncated segment will be `max_b64 + 2`.
 ///
 /// ```rust
@@ -750,82 +829,102 @@ aha
 /// );
 /// ```
 </span><span class="kw">pub fn </span>truncate_base64(text: <span class="kw-2">&amp;</span>str, max_b64: usize) -&gt; String {
-  <span class="kw">let </span>ellipsis = <span class="string">&quot;\u{2026}&quot;</span>;
-  <span class="kw">let </span>parts = b64here(text);
+    <span class="kw">let </span>ellipsis = <span class="string">&quot;\u{2026}&quot;</span>;
+    <span class="kw">let </span>parts = b64here(text);
 
-  <span class="kw">let </span>truncated_base64_size = |start, end| <span class="kw">if </span>end - start &gt; max_b64 { max_b64 + ellipsis.len() - <span class="number">1 </span>} <span class="kw">else </span>{ end - start };
-  <span class="comment">// calculate the total size of the reduced string
-  </span><span class="kw">let </span>short_size = parts.iter().map(|p| <span class="kw">if </span>p.base64 { truncated_base64_size(p.start, p.end) } <span class="kw">else </span>{ p.end - p.start })
-    .sum();
+    <span class="kw">let </span>truncated_base64_size = |start, end| {
+        <span class="kw">if </span>end - start &gt; max_b64 {
+            max_b64 + ellipsis.len() - <span class="number">1
+        </span>} <span class="kw">else </span>{
+            end - start
+        }
+    };
+    <span class="comment">// calculate the total size of the reduced string
+    </span><span class="kw">let </span>short_size = parts
+        .iter()
+        .map(|p| {
+            <span class="kw">if </span>p.base64 {
+                truncated_base64_size(p.start, p.end)
+            } <span class="kw">else </span>{
+                p.end - p.start
+            }
+        })
+        .sum();
     <span class="kw">let </span><span class="kw-2">mut </span>result = String::with_capacity(short_size);
 
-    parts.iter().for_each(|p| 
-      <span class="kw">if </span>p.base64 {
-        <span class="kw">if </span>p.end - p.start &gt; max_b64 {
-          <span class="comment">// in utf-8 this is E2 80 A6, three bytes
-          </span>result.push_str(<span class="kw-2">&amp;</span>text[p.start .. p.start + max_b64 - <span class="number">1</span>]);
-          result.push_str(ellipsis); 
+    parts.iter().for_each(|p| {
+        <span class="kw">if </span>p.base64 {
+            <span class="kw">if </span>p.end - p.start &gt; max_b64 {
+                <span class="comment">// in utf-8 this is E2 80 A6, three bytes
+                </span>result.push_str(<span class="kw-2">&amp;</span>text[p.start..p.start + max_b64 - <span class="number">1</span>]);
+                result.push_str(ellipsis);
+            } <span class="kw">else </span>{
+                result.push_str(<span class="kw-2">&amp;</span>text[p.start..p.end]);
+            }
         } <span class="kw">else </span>{
-          result.push_str(<span class="kw-2">&amp;</span>text[p.start..p.end]);
+            result.push_str(<span class="kw-2">&amp;</span>text[p.start..p.end]);
         }
-      } <span class="kw">else </span>{
-        result.push_str(<span class="kw-2">&amp;</span>text[p.start..p.end]);
-      }
-    );
+    });
     result
 }
 
 <span class="attribute">#[cfg(test)]
 </span><span class="kw">mod </span>test_truncate_base64 {
-  <span class="attribute">#[test]
-  </span><span class="kw">fn </span>memo_ellipsis_test() {
-    <span class="kw">let </span><span class="kw-2">mut </span>s = String::from(<span class="string">r#&quot;
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>memo_ellipsis_test() {
+        <span class="kw">let </span><span class="kw-2">mut </span>s = String::from(
+            <span class="string">r#&quot;
     Third secret
 DhVyXUxMTEwpo9eX4aw7dJnT1zaZ9DBqISbEU0rj6pPcoWZk5m1xTDqQouV4pyOxdLLVIeBfZG/bF2Rlm4AVR7dnn28t8Sr5
 aha
 8xRyXaSkpKQGqlTMpMssgnNsZDnatopg
-123   x&quot;#</span>);
-    <span class="kw">let </span>short = <span class="kw">super</span>::truncate_base64(<span class="kw-2">&amp;mut </span>s, <span class="number">16</span>);
-    <span class="macro">println!</span>(<span class="string">&quot;{}&quot;</span>, short);
-  }
+123   x&quot;#</span>,
+        );
+        <span class="kw">let </span>short = <span class="kw">super</span>::truncate_base64(<span class="kw-2">&amp;mut </span>s, <span class="number">16</span>);
+        <span class="macro">println!</span>(<span class="string">&quot;{}&quot;</span>, short);
+    }
 }
 
 <span class="doccomment">/// Decrypts the base64 encoded segments in a memo
 </span><span class="kw">pub fn </span>memo_decrypt(encrypted_memo: <span class="kw-2">&amp;</span>str, secret: <span class="kw-2">&amp;</span>str) -&gt; String {
     <span class="kw">let </span>parts = b64here(encrypted_memo);
     <span class="kw">let </span><span class="kw-2">mut </span>result = String::with_capacity(encrypted_memo.len());
-    parts.iter()
-      .map(|p| Part { text: <span class="kw-2">&amp;</span>encrypted_memo[p.start..p.end], clear: !p.base64 })
-      .for_each(|p| {
-        <span class="kw">if </span>p.clear {
-          result.push_str(p.text);
-        } <span class="kw">else </span>{
-          <span class="kw">let </span>clear_text = <span class="kw-2">&amp;</span>aes_ctr_decrypt(p.text, secret);
-          <span class="kw">if </span>clear_text.len() == p.text.len() {
-            <span class="comment">// decryption failed, encrypted text is the same length as clear text
-            </span>result.push_str(clear_text);
-          } <span class="kw">else </span>{
-            result.push(<span class="string">&#39;\u{300c}&#39;</span>);
-            result.push_str(clear_text);
-            result.push(<span class="string">&#39;\u{300d}&#39;</span>);
-          }
-        }
-      });
+    parts
+        .iter()
+        .map(|p| Part {
+            text:  <span class="kw-2">&amp;</span>encrypted_memo[p.start..p.end],
+            clear: !p.base64,
+        })
+        .for_each(|p| {
+            <span class="kw">if </span>p.clear {
+                result.push_str(p.text);
+            } <span class="kw">else </span>{
+                <span class="kw">let </span>clear_text = <span class="kw-2">&amp;</span>aes_ctr_decrypt(p.text, secret);
+                <span class="kw">if </span>clear_text.len() == p.text.len() {
+                    <span class="comment">// decryption failed, encrypted text is the same length as clear text
+                    </span>result.push_str(clear_text);
+                } <span class="kw">else </span>{
+                    result.push(<span class="string">&#39;\u{300c}&#39;</span>);
+                    result.push_str(clear_text);
+                    result.push(<span class="string">&#39;\u{300d}&#39;</span>);
+                }
+            }
+        });
     result
 }
 
 <span class="attribute">#[cfg(test)]
 </span><span class="kw">mod </span>test_memo_decryption {
-  <span class="attribute">#[test]
-  </span><span class="kw">fn </span>memo_decrypt_test() {
-    <span class="kw">let </span>memo_encrypted = <span class="string">r#&quot;
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>memo_decrypt_test() {
+        <span class="kw">let </span>memo_encrypted = <span class="string">r#&quot;
 First secret
 8xRyXaSkpKQGqlTMpMssgnNsZDnatopg
 
 Second secret
 /xRyXY6Ojo7/u45hZut8f41Uf6C2GvNCdA==
 &quot;#</span>;
-    <span class="kw">let </span>memo_clear = <span class="string">&quot;
+        <span class="kw">let </span>memo_clear = <span class="string">&quot;
 First secret
 \u{300c}The first secret\u{300d}
 
@@ -833,85 +932,88 @@ Second secret
 \u{300c}The second secret\u{300d}
 &quot;</span>;
 
-  <span class="macro">assert_eq!</span>(memo_clear, <span class="kw">super</span>::memo_decrypt(memo_encrypted, <span class="string">&quot;secret&quot;</span>));
-  }
+        <span class="macro">assert_eq!</span>(memo_clear, <span class="kw">super</span>::memo_decrypt(memo_encrypted, <span class="string">&quot;secret&quot;</span>));
+    }
 
-  <span class="attribute">#[test]
-  </span><span class="kw">fn </span>memo_decryption_false_test() {
-    <span class="kw">let </span>encrypted_memo = <span class="string">&quot;http://www.positioniseverything&quot;</span>;
-    <span class="kw">let </span>clear_memo = <span class="kw">super</span>::memo_decrypt(encrypted_memo, <span class="string">&quot;secret&quot;</span>);
-    <span class="macro">assert_eq!</span>(encrypted_memo, clear_memo);
-  }
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>memo_decryption_false_test() {
+        <span class="kw">let </span>encrypted_memo = <span class="string">&quot;http://www.positioniseverything&quot;</span>;
+        <span class="kw">let </span>clear_memo = <span class="kw">super</span>::memo_decrypt(encrypted_memo, <span class="string">&quot;secret&quot;</span>);
+        <span class="macro">assert_eq!</span>(encrypted_memo, clear_memo);
+    }
 }
 
-<span class="doccomment">/// Encrypts all segments surrounded by Japanes quotation marks in the memo 
+<span class="doccomment">/// Encrypts all segments surrounded by Japanes quotation marks in the memo
 /// `「secret」`
-</span><span class="kw">pub fn </span>memo_encrypt(clear_memo: <span class="kw-2">&amp;</span>str, secret: <span class="kw-2">&amp;</span>str, initial_nonce: u64) -&gt; <span class="prelude-ty">Result</span>&lt;String, <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str&gt; {
-  <span class="kw">let </span>opening_quote_size = <span class="string">&quot;\u{300c}&quot;</span>.len();
-  <span class="kw">let </span>closing_quote_size = <span class="string">&quot;\u{300d}&quot;</span>.len();
+</span><span class="kw">pub fn </span>memo_encrypt(
+    clear_memo: <span class="kw-2">&amp;</span>str,
+    secret: <span class="kw-2">&amp;</span>str,
+    initial_nonce: u64,
+) -&gt; <span class="prelude-ty">Result</span>&lt;String, <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str&gt; {
+    <span class="kw">let </span>opening_quote_size = <span class="string">&quot;\u{300c}&quot;</span>.len();
+    <span class="kw">let </span>closing_quote_size = <span class="string">&quot;\u{300d}&quot;</span>.len();
 
-  <span class="kw">let </span><span class="kw-2">mut </span>nonce = initial_nonce;
-  <span class="kw">let </span><span class="kw-2">mut </span>result = String::with_capacity(clear_memo.len() * <span class="number">2</span>);
-  <span class="kw">let </span><span class="kw-2">mut </span>start = <span class="number">0</span>;
-  <span class="kw">let </span><span class="kw-2">mut </span>encrypt = <span class="bool-val">false</span>;
+    <span class="kw">let </span><span class="kw-2">mut </span>nonce = initial_nonce;
+    <span class="kw">let </span><span class="kw-2">mut </span>result = String::with_capacity(clear_memo.len() * <span class="number">2</span>);
+    <span class="kw">let </span><span class="kw-2">mut </span>start = <span class="number">0</span>;
+    <span class="kw">let </span><span class="kw-2">mut </span>encrypt = <span class="bool-val">false</span>;
 
-  <span class="kw">let </span><span class="kw-2">mut </span>prev_char = <span class="string">&#39;\n&#39;</span>;
-  <span class="kw">let </span><span class="kw-2">mut </span>after_closing_quote = <span class="bool-val">false</span>;
-  <span class="kw">for </span>(pos, c) <span class="kw">in </span>clear_memo.char_indices() {
-      <span class="kw">match </span>c {
-        <span class="comment">// opening quote
-        </span><span class="string">&#39;\u{300c}&#39; </span>=&gt; {
-            after_closing_quote = <span class="bool-val">false</span>;
-            <span class="kw">if </span>pos &gt; start {
-              result.push_str(<span class="kw-2">&amp;</span>clear_memo[start..pos]);
-              <span class="comment">// make sure the encrypted result does not touch the text before it
-              </span><span class="kw">match </span>prev_char {
-                <span class="string">&#39; &#39;</span>| <span class="string">&#39;\n&#39; </span>|<span class="string">&#39;\r&#39; </span>| <span class="string">&#39;\t&#39; </span>=&gt; (),
-                <span class="kw">_ </span>=&gt; result.push(<span class="string">&#39; &#39;</span>), 
-              }
+    <span class="kw">let </span><span class="kw-2">mut </span>prev_char = <span class="string">&#39;\n&#39;</span>;
+    <span class="kw">let </span><span class="kw-2">mut </span>after_closing_quote = <span class="bool-val">false</span>;
+    <span class="kw">for </span>(pos, c) <span class="kw">in </span>clear_memo.char_indices() {
+        <span class="kw">match </span>c {
+            <span class="comment">// opening quote
+            </span><span class="string">&#39;\u{300c}&#39; </span>=&gt; {
+                after_closing_quote = <span class="bool-val">false</span>;
+                <span class="kw">if </span>pos &gt; start {
+                    result.push_str(<span class="kw-2">&amp;</span>clear_memo[start..pos]);
+                    <span class="comment">// make sure the encrypted result does not touch the text before it
+                    </span><span class="kw">match </span>prev_char {
+                        <span class="string">&#39; &#39; </span>| <span class="string">&#39;\n&#39; </span>| <span class="string">&#39;\r&#39; </span>| <span class="string">&#39;\t&#39; </span>=&gt; (),
+                        <span class="kw">_ </span>=&gt; result.push(<span class="string">&#39; &#39;</span>),
+                    }
+                }
+                start = pos + opening_quote_size;
+                <span class="kw">if </span>encrypt {
+                    <span class="kw">return </span><span class="prelude-val">Err</span>(<span class="string">&quot;Previous quote was not ended&quot;</span>);
+                }
+                encrypt = <span class="bool-val">true</span>;
             }
-            start = pos + opening_quote_size;
-            <span class="kw">if </span>encrypt {
-                <span class="kw">return </span><span class="prelude-val">Err</span>(<span class="string">&quot;Previous quote was not ended&quot;</span>);
+            <span class="comment">// closing quote
+            </span><span class="string">&#39;\u{300d}&#39; </span>=&gt; {
+                after_closing_quote = <span class="bool-val">true</span>;
+                <span class="kw">if </span>!encrypt {
+                    <span class="kw">return </span><span class="prelude-val">Err</span>(<span class="string">&quot;Closing quote has no opening quote&quot;</span>);
+                }
+                result.push_str(<span class="kw-2">&amp;</span>aes_ctr_encrypt(<span class="kw-2">&amp;</span>clear_memo[start..pos], secret, nonce));
+                nonce += (<span class="number">2 </span>+ (pos - start) / <span class="number">16</span>) <span class="kw">as </span>u64;
+                start = pos + closing_quote_size;
+                encrypt = <span class="bool-val">false</span>;
             }
-            encrypt = <span class="bool-val">true</span>;
-          },
-        <span class="comment">// closing quote
-        </span><span class="string">&#39;\u{300d}&#39; </span>=&gt; {
-            after_closing_quote = <span class="bool-val">true</span>;
-            <span class="kw">if </span>!encrypt {
-                <span class="kw">return </span><span class="prelude-val">Err</span>(<span class="string">&quot;Closing quote has no opening quote&quot;</span>);
+            <span class="kw">_ </span>=&gt; {
+                <span class="comment">// if we just added an encrypted section make sure it does not touch subsequent chars
+                </span><span class="kw">if </span>after_closing_quote {
+                    <span class="kw">match </span>c {
+                        <span class="string">&#39; &#39; </span>| <span class="string">&#39;\n&#39; </span>| <span class="string">&#39;\r&#39; </span>| <span class="string">&#39;\t&#39; </span>=&gt; (),
+                        <span class="kw">_ </span>=&gt; result.push(<span class="string">&#39; &#39;</span>),
+                    }
+                    after_closing_quote = <span class="bool-val">false</span>;
+                }
+                prev_char = c
             }
-            result.push_str(<span class="kw-2">&amp;</span>aes_ctr_encrypt(<span class="kw-2">&amp;</span>clear_memo[start..pos], secret, nonce));
-            nonce += (<span class="number">2 </span>+ (pos - start) / <span class="number">16</span>) <span class="kw">as </span>u64;
-            start = pos + closing_quote_size;
-            encrypt = <span class="bool-val">false</span>;
-          },
-          <span class="kw">_ </span>=&gt; {
-            <span class="comment">// if we just added an encrypted section make sure it does not touch subsequent chars
-            </span><span class="kw">if </span>after_closing_quote {
-              <span class="kw">match </span>c {
-                <span class="string">&#39; &#39;</span>| <span class="string">&#39;\n&#39; </span>|<span class="string">&#39;\r&#39; </span>| <span class="string">&#39;\t&#39; </span>=&gt; (),
-                <span class="kw">_ </span>=&gt; result.push(<span class="string">&#39; &#39;</span>), 
-              }
-                after_closing_quote = <span class="bool-val">false</span>; 
-            }
-              prev_char = c
-          },
-
-      }
-  }
-  <span class="kw">if </span>start &lt; clear_memo.len() {
-    result.push_str(<span class="kw-2">&amp;</span>clear_memo[start..]);
-  }
-  <span class="prelude-val">Ok</span>(result)
+        }
+    }
+    <span class="kw">if </span>start &lt; clear_memo.len() {
+        result.push_str(<span class="kw-2">&amp;</span>clear_memo[start..]);
+    }
+    <span class="prelude-val">Ok</span>(result)
 }
 
 <span class="attribute">#[cfg(test)]
 </span><span class="kw">mod </span>test_memo_encrypt {
-  <span class="attribute">#[test]
-  </span><span class="kw">fn </span>memo_encrypt_test() {
-    <span class="kw">let </span>clear_memo = <span class="string">&quot;
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>memo_encrypt_test() {
+        <span class="kw">let </span>clear_memo = <span class="string">&quot;
 First secret
 \u{300c}The first secret\u{300d} a
 
@@ -920,7 +1022,7 @@ Second secret
 End
 &quot;</span>;
 
-    <span class="kw">let </span>encrypted_memo = <span class="string">&quot;
+        <span class="kw">let </span>encrypted_memo = <span class="string">&quot;
 First secret
 AAAAAAAAAACmrCf4UYHplcBTiCEztS/3 a
 
@@ -928,41 +1030,41 @@ Second secret
 AwAAAAAAAADSUdXvchKudrwyi9q+mYmOUtD762Z48LL6PfIqyh+TyQ==
 End
 &quot;</span>;
-    <span class="kw">match </span><span class="kw">super</span>::memo_encrypt(<span class="kw-2">&amp;</span>clear_memo, <span class="string">&quot;secret&quot;</span>, <span class="number">0</span>) {
-      <span class="prelude-val">Ok</span>(s) =&gt; <span class="macro">assert_eq!</span>(encrypted_memo, s),
-      <span class="prelude-val">Err</span>(s) =&gt; <span class="macro">println!</span>(<span class="string">&quot;Failed to process memo: {}&quot;</span>, s),
+        <span class="kw">match </span><span class="kw">super</span>::memo_encrypt(<span class="kw-2">&amp;</span>clear_memo, <span class="string">&quot;secret&quot;</span>, <span class="number">0</span>) {
+            <span class="prelude-val">Ok</span>(s) =&gt; <span class="macro">assert_eq!</span>(encrypted_memo, s),
+            <span class="prelude-val">Err</span>(s) =&gt; <span class="macro">println!</span>(<span class="string">&quot;Failed to process memo: {}&quot;</span>, s),
+        }
     }
-  }
 
-  <span class="attribute">#[test]
-  </span><span class="kw">fn </span>memo_encrypt_spaces() {
-    <span class="kw">let </span>clear_memo = <span class="string">&quot;
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>memo_encrypt_spaces() {
+        <span class="kw">let </span>clear_memo = <span class="string">&quot;
 First secret\u{300c}The first secret\u{300d}
 Second secret
 \u{300c}The second secret\u{300d}is here
 &quot;</span>;
-    <span class="kw">let </span>encrypted_memo = <span class="string">&quot;
+        <span class="kw">let </span>encrypted_memo = <span class="string">&quot;
 First secret AAAAAAAAAACmrCf4UYHplcBTiCEztS/3
 Second secret
 AwAAAAAAAADSUdXvchKudrwyi9q+mYmOUtD762Z48LL6PfIqyh+TyQ== is here
-&quot;</span>;   
-  
-    <span class="kw">match </span><span class="kw">super</span>::memo_encrypt(<span class="kw-2">&amp;</span>clear_memo, <span class="string">&quot;secret&quot;</span>, <span class="number">0</span>) {
-      <span class="prelude-val">Ok</span>(s) =&gt; <span class="macro">assert_eq!</span>(encrypted_memo, s),
-      <span class="prelude-val">Err</span>(s) =&gt; <span class="macro">println!</span>(<span class="string">&quot;Failed to process memo: {}&quot;</span>, s),
+&quot;</span>;
+
+        <span class="kw">match </span><span class="kw">super</span>::memo_encrypt(<span class="kw-2">&amp;</span>clear_memo, <span class="string">&quot;secret&quot;</span>, <span class="number">0</span>) {
+            <span class="prelude-val">Ok</span>(s) =&gt; <span class="macro">assert_eq!</span>(encrypted_memo, s),
+            <span class="prelude-val">Err</span>(s) =&gt; <span class="macro">println!</span>(<span class="string">&quot;Failed to process memo: {}&quot;</span>, s),
+        }
     }
-  }
 
-  <span class="attribute">#[test]
-  </span><span class="kw">fn </span>memo_encrypt_short() {
-    <span class="kw">let </span>clear_memo = <span class="string">&quot;Secret \u{300c}secret\u{300d}&quot;</span>;
-    <span class="kw">let </span>encrypted_memo = <span class="string">&quot;Secret AAAAAAAAAACBoSGqUpyb5rRz+0RQx0qD&quot;</span>;
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>memo_encrypt_short() {
+        <span class="kw">let </span>clear_memo = <span class="string">&quot;Secret \u{300c}secret\u{300d}&quot;</span>;
+        <span class="kw">let </span>encrypted_memo = <span class="string">&quot;Secret AAAAAAAAAACBoSGqUpyb5rRz+0RQx0qD&quot;</span>;
 
-    <span class="kw">match </span><span class="kw">super</span>::memo_encrypt(<span class="kw-2">&amp;</span>clear_memo, <span class="string">&quot;secret&quot;</span>, <span class="number">0</span>) {
-      <span class="prelude-val">Ok</span>(s) =&gt; <span class="macro">assert_eq!</span>(encrypted_memo, s),
-      <span class="prelude-val">Err</span>(s) =&gt; <span class="macro">println!</span>(<span class="string">&quot;Failed to process memo: {}&quot;</span>, s),
-    }      
-  }
+        <span class="kw">match </span><span class="kw">super</span>::memo_encrypt(<span class="kw-2">&amp;</span>clear_memo, <span class="string">&quot;secret&quot;</span>, <span class="number">0</span>) {
+            <span class="prelude-val">Ok</span>(s) =&gt; <span class="macro">assert_eq!</span>(encrypted_memo, s),
+            <span class="prelude-val">Err</span>(s) =&gt; <span class="macro">println!</span>(<span class="string">&quot;Failed to process memo: {}&quot;</span>, s),
+        }
+    }
 }
 </code></pre></div>
 </section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="memo_rust" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0-nightly (015a824f2 2022-08-22)" ></div></body></html>
