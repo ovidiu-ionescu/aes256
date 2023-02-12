@@ -261,6 +261,20 @@ aha
         let short = super::prepare_memo_for_view(&mut s, 16);
         println!("{}", short);
     }
+
+    #[test]
+    fn long_string_inside_quotes() {
+        let mut s = r#"# serverless
+        「
+        a_very_long_string_that_is_not_base64_but_is_inside_quotes
+        」  
+        "#
+        .to_string();
+        let initial_len = s.len();
+        let short = super::prepare_memo_for_view(&mut s, 16);
+        println!("{}", &short);
+        assert_eq!(initial_len, short.len());
+    }
 }
 
 /// Truncates the large segments of base64 if they are larger than `max_b64`
